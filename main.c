@@ -6,6 +6,8 @@
 #include "win.h"
 #include "pause.h"
 #include "game.h"
+#include "house.h"
+#include "outside.h"
 
 // Prototypes.
 void initialize();
@@ -126,11 +128,11 @@ void instructions() {
 
 // Sets up the game state.
 void goToGame() {
-    state = GAME;
+    state = OUTSIDE;
     waitForVBlank();
-    DMANow(3, gamePal, PALETTE, 256);
-    DMANow(3, gameTiles, &CHARBLOCK[0], gameTilesLen / 2);
-    DMANow(3, gameMap, &SCREENBLOCK[28], gameMapLen / 2);
+    DMANow(3, outsidePal, PALETTE, 256);
+    DMANow(3, outsideTiles, &CHARBLOCK[0], outsideTilesLen / 2);
+    DMANow(3, outsideMap, &SCREENBLOCK[28], outsideMapLen / 2);
 }
 
 // Runs every frame of the game state.

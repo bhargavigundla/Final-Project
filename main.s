@@ -151,7 +151,7 @@ goToGame:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r1, #1
+	mov	r1, #0
 	push	{r4, lr}
 	ldr	r2, .L15
 	ldr	r3, .L15+4
@@ -171,7 +171,7 @@ goToGame:
 	ldr	r1, .L15+20
 	mov	lr, pc
 	bx	r4
-	mov	r3, #1024
+	mov	r3, #4096
 	mov	r0, #3
 	ldr	r2, .L15+24
 	ldr	r1, .L15+28
@@ -185,11 +185,11 @@ goToGame:
 	.word	state
 	.word	waitForVBlank
 	.word	DMANow
-	.word	gamePal
-	.word	7392
-	.word	gameTiles
+	.word	outsidePal
+	.word	19808
+	.word	outsideTiles
 	.word	100720640
-	.word	gameMap
+	.word	outsideMap
 	.size	goToGame, .-goToGame
 	.align	2
 	.global	start
@@ -576,5 +576,6 @@ main:
 	.comm	shadowOAM,1024,4
 	.comm	oldButtons,2,2
 	.comm	buttons,2,2
+	.comm	stage,4,4
 	.comm	state,4,4
 	.ident	"GCC: (devkitARM release 53) 9.1.0"

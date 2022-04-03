@@ -1369,6 +1369,26 @@ extern const unsigned short gameMap[1024];
 
 extern const unsigned short gamePal[256];
 # 9 "main.c" 2
+# 1 "house.h" 1
+# 22 "house.h"
+extern const unsigned short houseTiles[46016];
+
+
+extern const unsigned short houseMap[4096];
+
+
+extern const unsigned short housePal[256];
+# 10 "main.c" 2
+# 1 "outside.h" 1
+# 22 "outside.h"
+extern const unsigned short outsideTiles[19808];
+
+
+extern const unsigned short outsideMap[4096];
+
+
+extern const unsigned short outsidePal[256];
+# 11 "main.c" 2
 
 
 void initialize();
@@ -1393,7 +1413,17 @@ enum {
     PAUSE,
     WIN
 };
+
+enum {
+    OUTSIDE,
+    HOUSE,
+    VOLCANO,
+    OCEAN,
+    FOREST
+};
+
 int state;
+int stage;
 
 
 unsigned short buttons;
@@ -1479,11 +1509,11 @@ void instructions() {
 
 
 void goToGame() {
-    state = GAME;
+    state = OUTSIDE;
     waitForVBlank();
-    DMANow(3, gamePal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, gameTiles, &((charblock *)0x6000000)[0], 14784 / 2);
-    DMANow(3, gameMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    DMANow(3, outsidePal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, outsideTiles, &((charblock *)0x6000000)[0], 39616 / 2);
+    DMANow(3, outsideMap, &((screenblock *)0x6000000)[28], 8192 / 2);
 }
 
 
@@ -1492,7 +1522,21 @@ void game() {
         goToWin();
     } else if ((!(~(oldButtons) & ((1 << 2))) && (~buttons & ((1 << 2))))) {
         goToPause();
+    } else {
+        switch (stage) {
+            case OUTSIDE:
+                break;
+            case HOUSE:
+                break;
+            case VOLCANO:
+                break;
+            case OCEAN:
+                break;
+            case FOREST:
+                break;
+        }
     }
+
 }
 
 
