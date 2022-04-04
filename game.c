@@ -30,13 +30,13 @@ enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
 OBJ_ATTR shadowOAM[128];
 SPRITE player;
 
-// TODO 2.1: Declare collisionMap and assign it the value collisionmapBitmap
-// If you see a warning in the terminal when building because of this line,
-// you need to fix it! (Hint: use a cast operation)
-unsigned char* collisionMap = (unsigned char *) outsideCMBitmap;
+unsigned char* collisionMap;
 
 // Initialize the game
 void initGame() {
+    collisionMap = (unsigned char *) outsideCMBitmap;
+    stage = OUTSIDE;
+
 	waitForVBlank();
     setOutsideBackground();
 
@@ -50,8 +50,6 @@ void initGame() {
     // Set up the sprites
     initSprites();
 	
-
-
     initPlayer();
 }
 
@@ -81,7 +79,7 @@ void initPlayer() {
     player.rdel = 1;
     player.cdel = 1;
 
-    // Place in the middle of the screen in the world location
+    // Place in the middle of the screen
     player.worldRow = SCREENHEIGHT / 2 - player.width / 2 + vOff;
     player.worldCol = SCREENWIDTH / 2 - player.height / 2 + hOff;
     player.aniCounter = 0;
@@ -139,13 +137,15 @@ void updateStage() {
 	// change stage, world variables, background varibales to specified stage
 	switch (stage) {
 		case OUTSIDE:
-		    if (player.worldRow == EEVEEDOORROW && player.worldCol == EEVEEDOORCOL) {  // good
+		    if (player.worldRow == EEVEEDOORROW && player.worldCol == EEVEEDOORCOL) { 
+                // REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+                // REG_DISPCTL = MODE0 | BG0_ENABLE;
                 collisionMap = (unsigned char *) houseCMBitmap; // good
-                vOff = 137;
-                hOff = 275;
                 stage = HOUSE;
                 player.worldCol = 114;
                 player.worldRow = 114;
+                vOff = 137;
+                hOff = 275;
                 setStage();
             }
 			break;
@@ -252,7 +252,7 @@ void showGame() {
     REG_BG0VOFF = vOff;
     REG_BG0HOFF = hOff;
 
-    initSprites();
+    // initSprites();
 }
 
 void setStage() {
@@ -266,7 +266,7 @@ void setStage() {
             setOutsideBackground();
             break;
         case (HOUSE):
-            REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+            // REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
             mapWidth = HOUSEWIDTH;
 	        mapWidth = HOUSEHEIGHT;
 
