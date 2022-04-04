@@ -8,6 +8,7 @@
 #include "game.h"
 #include "house.h"
 #include "outside.h"
+#include "spritesheet.h"
 
 // Prototypes.
 void initialize();
@@ -33,16 +34,7 @@ enum {
     WIN
 };
 
-enum {
-    OUTSIDE,
-    HOUSE,
-    VOLCANO,
-    OCEAN,
-    FOREST
-};
-
 int state;
-int stage;
 
 // Button Variables.
 unsigned short buttons;
@@ -67,6 +59,9 @@ int main() {
         case GAME:
             game();
             break;
+        case INSTRUCTIONS:
+            instructions();
+            break;
         case PAUSE:
             pause();
             break;
@@ -79,11 +74,6 @@ int main() {
 
 // Sets up GBA.
 void initialize() {
-    // Bitwise OR the BG(s) you want to use and Bitwise OR SPRITE_ENABLE if you want to use sprites.
-    // Don't forget to set up whatever BGs you enabled in the line above!
-    REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
-    REG_BG0CNT = BG_8BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
-
     buttons = BUTTONS;
     oldButtons = 0;
 
@@ -93,6 +83,11 @@ void initialize() {
 // Sets up the start state.
 void goToStart() {
     state = START;
+    REG_BG0CNT = BG_8BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    REG_BG0VOFF = 0;
+    REG_BG0HOFF = 0;
+
     waitForVBlank();
     DMANow(3, startPal, PALETTE, 256);
     DMANow(3, startTiles, &CHARBLOCK[0], startTilesLen / 2);
@@ -102,6 +97,7 @@ void goToStart() {
 // Runs every frame of the start state.
 void start() {
     if (BUTTON_PRESSED(BUTTON_START)) {
+        initGame();
         goToGame();
     } else if (BUTTON_PRESSED(BUTTON_SELECT)) {
         goToInstructions();
@@ -111,6 +107,12 @@ void start() {
 // Sets up the game state.
 void goToInstructions() {
     state = INSTRUCTIONS;
+
+    REG_BG0CNT = BG_8BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    REG_BG0VOFF = 0;
+    REG_BG0HOFF = 0;
+
     waitForVBlank();
     DMANow(3, instructionsPal, PALETTE, 256);
     DMANow(3, instructionsTiles, &CHARBLOCK[0], instructionsTilesLen / 2);
@@ -128,11 +130,9 @@ void instructions() {
 
 // Sets up the game state.
 void goToGame() {
-    state = OUTSIDE;
-    waitForVBlank();
-    DMANow(3, outsidePal, PALETTE, 256);
-    DMANow(3, outsideTiles, &CHARBLOCK[0], outsideTilesLen / 2);
-    DMANow(3, outsideMap, &SCREENBLOCK[28], outsideMapLen / 2);
+    state = GAME;
+    REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
+    showGame();
 }
 
 // Runs every frame of the game state.
@@ -142,25 +142,20 @@ void game() {
     } else if (BUTTON_PRESSED(BUTTON_SELECT)) {
         goToPause();
     } else {
-        switch (stage) {
-            case OUTSIDE:
-                break;
-            case HOUSE:
-                break;
-            case VOLCANO:
-                break;
-            case OCEAN:
-                break;
-            case FOREST:
-                break;
-        }
+        updateGame();
+        drawGame();
     }
-
 }
 
 // Sets up the pause state.
 void goToPause() {
     state = PAUSE;
+
+    REG_BG0CNT = BG_8BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    REG_BG0VOFF = 0;
+    REG_BG0HOFF = 0;
+
     waitForVBlank();
     DMANow(3, pausePal, PALETTE, 256);
     DMANow(3, pauseTiles, &CHARBLOCK[0], pauseTilesLen / 2);
@@ -181,6 +176,11 @@ void pause() {
 // Sets up the win state.
 void goToWin() {
     state = WIN;
+
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    REG_BG0VOFF = 0;
+    REG_BG0HOFF = 0;
+
     waitForVBlank();
     DMANow(3, winPal, PALETTE, 256);
     DMANow(3, winTiles, &CHARBLOCK[0], winTilesLen / 2);

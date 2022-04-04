@@ -1360,18 +1360,53 @@ extern const unsigned short pauseMap[1024];
 extern const unsigned short pausePal[256];
 # 8 "main.c" 2
 # 1 "game.h" 1
-# 22 "game.h"
-extern const unsigned short gameTiles[7392];
 
 
-extern const unsigned short gameMap[1024];
 
 
-extern const unsigned short gamePal[256];
+# 1 "outsideCM.h" 1
+# 20 "outsideCM.h"
+extern const unsigned short outsideCMBitmap[131072];
+# 6 "game.h" 2
+
+
+int mapHeight;
+int mapWidth;
+
+
+extern int hOff;
+extern int vOff;
+extern OBJ_ATTR shadowOAM[128];
+extern SPRITE player;
+
+
+enum {PLAYERFRONT, PLAYERBACK, PLAYERRIGHT, PLAYERLEFT, PLAYERIDLE};
+
+unsigned char* collisionMap;
+
+
+void play();
+void initGame();
+void updateGame();
+void drawGame();
+void initPlayer();
+void updatePlayer();
+void animatePlayer();
+void drawPlayer();
+void updateStage();
+void showGame();
+void setOutsideBackground();
+
+void initSprites();
+void setStage();
+
+
+int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, int width, int height,
+        int colShift, int rowShift);
 # 9 "main.c" 2
 # 1 "house.h" 1
 # 22 "house.h"
-extern const unsigned short houseTiles[46016];
+extern const unsigned short houseTiles[44928];
 
 
 extern const unsigned short houseMap[4096];
@@ -1381,7 +1416,7 @@ extern const unsigned short housePal[256];
 # 10 "main.c" 2
 # 1 "outside.h" 1
 # 22 "outside.h"
-extern const unsigned short outsideTiles[19808];
+extern const unsigned short outsideTiles[26592];
 
 
 extern const unsigned short outsideMap[4096];
@@ -1389,6 +1424,13 @@ extern const unsigned short outsideMap[4096];
 
 extern const unsigned short outsidePal[256];
 # 11 "main.c" 2
+# 1 "spritesheet.h" 1
+# 21 "spritesheet.h"
+extern const unsigned short spritesheetTiles[16384];
+
+
+extern const unsigned short spritesheetPal[256];
+# 12 "main.c" 2
 
 
 void initialize();
@@ -1414,16 +1456,7 @@ enum {
     WIN
 };
 
-enum {
-    OUTSIDE,
-    HOUSE,
-    VOLCANO,
-    OCEAN,
-    FOREST
-};
-
 int state;
-int stage;
 
 
 unsigned short buttons;
@@ -1448,6 +1481,9 @@ int main() {
         case GAME:
             game();
             break;
+        case INSTRUCTIONS:
+            instructions();
+            break;
         case PAUSE:
             pause();
             break;
@@ -1460,11 +1496,6 @@ int main() {
 
 
 void initialize() {
-
-
-    (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8) | (1 << 12);
-    (*(volatile unsigned short *)0x4000008) = (1 << 7) | (0 << 14) | ((0) << 2) | ((28) << 8);
-
     buttons = (*(volatile unsigned short *)0x04000130);
     oldButtons = 0;
 
@@ -1474,6 +1505,11 @@ void initialize() {
 
 void goToStart() {
     state = START;
+    (*(volatile unsigned short *)0x4000008) = (1 << 7) | (0 << 14) | ((0) << 2) | ((28) << 8);
+    (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8);
+    (*(volatile unsigned short *)0x04000012) = 0;
+    (*(volatile unsigned short *)0x04000010) = 0;
+
     waitForVBlank();
     DMANow(3, startPal, ((unsigned short *)0x5000000), 256);
     DMANow(3, startTiles, &((charblock *)0x6000000)[0], 44160 / 2);
@@ -1483,6 +1519,7 @@ void goToStart() {
 
 void start() {
     if ((!(~(oldButtons) & ((1 << 3))) && (~buttons & ((1 << 3))))) {
+        initGame();
         goToGame();
     } else if ((!(~(oldButtons) & ((1 << 2))) && (~buttons & ((1 << 2))))) {
         goToInstructions();
@@ -1492,6 +1529,12 @@ void start() {
 
 void goToInstructions() {
     state = INSTRUCTIONS;
+
+    (*(volatile unsigned short *)0x4000008) = (1 << 7) | (0 << 14) | ((0) << 2) | ((28) << 8);
+    (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8);
+    (*(volatile unsigned short *)0x04000012) = 0;
+    (*(volatile unsigned short *)0x04000010) = 0;
+
     waitForVBlank();
     DMANow(3, instructionsPal, ((unsigned short *)0x5000000), 256);
     DMANow(3, instructionsTiles, &((charblock *)0x6000000)[0], 14080 / 2);
@@ -1509,11 +1552,9 @@ void instructions() {
 
 
 void goToGame() {
-    state = OUTSIDE;
-    waitForVBlank();
-    DMANow(3, outsidePal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, outsideTiles, &((charblock *)0x6000000)[0], 39616 / 2);
-    DMANow(3, outsideMap, &((screenblock *)0x6000000)[28], 8192 / 2);
+    state = GAME;
+    (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8) | (1 << 12);
+    showGame();
 }
 
 
@@ -1523,25 +1564,20 @@ void game() {
     } else if ((!(~(oldButtons) & ((1 << 2))) && (~buttons & ((1 << 2))))) {
         goToPause();
     } else {
-        switch (stage) {
-            case OUTSIDE:
-                break;
-            case HOUSE:
-                break;
-            case VOLCANO:
-                break;
-            case OCEAN:
-                break;
-            case FOREST:
-                break;
-        }
+        updateGame();
+        drawGame();
     }
-
 }
 
 
 void goToPause() {
     state = PAUSE;
+
+    (*(volatile unsigned short *)0x4000008) = (1 << 7) | (0 << 14) | ((0) << 2) | ((28) << 8);
+    (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8);
+    (*(volatile unsigned short *)0x04000012) = 0;
+    (*(volatile unsigned short *)0x04000010) = 0;
+
     waitForVBlank();
     DMANow(3, pausePal, ((unsigned short *)0x5000000), 256);
     DMANow(3, pauseTiles, &((charblock *)0x6000000)[0], 15680 / 2);
@@ -1562,6 +1598,11 @@ void pause() {
 
 void goToWin() {
     state = WIN;
+
+    (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8);
+    (*(volatile unsigned short *)0x04000012) = 0;
+    (*(volatile unsigned short *)0x04000010) = 0;
+
     waitForVBlank();
     DMANow(3, winPal, ((unsigned short *)0x5000000), 256);
     DMANow(3, winTiles, &((charblock *)0x6000000)[0], 15232 / 2);

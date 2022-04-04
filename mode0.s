@@ -603,7 +603,14 @@ hideSprites:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
+	mov	r2, #512
+	ldr	r3, .L102
+	strh	r2, [r3]	@ movhi
 	bx	lr
+.L103:
+	.align	2
+.L102:
+	.word	shadowOAM
 	.size	hideSprites, .-hideSprites
 	.global	dma
 	.global	videoBuffer

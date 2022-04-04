@@ -1,24 +1,24 @@
 
-//{{BLOCK(outsideCM)
+//{{BLOCK(houseCM)
 
 //======================================================================
 //
-//	outsideCM, 512x512@8, 
+//	houseCM, 512x512@8, 
 //	+ bitmap not compressed
 //	Total size: 262144 = 262144
 //
-//	Time-stamp: 2022-04-04, 12:14:22
+//	Time-stamp: 2022-04-04, 13:58:45
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================
 
-#ifndef GRIT_OUTSIDECM_H
-#define GRIT_OUTSIDECM_H
+#ifndef GRIT_HOUSECM_H
+#define GRIT_HOUSECM_H
 
-#define outsideCMBitmapLen 262144
-extern const unsigned short outsideCMBitmap[131072];
+#define houseCMBitmapLen 262144
+extern const unsigned short houseCMBitmap[131072];
 
-#endif // GRIT_OUTSIDECM_H
+#endif // GRIT_HOUSECM_H
 
-//}}BLOCK(outsideCM)
+//}}BLOCK(houseCM)

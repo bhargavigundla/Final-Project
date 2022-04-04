@@ -1,32 +1,42 @@
+#ifndef GAME_H
+#define GAME_H
 
-//{{BLOCK(game)
+#include "mode0.h"
+#include "outsideCM.h"
 
-//======================================================================
-//
-//	game, 256x256@8, 
-//	+ palette 256 entries, not compressed
-//	+ 231 tiles (t|f|p reduced) not compressed
-//	+ regular map (in SBBs), not compressed, 32x32 
-//	Total size: 512 + 14784 + 2048 = 17344
-//
-//	Time-stamp: 2022-04-03, 16:25:08
-//	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
-//	( http://www.coranac.com/projects/#grit )
-//
-//======================================================================
+// Constants
+int mapHeight;
+int mapWidth;
 
-#ifndef GRIT_GAME_H
-#define GRIT_GAME_H
+// Variables
+extern int hOff;
+extern int vOff;
+extern OBJ_ATTR shadowOAM[128];
+extern SPRITE player;
 
-#define gameTilesLen 14784
-extern const unsigned short gameTiles[7392];
+// Player animation states for aniState
+enum {PLAYERFRONT, PLAYERBACK, PLAYERRIGHT, PLAYERLEFT, PLAYERIDLE};
 
-#define gameMapLen 2048
-extern const unsigned short gameMap[1024];
+unsigned char* collisionMap;
 
-#define gamePalLen 512
-extern const unsigned short gamePal[256];
+// Prototypes
+void play();
+void initGame();
+void updateGame();
+void drawGame();
+void initPlayer();
+void updatePlayer();
+void animatePlayer();
+void drawPlayer();
+void updateStage();
+void showGame();
+void setOutsideBackground(); 
 
-#endif // GRIT_GAME_H
+void initSprites();
+void setStage();
 
-//}}BLOCK(game)
+// Collision function prototypes
+int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, int width, int height, 
+        int colShift, int rowShift);
+
+#endif
