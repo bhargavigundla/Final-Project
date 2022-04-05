@@ -25,6 +25,8 @@ void pause();
 void goToWin();
 void win();
 
+int seed;
+
 // States.
 enum {
     START,
@@ -97,10 +99,13 @@ void goToStart() {
 // Runs every frame of the start state.
 void start() {
     if (BUTTON_PRESSED(BUTTON_START)) {
+        srand(seed);
         initGame();
         goToGame();
     } else if (BUTTON_PRESSED(BUTTON_SELECT)) {
         goToInstructions();
+    } else {
+        seed++;
     }
 }
 

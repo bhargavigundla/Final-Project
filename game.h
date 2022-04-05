@@ -25,9 +25,12 @@ void initGame();
 void updateGame();
 void drawGame();
 void initPlayer();
+void initNonPlayers();
 void updatePlayer();
+void updateNonPlayers();
 void animatePlayer();
 void drawPlayer();
+void drawNonPlayers();
 void updateStage();
 void showGame();
 void setOutsideBackground(); 
@@ -37,9 +40,12 @@ void initSprites();
 void setStage();
 
 void returnToOutside();
+void initNonPlayerSprites();
+void clearSprites();
 
 // Collision function prototypes
 int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, int width, int height, 
         int colShift, int rowShift);
+
 
 #endif

@@ -1390,9 +1390,12 @@ void initGame();
 void updateGame();
 void drawGame();
 void initPlayer();
+void initNonPlayers();
 void updatePlayer();
+void updateNonPlayers();
 void animatePlayer();
 void drawPlayer();
+void drawNonPlayers();
 void updateStage();
 void showGame();
 void setOutsideBackground();
@@ -1400,6 +1403,10 @@ void setHouseBackground();
 void setVolcanoBackground();
 void initSprites();
 void setStage();
+
+void returnToOutside();
+void initNonPlayerSprites();
+void clearSprites();
 
 
 int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, int width, int height,
@@ -1447,6 +1454,8 @@ void goToPause();
 void pause();
 void goToWin();
 void win();
+
+int seed;
 
 
 enum {
@@ -1520,10 +1529,13 @@ void goToStart() {
 
 void start() {
     if ((!(~(oldButtons) & ((1 << 3))) && (~buttons & ((1 << 3))))) {
+        srand(seed);
         initGame();
         goToGame();
     } else if ((!(~(oldButtons) & ((1 << 2))) && (~buttons & ((1 << 2))))) {
         goToInstructions();
+    } else {
+        seed++;
     }
 }
 
