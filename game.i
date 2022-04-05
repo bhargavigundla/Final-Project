@@ -330,7 +330,10 @@ void updateStage() {
  switch (stage) {
   case OUTSIDE:
       if (player.worldRow == EEVEEDOORROW && player.worldCol == EEVEEDOORCOL) {
+
+
                 collisionMap = (unsigned char *) houseCMBitmap;
+<<<<<<< HEAD
                 vOff = 275;
                 hOff = 137;
                 player.worldRow = 160 / 2 - player.width / 2 + vOff;
@@ -354,6 +357,14 @@ void updateStage() {
 
                 (*(volatile unsigned short *)0x04000012) = vOff;
                 (*(volatile unsigned short *)0x04000010) = hOff;
+=======
+                stage = HOUSE;
+                player.worldCol = 114;
+                player.worldRow = 114;
+                vOff = 137;
+                hOff = 275;
+                setStage();
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
             }
    break;
   case HOUSE:

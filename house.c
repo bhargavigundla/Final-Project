@@ -9,7 +9,11 @@
 //	+ regular map (in SBBs), not compressed, 64x64 
 //	Total size: 512 + 91200 + 8192 = 99904
 //
+<<<<<<< HEAD
 //	Time-stamp: 2022-04-04, 23:02:02
+=======
+//	Time-stamp: 2022-04-04, 16:56:16
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //

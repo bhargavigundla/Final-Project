@@ -615,6 +615,7 @@ updateStage:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
+<<<<<<< HEAD
 	push	{r4, r5, r6, lr}
 	ldr	r5, .L85
 	ldr	r4, [r5]
@@ -752,6 +753,37 @@ updateStage:
 	ldr	r2, [r6, #20]
 	b	.L75
 .L86:
+=======
+	ldr	r3, .L80
+	ldr	r2, [r3]
+	cmp	r2, #0
+	bxne	lr
+	ldr	r2, .L80+4
+	ldr	r1, [r2]
+	cmp	r1, #256
+	bxne	lr
+	ldr	r1, [r2, #4]
+	cmp	r1, #256
+	bxne	lr
+	mov	r0, #1
+	mov	r1, #114
+	push	{r4, lr}
+	mov	r4, #137
+	ldr	lr, .L80+8
+	str	r0, [r3]
+	ldr	ip, .L80+12
+	ldr	r0, .L80+16
+	str	r1, [r2, #4]
+	str	r1, [r2]
+	ldr	r3, .L80+20
+	ldr	r2, .L80+24
+	str	r4, [lr]
+	pop	{r4, lr}
+	str	ip, [r0]
+	str	r2, [r3]
+	b	setStage
+.L81:
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
 	.align	2
 .L85:
 	.word	stage
@@ -762,7 +794,12 @@ updateStage:
 	.word	volcanoCMBitmap
 	.word	waitForVBlank
 	.word	vOff
+<<<<<<< HEAD
 	.word	outsideCMBitmap
+=======
+	.word	houseCMBitmap
+	.word	collisionMap
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
 	.word	hOff
 	.word	houseCMBitmap
 	.word	275
@@ -784,6 +821,7 @@ updateGame:
 	b	updatePlayer
 	.size	updateGame, .-updateGame
 	.align	2
+<<<<<<< HEAD
 	.global	setStage
 	.syntax unified
 	.arm
@@ -853,6 +891,8 @@ setStage:
 	.word	waitForVBlank
 	.size	setStage, .-setStage
 	.align	2
+=======
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
 	.global	showGame
 	.syntax unified
 	.arm
@@ -865,17 +905,29 @@ showGame:
 	push	{r4, lr}
 	bl	setStage
 	mov	r3, #67108864
+<<<<<<< HEAD
 	ldr	r2, .L99
 	ldrh	r1, [r2]
 	ldr	r2, .L99+4
+=======
+	ldr	r2, .L86
+	ldrh	r1, [r2]
+	ldr	r2, .L86+4
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
 	ldrh	r2, [r2]
 	strh	r1, [r3, #18]	@ movhi
 	pop	{r4, lr}
 	strh	r2, [r3, #16]	@ movhi
 	bx	lr
+<<<<<<< HEAD
 .L100:
 	.align	2
 .L99:
+=======
+.L87:
+	.align	2
+.L86:
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
 	.word	vOff
 	.word	hOff
 	.size	showGame, .-showGame
@@ -891,6 +943,7 @@ initSprites:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, lr}
 	mov	r3, #16384
+<<<<<<< HEAD
 	ldr	r4, .L103
 	mov	r0, #3
 	ldr	r2, .L103+4
@@ -904,19 +957,44 @@ initSprites:
 	mov	lr, pc
 	bx	r4
 	ldr	r3, .L103+20
+=======
+	ldr	r4, .L90
+	mov	r0, #3
+	ldr	r2, .L90+4
+	ldr	r1, .L90+8
+	mov	lr, pc
+	bx	r4
+	mov	r0, #3
+	ldr	r2, .L90+12
+	ldr	r1, .L90+16
+	mov	r3, #256
+	mov	lr, pc
+	bx	r4
+	ldr	r3, .L90+20
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
 	mov	lr, pc
 	bx	r3
 	mov	r3, #512
 	mov	r2, #117440512
 	mov	r0, #3
+<<<<<<< HEAD
 	ldr	r1, .L103+24
+=======
+	ldr	r1, .L90+24
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
 	mov	lr, pc
 	bx	r4
 	pop	{r4, lr}
 	bx	lr
+<<<<<<< HEAD
 .L104:
 	.align	2
 .L103:
+=======
+.L91:
+	.align	2
+.L90:
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
 	.word	DMANow
 	.word	100728832
 	.word	spritesheetTiles
@@ -937,20 +1015,34 @@ initGame:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, lr}
 	mov	r4, #0
+<<<<<<< HEAD
 	ldr	r0, .L107
 	ldr	r2, .L107+4
 	ldr	r1, .L107+8
 	ldr	r3, .L107+12
+=======
+	ldr	r0, .L94
+	ldr	r2, .L94+4
+	ldr	r1, .L94+8
+	ldr	r3, .L94+12
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
 	str	r4, [r0]
 	str	r1, [r2]
 	mov	lr, pc
 	bx	r3
 	bl	setOutsideBackground
 	mov	r3, #67108864
+<<<<<<< HEAD
 	mov	r1, #220
 	mov	r2, #144
 	ldr	r6, .L107+16
 	ldr	r5, .L107+20
+=======
+	mov	r1, #137
+	mov	r2, #83
+	ldr	r6, .L94+16
+	ldr	r5, .L94+20
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
 	ldrh	r0, [r6]
 	strh	r0, [r3, #18]	@ movhi
 	ldrh	r0, [r5]
@@ -963,7 +1055,11 @@ initGame:
 	mov	r0, #1
 	ldr	r1, [r6]
 	ldr	r2, [r5]
+<<<<<<< HEAD
 	ldr	r3, .L107+24
+=======
+	ldr	r3, .L94+24
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
 	add	r1, r1, #72
 	add	r2, r2, #112
 	str	r4, [r3, #24]
@@ -977,9 +1073,15 @@ initGame:
 	str	r0, [r3, #12]
 	pop	{r4, r5, r6, lr}
 	bx	lr
+<<<<<<< HEAD
 .L108:
 	.align	2
 .L107:
+=======
+.L95:
+	.align	2
+.L94:
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
 	.word	stage
 	.word	collisionMap
 	.word	outsideCMBitmap

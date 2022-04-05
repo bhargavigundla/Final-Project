@@ -147,6 +147,7 @@ void updateStage() {
 	switch (stage) {
 		case OUTSIDE:
 		    if (player.worldRow == EEVEEDOORROW && player.worldCol == EEVEEDOORCOL) { 
+<<<<<<< HEAD
                 collisionMap = (unsigned char *) houseCMBitmap;
                 vOff = 275;
                 hOff = 137;
@@ -171,6 +172,17 @@ void updateStage() {
                 // TODO 3.5: Set up background 0's hOff and vOff
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
+=======
+                // REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+                // REG_DISPCTL = MODE0 | BG0_ENABLE;
+                collisionMap = (unsigned char *) houseCMBitmap; // good
+                stage = HOUSE;
+                player.worldCol = 114;
+                player.worldRow = 114;
+                vOff = 137;
+                hOff = 275;
+                setStage();
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
             }
 			break;
 		case HOUSE:
@@ -312,8 +324,12 @@ void setStage() {
             setOutsideBackground();
             break;
         case (HOUSE):
+<<<<<<< HEAD
             REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
             REG_DISPCTL = MODE0 | BG0_ENABLE |SPRITE_ENABLE;
+=======
+            // REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+>>>>>>> d06565a9be7ea1a99d5e9aa2a3206dae2f1b0d86
             mapWidth = HOUSEWIDTH;
 	        mapWidth = HOUSEHEIGHT;
 
