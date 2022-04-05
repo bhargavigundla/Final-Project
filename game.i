@@ -143,7 +143,7 @@ int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, 
 # 2 "game.c" 2
 # 1 "house.h" 1
 # 22 "house.h"
-extern const unsigned short houseTiles[44928];
+extern const unsigned short houseTiles[45600];
 
 
 extern const unsigned short houseMap[4096];
@@ -199,13 +199,13 @@ enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
 OBJ_ATTR shadowOAM[128];
 SPRITE player;
 
-
-
-
-unsigned char* collisionMap = (unsigned char *) outsideCMBitmap;
+unsigned char* collisionMap;
 
 
 void initGame() {
+    collisionMap = (unsigned char *) outsideCMBitmap;
+    stage = OUTSIDE;
+
  waitForVBlank();
     setOutsideBackground();
 
@@ -218,8 +218,6 @@ void initGame() {
 
 
     initSprites();
-
-
 
     initPlayer();
 }
@@ -309,12 +307,14 @@ void updateStage() {
  switch (stage) {
   case OUTSIDE:
       if (player.worldRow == EEVEEDOORROW && player.worldCol == EEVEEDOORCOL) {
+
+
                 collisionMap = (unsigned char *) houseCMBitmap;
-                vOff = 137;
-                hOff = 275;
                 stage = HOUSE;
                 player.worldCol = 114;
                 player.worldRow = 114;
+                vOff = 137;
+                hOff = 275;
                 setStage();
             }
    break;
@@ -409,7 +409,7 @@ void setOutsideBackground() {
 
 void setHouseBackground() {
     DMANow(3, housePal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, houseTiles, &((charblock *)0x6000000)[0], 89856 / 2);
+    DMANow(3, houseTiles, &((charblock *)0x6000000)[0], 91200 / 2);
     DMANow(3, houseMap, &((screenblock *)0x6000000)[28], 8192 / 2);
 }
 
@@ -421,7 +421,7 @@ void showGame() {
     (*(volatile unsigned short *)0x04000012) = vOff;
     (*(volatile unsigned short *)0x04000010) = hOff;
 
-    initSprites();
+
 }
 
 void setStage() {
