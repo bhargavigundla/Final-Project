@@ -133,7 +133,8 @@ void drawPlayer();
 void updateStage();
 void showGame();
 void setOutsideBackground();
-
+void setHouseBackground();
+void setVolcanoBackground();
 void initSprites();
 void setStage();
 
@@ -166,13 +167,27 @@ extern const unsigned short outsideMap[4096];
 
 extern const unsigned short outsidePal[256];
 # 6 "game.c" 2
+# 1 "volcano.h" 1
+# 22 "volcano.h"
+extern const unsigned short volcanoTiles[80576];
+
+
+extern const unsigned short volcanoMap[4096];
+
+
+extern const unsigned short volcanoPal[256];
+# 7 "game.c" 2
+# 1 "volcanoCM.h" 1
+# 20 "volcanoCM.h"
+extern const unsigned short volcanoCMBitmap[131072];
+# 8 "game.c" 2
 # 1 "spritesheet.h" 1
 # 21 "spritesheet.h"
 extern const unsigned short spritesheetTiles[16384];
 
 
 extern const unsigned short spritesheetPal[256];
-# 7 "game.c" 2
+# 9 "game.c" 2
 
 
 
@@ -189,12 +204,20 @@ enum {
 enum {
     EEVEEDOORROW = 256,
     EEVEEDOORCOL = 256,
-    EEVEEDOORWIDTH = 16
+    EEVEEDOORWIDTH = 16,
+    LAVADOORROW = 430,
+    LAVADOORCOL = 254,
+    LAVADOORWIDTH = 18,
+    HOUSEEXITROW = 212,
+    HOUSEEXITCOL = 179,
+    HOUSEEXITWIDTH = 17,
+    HOUSEEXITHEIGHT = 21
 };
 int stage;
 
 enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
-      HOUSEWIDTH = 512, HOUSEHEIGHT = 512};
+      HOUSEWIDTH = 512, HOUSEHEIGHT = 512,
+      VOLCANOWIDTH = 512, VOLCANOHEIGHT = 512};
 
 OBJ_ATTR shadowOAM[128];
 SPRITE player;
@@ -213,8 +236,8 @@ void initGame() {
     (*(volatile unsigned short *)0x04000012) = vOff;
     (*(volatile unsigned short *)0x04000010) = hOff;
 
- vOff = 137;
- hOff = 83;
+ vOff = 220;
+ hOff = 144;
 
 
     initSprites();
@@ -307,18 +330,48 @@ void updateStage() {
  switch (stage) {
   case OUTSIDE:
       if (player.worldRow == EEVEEDOORROW && player.worldCol == EEVEEDOORCOL) {
-
-
                 collisionMap = (unsigned char *) houseCMBitmap;
+                vOff = 275;
+                hOff = 137;
+                player.worldRow = 160 / 2 - player.width / 2 + vOff;
+                player.worldCol = 240 / 2 - player.height / 2 + hOff;
                 stage = HOUSE;
-                player.worldCol = 114;
-                player.worldRow = 114;
-                vOff = 137;
-                hOff = 275;
-                setStage();
+                hideSprites();
+                player.hide = 0;
+                setHouseBackground();
+
+            }
+            if (player.worldRow + player.height - 1 == LAVADOORROW && player.worldCol == LAVADOORCOL) {
+                collisionMap = (unsigned char *) volcanoCMBitmap;
+                stage = VOLCANO;
+
+                waitForVBlank();
+                setVolcanoBackground();
+                vOff = 220;
+                hOff = 144;
+                player.worldRow = 160 / 2 - player.width / 2 + vOff;
+                player.worldCol = 240 / 2 - player.height / 2 + hOff;
+
+                (*(volatile unsigned short *)0x04000012) = vOff;
+                (*(volatile unsigned short *)0x04000010) = hOff;
             }
    break;
   case HOUSE:
+            if (collision(player.worldCol, player.worldRow, player.width, player.height,
+                          HOUSEEXITCOL, HOUSEEXITROW, HOUSEEXITWIDTH, HOUSEEXITHEIGHT)) {
+                collisionMap = (unsigned char *) outsideCMBitmap;
+                stage = OUTSIDE;
+
+                waitForVBlank();
+                setOutsideBackground();
+                vOff = 220;
+                hOff = 144;
+                player.worldRow = 160 / 2 - player.width / 2 + vOff;
+                player.worldCol = 240 / 2 - player.height / 2 + hOff;
+
+                (*(volatile unsigned short *)0x04000012) = vOff;
+                (*(volatile unsigned short *)0x04000010) = hOff;
+            }
    break;
   case VOLCANO:
    break;
@@ -413,6 +466,12 @@ void setHouseBackground() {
     DMANow(3, houseMap, &((screenblock *)0x6000000)[28], 8192 / 2);
 }
 
+void setVolcanoBackground() {
+    DMANow(3, volcanoPal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, volcanoTiles, &((charblock *)0x6000000)[0], 161152 / 2);
+    DMANow(3, volcanoMap, &((screenblock *)0x6000000)[28], 8192 / 2);
+}
+
 void showGame() {
 
     setStage();
@@ -428,6 +487,7 @@ void setStage() {
     switch (stage) {
         case (OUTSIDE):
             (*(volatile unsigned short *)0x4000008) = (1 << 7) | (3 << 14) | ((0) << 2) | ((28) << 8);
+            (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8) |(1 << 12);
             mapWidth = OUTSIDEWIDTH;
          mapWidth = OUTSIDEHEIGHT;
 
@@ -436,11 +496,20 @@ void setStage() {
             break;
         case (HOUSE):
             (*(volatile unsigned short *)0x4000008) = (1 << 7) | (3 << 14) | ((0) << 2) | ((28) << 8);
+            (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8) |(1 << 12);
             mapWidth = HOUSEWIDTH;
          mapWidth = HOUSEHEIGHT;
 
             waitForVBlank();
             setHouseBackground();
+            break;
+        case VOLCANO:
+            (*(volatile unsigned short *)0x4000008) = (1 << 7) | (3 << 14) | ((0) << 2) | ((28) << 8);
+            mapWidth = VOLCANOWIDTH;
+         mapWidth = VOLCANOHEIGHT;
+
+            waitForVBlank();
+            setVolcanoBackground();
             break;
     }
 }

@@ -3,6 +3,8 @@
 #include "houseCM.h"
 #include "outsideCM.h"
 #include "outside.h"
+#include "volcano.h"
+#include "volcanoCM.h"
 #include "spritesheet.h"
 #include "mode0.h"
 
@@ -20,7 +22,14 @@ enum {
 enum {
     EEVEEDOORROW = 256,
     EEVEEDOORCOL = 256,
-    EEVEEDOORWIDTH = 16
+    EEVEEDOORWIDTH = 16,
+    LAVADOORROW = 430,
+    LAVADOORCOL = 254,
+    LAVADOORWIDTH = 18,
+    HOUSEEXITROW = 212,
+    HOUSEEXITCOL = 179,
+    HOUSEEXITWIDTH = 17,
+    HOUSEEXITHEIGHT = 21
 };
 int stage;
 
@@ -44,8 +53,8 @@ void initGame() {
     REG_BG0VOFF = vOff;
     REG_BG0HOFF = hOff;
 
-	vOff = 137;
-	hOff = 83;
+	vOff = 220;
+	hOff = 144;
 
     // Set up the sprites
     initSprites();
@@ -134,22 +143,52 @@ void updatePlayer() {
 }
 
 void updateStage() {
-	// change stage, world variables, background varibales to specified stage
+	// change stage, world variables, background vars to specified stage
 	switch (stage) {
 		case OUTSIDE:
 		    if (player.worldRow == EEVEEDOORROW && player.worldCol == EEVEEDOORCOL) { 
-                // REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
-                // REG_DISPCTL = MODE0 | BG0_ENABLE;
-                collisionMap = (unsigned char *) houseCMBitmap; // good
+                collisionMap = (unsigned char *) houseCMBitmap;
+                vOff = 275;
+                hOff = 137;
+                player.worldRow = SCREENHEIGHT / 2 - player.width / 2 + vOff;
+                player.worldCol = SCREENWIDTH / 2 - player.height / 2 + hOff;
                 stage = HOUSE;
-                player.worldCol = 114;
-                player.worldRow = 114;
-                vOff = 137;
-                hOff = 275;
-                setStage();
+                hideSprites();
+                player.hide = 0;
+                setHouseBackground();
+                // initGame();
+            }
+            if (player.worldRow + player.height - 1 == LAVADOORROW && player.worldCol == LAVADOORCOL) {
+                collisionMap = (unsigned char *) volcanoCMBitmap;
+                stage = VOLCANO;
+
+                waitForVBlank();
+                setVolcanoBackground();
+                vOff = 220;
+                hOff = 144;
+                player.worldRow = SCREENHEIGHT / 2 - player.width / 2 + vOff;
+                player.worldCol = SCREENWIDTH / 2 - player.height / 2 + hOff;
+                // TODO 3.5: Set up background 0's hOff and vOff
+                REG_BG0VOFF = vOff;
+                REG_BG0HOFF = hOff;
             }
 			break;
 		case HOUSE:
+            if (collision(player.worldCol, player.worldRow, player.width, player.height,
+                          HOUSEEXITCOL, HOUSEEXITROW, HOUSEEXITWIDTH, HOUSEEXITHEIGHT)) {
+                collisionMap = (unsigned char *) outsideCMBitmap;
+                stage = OUTSIDE;
+
+                waitForVBlank();
+                setOutsideBackground();
+                vOff = 220;
+                hOff = 144;
+                player.worldRow = SCREENHEIGHT / 2 - player.width / 2 + vOff;
+                player.worldCol = SCREENWIDTH / 2 - player.height / 2 + hOff;
+                // TODO 3.5: Set up background 0's hOff and vOff
+                REG_BG0VOFF = vOff;
+                REG_BG0HOFF = hOff;
+            }
 			break;
 		case VOLCANO:
 			break;
@@ -244,6 +283,12 @@ void setHouseBackground() {
     DMANow(3, houseMap, &SCREENBLOCK[28], houseMapLen / 2);
 }
 
+void setVolcanoBackground() {
+    DMANow(3, volcanoPal, PALETTE, 256);
+    DMANow(3, volcanoTiles, &CHARBLOCK[0], volcanoTilesLen / 2);
+    DMANow(3, volcanoMap, &SCREENBLOCK[28], volcanoMapLen / 2);
+}
+
 void showGame() {
     // sets registers and initializes backgrounds for correct stage
     setStage();
@@ -259,6 +304,7 @@ void setStage() {
     switch (stage) {
         case (OUTSIDE):
             REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+            REG_DISPCTL = MODE0 | BG0_ENABLE |SPRITE_ENABLE;
             mapWidth = OUTSIDEWIDTH;
 	        mapWidth = OUTSIDEHEIGHT;
 
@@ -266,12 +312,21 @@ void setStage() {
             setOutsideBackground();
             break;
         case (HOUSE):
-            // REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+            REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+            REG_DISPCTL = MODE0 | BG0_ENABLE |SPRITE_ENABLE;
             mapWidth = HOUSEWIDTH;
 	        mapWidth = HOUSEHEIGHT;
 
             waitForVBlank();
             setHouseBackground();
+            break;
+        case VOLCANO:
+            REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+            mapWidth = VOLCANOWIDTH;
+	        mapWidth = VOLCANOHEIGHT;
+
+            waitForVBlank();
+            setVolcanoBackground();
             break;
     }
 }

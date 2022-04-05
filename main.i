@@ -1396,7 +1396,8 @@ void drawPlayer();
 void updateStage();
 void showGame();
 void setOutsideBackground();
-
+void setHouseBackground();
+void setVolcanoBackground();
 void initSprites();
 void setStage();
 

@@ -603,13 +603,17 @@ hideSprites:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	mov	r2, #512
-	ldr	r3, .L102
-	strh	r2, [r3]	@ movhi
-	bx	lr
-.L103:
-	.align	2
+	mov	r1, #512
+	ldr	r3, .L105
+	add	r2, r3, #1024
 .L102:
+	strh	r1, [r3], #8	@ movhi
+	cmp	r3, r2
+	bne	.L102
+	bx	lr
+.L106:
+	.align	2
+.L105:
 	.word	shadowOAM
 	.size	hideSprites, .-hideSprites
 	.global	dma
