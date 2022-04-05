@@ -138,6 +138,8 @@ void setVolcanoBackground();
 void initSprites();
 void setStage();
 
+void returnToOutside();
+
 
 int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, int width, int height,
         int colShift, int rowShift);
@@ -169,7 +171,7 @@ extern const unsigned short outsidePal[256];
 # 6 "game.c" 2
 # 1 "volcano.h" 1
 # 22 "volcano.h"
-extern const unsigned short volcanoTiles[64];
+extern const unsigned short volcanoTiles[96];
 
 
 extern const unsigned short volcanoMap[1024];
@@ -181,18 +183,32 @@ extern const unsigned short volcanoPal[256];
 # 20 "volcanoCM.h"
 extern const unsigned short volcanoCMBitmap[32768];
 # 8 "game.c" 2
+# 1 "volcanoNoStone.h" 1
+# 22 "volcanoNoStone.h"
+extern const unsigned short volcanoNoStoneTiles[64];
+
+
+extern const unsigned short volcanoNoStoneMap[1024];
+
+
+extern const unsigned short volcanoNoStonePal[256];
+# 9 "game.c" 2
 # 1 "spritesheet.h" 1
 # 21 "spritesheet.h"
 extern const unsigned short spritesheetTiles[16384];
 
 
 extern const unsigned short spritesheetPal[256];
-# 9 "game.c" 2
+# 10 "game.c" 2
 
 
 
 int hOff;
 int vOff;
+
+int hasFireStone;
+int hasWaterStone;
+int hasLeafStone;
 
 enum {
     OUTSIDE,
@@ -211,13 +227,17 @@ enum {
     HOUSEEXITROW = 212,
     HOUSEEXITCOL = 179,
     HOUSEEXITWIDTH = 17,
-    HOUSEEXITHEIGHT = 21
+    HOUSEEXITHEIGHT = 21,
+    FIRESTONECOL = 224,
+    FIRESTONEROW = 16,
+    FIRESTONEWIDTH = 16,
+    FIRESTONEHEIGHT = 16
 };
 int stage;
 
 enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
       HOUSEWIDTH = 512, HOUSEHEIGHT = 512,
-      VOLCANOWIDTH = 512, VOLCANOHEIGHT = 512};
+      VOLCANOWIDTH = 256, VOLCANOHEIGHT = 256};
 
 OBJ_ATTR shadowOAM[128];
 SPRITE player;
@@ -339,14 +359,16 @@ void updateStage() {
                 hideSprites();
                 player.hide = 0;
                 setHouseBackground();
-
+                (*(volatile unsigned short *)0x04000012) = vOff;
+                (*(volatile unsigned short *)0x04000010) = hOff;
             }
             if (player.worldRow + player.height - 1 == LAVADOORROW && player.worldCol == LAVADOORCOL) {
                 collisionMap = (unsigned char *) volcanoCMBitmap;
+                mapHeight = VOLCANOHEIGHT;
                 stage = VOLCANO;
 
                 waitForVBlank();
-                setVolcanoBackground();
+                setStage();
                 vOff = 0;
                 hOff = 0;
                 player.worldRow = 160 / 2 - player.width / 2 + vOff;
@@ -366,6 +388,7 @@ void updateStage() {
                 setOutsideBackground();
                 vOff = 220;
                 hOff = 144;
+
                 player.worldRow = 160 / 2 - player.width / 2 + vOff;
                 player.worldCol = 240 / 2 - player.height / 2 + hOff;
 
@@ -374,6 +397,11 @@ void updateStage() {
             }
    break;
   case VOLCANO:
+            if (collision(player.worldCol, player.worldRow, player.width, player.height,
+                          FIRESTONECOL, FIRESTONEROW, FIRESTONEWIDTH, FIRESTONEHEIGHT)) {
+                hasFireStone = 1;
+                returnToOutside();
+            }
    break;
  }
 }
@@ -467,9 +495,16 @@ void setHouseBackground() {
 }
 
 void setVolcanoBackground() {
-    DMANow(3, volcanoPal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, volcanoTiles, &((charblock *)0x6000000)[0], 128 / 2);
-    DMANow(3, volcanoMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    if (hasFireStone) {
+        DMANow(3, volcanoNoStonePal, ((unsigned short *)0x5000000), 256);
+        DMANow(3, volcanoNoStoneTiles, &((charblock *)0x6000000)[0], 192 / 2);
+        DMANow(3, volcanoNoStoneMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    } else {
+        DMANow(3, volcanoPal, ((unsigned short *)0x5000000), 256);
+        DMANow(3, volcanoTiles, &((charblock *)0x6000000)[0], 192 / 2);
+        DMANow(3, volcanoMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    }
+
 }
 
 void showGame() {
@@ -508,8 +543,7 @@ void setStage() {
             (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8) | (1 << 12);
             mapWidth = VOLCANOWIDTH;
          mapWidth = VOLCANOHEIGHT;
-            vOff = 0;
-            hOff = 0;
+
             waitForVBlank();
             setVolcanoBackground();
             break;
@@ -522,4 +556,19 @@ void initSprites() {
     DMANow(3, spritesheetPal, ((unsigned short *)0x5000200), 512 / 2);
     hideSprites();
     DMANow(3, shadowOAM, ((OBJ_ATTR *)(0x7000000)), 128 * 4);
+}
+
+void returnToOutside() {
+    collisionMap = (unsigned char *) outsideCMBitmap;
+    stage = OUTSIDE;
+
+    vOff = 220;
+    hOff = 144;
+    player.worldRow = 160 / 2 - player.width / 2 + vOff;
+    player.worldCol = 240 / 2 - player.height / 2 + hOff;
+
+    (*(volatile unsigned short *)0x04000012) = vOff;
+    (*(volatile unsigned short *)0x04000010) = hOff;
+
+    setStage();
 }

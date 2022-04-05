@@ -5,12 +5,17 @@
 #include "outside.h"
 #include "volcano.h"
 #include "volcanoCM.h"
+#include "volcanoNoStone.h"
 #include "spritesheet.h"
 #include "mode0.h"
 
 // Variables
 int hOff;
 int vOff;
+
+int hasFireStone;
+int hasWaterStone;
+int hasLeafStone;
 
 enum {
     OUTSIDE,
@@ -29,13 +34,17 @@ enum {
     HOUSEEXITROW = 212,
     HOUSEEXITCOL = 179,
     HOUSEEXITWIDTH = 17,
-    HOUSEEXITHEIGHT = 21
+    HOUSEEXITHEIGHT = 21,
+    FIRESTONECOL = 224,
+    FIRESTONEROW = 16,
+    FIRESTONEWIDTH = 16,
+    FIRESTONEHEIGHT = 16
 };
 int stage;
 
 enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
       HOUSEWIDTH = 512, HOUSEHEIGHT = 512,
-      VOLCANOWIDTH = 512, VOLCANOHEIGHT = 512};
+      VOLCANOWIDTH = 256, VOLCANOHEIGHT = 256};
 
 OBJ_ATTR shadowOAM[128];
 SPRITE player;
@@ -157,14 +166,16 @@ void updateStage() {
                 hideSprites();
                 player.hide = 0;
                 setHouseBackground();
-                // initGame();
+                REG_BG0VOFF = vOff;
+                REG_BG0HOFF = hOff;
             }
             if (player.worldRow + player.height - 1 == LAVADOORROW && player.worldCol == LAVADOORCOL) {
                 collisionMap = (unsigned char *) volcanoCMBitmap;
+                mapHeight = VOLCANOHEIGHT;
                 stage = VOLCANO;
 
                 waitForVBlank();
-                setVolcanoBackground();
+                setStage();
                 vOff = 0;
                 hOff = 0;
                 player.worldRow = SCREENHEIGHT / 2 - player.width / 2 + vOff;
@@ -184,14 +195,20 @@ void updateStage() {
                 setOutsideBackground();
                 vOff = 220;
                 hOff = 144;
+
                 player.worldRow = SCREENHEIGHT / 2 - player.width / 2 + vOff;
                 player.worldCol = SCREENWIDTH / 2 - player.height / 2 + hOff;
-                // TODO 3.5: Set up background 0's hOff and vOff
+                
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
             }
 			break;
 		case VOLCANO:
+            if (collision(player.worldCol, player.worldRow, player.width, player.height,
+                          FIRESTONECOL, FIRESTONEROW, FIRESTONEWIDTH, FIRESTONEHEIGHT)) {
+                hasFireStone = 1;
+                returnToOutside();
+            }
 			break;
 	}
 }
@@ -285,9 +302,16 @@ void setHouseBackground() {
 }
 
 void setVolcanoBackground() {
-    DMANow(3, volcanoPal, PALETTE, 256);
-    DMANow(3, volcanoTiles, &CHARBLOCK[0], volcanoTilesLen / 2);
-    DMANow(3, volcanoMap, &SCREENBLOCK[28], volcanoMapLen / 2);
+    if (hasFireStone) {
+        DMANow(3, volcanoNoStonePal, PALETTE, 256);
+        DMANow(3, volcanoNoStoneTiles, &CHARBLOCK[0], volcanoTilesLen / 2);
+        DMANow(3, volcanoNoStoneMap, &SCREENBLOCK[28], volcanoMapLen / 2);
+    } else {
+        DMANow(3, volcanoPal, PALETTE, 256);
+        DMANow(3, volcanoTiles, &CHARBLOCK[0], volcanoTilesLen / 2);
+        DMANow(3, volcanoMap, &SCREENBLOCK[28], volcanoMapLen / 2);
+    }
+
 }
 
 void showGame() {
@@ -326,8 +350,7 @@ void setStage() {
             REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
             mapWidth = VOLCANOWIDTH;
 	        mapWidth = VOLCANOHEIGHT;
-            vOff = 0;
-            hOff = 0;
+            
             waitForVBlank();
             setVolcanoBackground();
             break;
@@ -340,4 +363,19 @@ void initSprites() {
     DMANow(3, spritesheetPal, SPRITEPALETTE, spritesheetPalLen / 2);
     hideSprites();
     DMANow(3, shadowOAM, OAM, 128 * 4);
+}
+
+void returnToOutside() {
+    collisionMap = (unsigned char *) outsideCMBitmap;
+    stage = OUTSIDE;
+
+    vOff = 220;
+    hOff = 144;
+    player.worldRow = SCREENHEIGHT / 2 - player.width / 2 + vOff;
+    player.worldCol = SCREENWIDTH / 2 - player.height / 2 + hOff;
+    
+    REG_BG0VOFF = vOff;
+    REG_BG0HOFF = hOff;
+    
+    setStage();
 }

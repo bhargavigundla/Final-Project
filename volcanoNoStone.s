@@ -8,18 +8,17 @@
 	.eabi_attribute 30, 2
 	.eabi_attribute 34, 0
 	.eabi_attribute 18, 4
-	.file	"volcano.c"
+	.file	"volcanoNoStone.c"
 	.text
-	.global	volcanoPal
-	.global	volcanoMap
-	.global	volcanoTiles
+	.global	volcanoNoStonePal
+	.global	volcanoNoStoneMap
+	.global	volcanoNoStoneTiles
 	.section	.rodata
 	.align	2
-	.type	volcanoPal, %object
-	.size	volcanoPal, 512
-volcanoPal:
+	.type	volcanoNoStonePal, %object
+	.size	volcanoNoStonePal, 512
+volcanoNoStonePal:
 	.short	1062
-	.short	31
 	.short	15935
 	.short	0
 	.short	0
@@ -274,10 +273,10 @@ volcanoPal:
 	.short	0
 	.short	0
 	.short	0
-	.type	volcanoMap, %object
-	.size	volcanoMap, 2048
-volcanoMap:
 	.short	0
+	.type	volcanoNoStoneMap, %object
+	.size	volcanoNoStoneMap, 2048
+volcanoNoStoneMap:
 	.short	0
 	.short	0
 	.short	0
@@ -343,6 +342,8 @@ volcanoMap:
 	.short	0
 	.short	0
 	.short	0
+	.short	0
+	.short	1
 	.short	1
 	.short	1
 	.short	1
@@ -369,12 +370,13 @@ volcanoMap:
 	.short	1
 	.short	1
 	.short	1
-	.short	2
-	.short	2
+	.short	1
 	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	1
+	.short	1
 	.short	1
 	.short	1
 	.short	1
@@ -401,8 +403,6 @@ volcanoMap:
 	.short	1
 	.short	1
 	.short	1
-	.short	2
-	.short	2
 	.short	0
 	.short	0
 	.short	0
@@ -1301,9 +1301,9 @@ volcanoMap:
 	.short	0
 	.short	0
 	.short	0
-	.type	volcanoTiles, %object
-	.size	volcanoTiles, 192
-volcanoTiles:
+	.type	volcanoNoStoneTiles, %object
+	.size	volcanoNoStoneTiles, 128
+volcanoNoStoneTiles:
 	.short	0
 	.short	0
 	.short	0
@@ -1336,38 +1336,6 @@ volcanoTiles:
 	.short	0
 	.short	0
 	.short	0
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
-	.short	514
 	.short	257
 	.short	257
 	.short	257

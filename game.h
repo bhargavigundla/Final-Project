@@ -36,6 +36,8 @@ void setVolcanoBackground();
 void initSprites();
 void setStage();
 
+void returnToOutside();
+
 // Collision function prototypes
 int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, int width, int height, 
         int colShift, int rowShift);
