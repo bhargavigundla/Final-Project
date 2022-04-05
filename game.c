@@ -376,6 +376,6 @@ void returnToOutside() {
     
     REG_BG0VOFF = vOff;
     REG_BG0HOFF = hOff;
-    
+
     setStage();
 }
