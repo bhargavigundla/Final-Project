@@ -1205,28 +1205,22 @@ void updateStage() {
   case HOUSE:
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                           HOUSEEXITCOL, HOUSEEXITROW, HOUSEEXITWIDTH, HOUSEEXITHEIGHT)) {
-                collisionMap = (unsigned char *) outsideCMBitmap;
-                stage = OUTSIDE;
-
-                waitForVBlank();
-                setOutsideBackground();
-                vOff = 220;
-                hOff = 144;
-
-                player.worldRow = 160 / 2 - player.width / 2 + vOff;
-                player.worldCol = 240 / 2 - player.height / 2 + hOff;
-
-                (*(volatile unsigned short *)0x04000012) = vOff;
-                (*(volatile unsigned short *)0x04000010) = hOff;
-                initNonPlayers(0);
+# 213 "game.c"
+                initSprites();
+                returnToOutside();
             }
    break;
   case VOLCANO:
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                           FIRESTONECOL, FIRESTONEROW, FIRESTONEWIDTH, FIRESTONEHEIGHT)) {
                 hasFireStone = 1;
-                initNonPlayers();
                 returnToOutside();
+            }
+            for (int i = 0; i < 5; i++) {
+                if (collision(player.worldCol, player.worldRow, player.width, player.height,
+                    lavaBlobs[i].worldCol, lavaBlobs[i].worldRow, lavaBlobs[i].width, lavaBlobs[i].height)) {
+                    returnToOutside();
+                }
             }
    break;
  }
@@ -1266,7 +1260,6 @@ void animatePlayer() {
 
 
 void drawPlayer() {
-
     if (player.hide) {
         shadowOAM[0].attr0 |= (2 << 8);
     } else {
@@ -1385,6 +1378,7 @@ void initSprites() {
 void returnToOutside() {
     collisionMap = (unsigned char *) outsideCMBitmap;
     stage = OUTSIDE;
+    initNonPlayers();
 
     vOff = 220;
     hOff = 144;
@@ -1425,7 +1419,7 @@ void updateNonPlayers() {
     switch (stage) {
         case VOLCANO:
             for (int i = 0; i < 5; i++) {
-                lavaBlobs[i].worldRow = (lavaBlobs[i].worldRow + 1) % (mapHeight - LAVABLOBSHEIGHT);
+                lavaBlobs[i].worldRow = (lavaBlobs[i].worldRow + lavaBlobs[i].rdel) % (mapHeight - LAVABLOBSHEIGHT);
             }
         break;
     }
@@ -1438,10 +1432,10 @@ void drawNonPlayers() {
         case HOUSE:
             break;
         case VOLCANO:
-            for (int i = 0; i < 5; i++) {
-                shadowOAM[i + 1].attr0 = (0xFF &(lavaBlobs[i + 1].worldRow)) | (0 << 14);
-                shadowOAM[i + 1].attr1 = (0x1FF &(lavaBlobs[i + 1].worldCol)) | (1 << 14);
-                shadowOAM[i + 1].attr2 = ((0) << 12) | ((6)*32 + (0));
+            for (int i = 1; i < 5 + 1; i++) {
+                shadowOAM[i].attr0 = (0xFF &(lavaBlobs[i - 1].worldRow - vOff)) | (0 << 14);
+                shadowOAM[i].attr1 = (0x1FF &(lavaBlobs[i - 1].worldCol - hOff)) | (1 << 14);
+                shadowOAM[i].attr2 = ((0) << 12) | ((6)*32 + (0));
             }
             break;
     }
