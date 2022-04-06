@@ -1205,8 +1205,8 @@ void updateStage() {
   case HOUSE:
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                           HOUSEEXITCOL, HOUSEEXITROW, HOUSEEXITWIDTH, HOUSEEXITHEIGHT)) {
-# 213 "game.c"
                 initSprites();
+
                 returnToOutside();
             }
    break;
