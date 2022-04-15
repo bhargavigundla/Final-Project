@@ -15,7 +15,7 @@ The stones are present, and colliding with all three ends the game for now. I wi
 
 Note: you may have to restart the app to play the game again after hitting the win screen.
 The inside of the house actually properly displays! Next, I will implement eevees and interaction with them.
-I will also implement a foreground screen that displays the stones the player has currently collected.
+I will also implement a foreground screen that displays the stones the player has currently collected. There will be no lose condition, as I want this game to be positive and completion based, and cute!
 
 # Final-Project Milestone 2
  Feedback from M1:
