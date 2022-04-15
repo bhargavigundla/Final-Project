@@ -1,3 +1,22 @@
+# Final-Project Milestone 3
+make sure to fix the black parts showing up on the edges of the background 
+for m03, make sure the rest of your core gameplay is implemented: 
+- get all 3 different quest regions implemented (fire stone, leaf stone, and water stone) with the different mechanics
+- implement the different stones, - make sure that having all 3 stones takes player to win condition, - add a visual indicator of the stones that the player has already collected. essentially, make sure you have the completed gameplay mechanics!! art doesn’t have to be finalized and gameplay doesn’t have to be perfect, but it should be a playable version, where you can play through the different regions and win the game. as always, make sure to reference the m03 pdf and that you’re meeting all of those requirements. keep up the great work! if you have any questions, please feel free to email me or come to my office hours.
+Julia Reuter E Carvalho, Apr 9 at 8:10pm
+
+On the Black Parts:
+I actually have black parts drawn into my images, so this was on purpose! I implemented screen scrolling for this milestone, but the main screen still has a thick black outline. I will get rid of this next milestone.
+The volcano scene was remade simply with tiles.
+The Forest screen was simply implemented with a stone to show movement. This level will be my way of playing with aesthetics, so it will primarily by a visual experience(movement will simply be walking right/left)
+The Ocean will be set to automatically scroll, which you will notice when you get to the level. In the next milestone, it will loop for MUCH longer, and obstacles will be implemented
+
+The stones are present, and colliding with all three ends the game for now. I will add more visuals/more complicated obstacles by the next milestone!
+
+Note: you may have to restart the app to play the game again after hitting the win screen.
+The inside of the house actually properly displays! Next, I will implement eevees and interaction with them.
+I will also implement a foreground screen that displays the stones the player has currently collected.
+
 # Final-Project Milestone 2
  Feedback from M1:
  this is an awesome idea! i appreciate the super detailed milestone!! 

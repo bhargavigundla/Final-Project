@@ -18,10 +18,10 @@
 	.type	volcanoNoStonePal, %object
 	.size	volcanoNoStonePal, 512
 volcanoNoStonePal:
-	.short	1062
-	.short	15935
 	.short	0
-	.short	0
+	.short	2159
+	.short	3251
+	.short	7446
 	.short	0
 	.short	0
 	.short	0
@@ -275,7 +275,7 @@ volcanoNoStonePal:
 	.short	0
 	.short	0
 	.type	volcanoNoStoneMap, %object
-	.size	volcanoNoStoneMap, 2048
+	.size	volcanoNoStoneMap, 8192
 volcanoNoStoneMap:
 	.short	0
 	.short	0
@@ -343,898 +343,3970 @@ volcanoNoStoneMap:
 	.short	0
 	.short	0
 	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	0
 	.short	0
 	.short	0
 	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	0
 	.short	0
 	.short	0
 	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	0
 	.short	0
 	.short	0
 	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
 	.short	0
 	.short	0
 	.short	0
 	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	0
 	.short	0
 	.short	0
 	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
-	.short	1
-	.short	1
-	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	0
 	.short	0
 	.short	0
 	.short	0
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
-	.short	1
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
+	.short	1
+	.short	2
 	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
 	.short	0
 	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
 	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
 	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
 	.short	0
 	.short	0
 	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
 	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
 	.short	1
+	.short	2
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	3
+	.short	4
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
+	.short	0
 	.short	0
 	.short	0
 	.short	0
@@ -1302,7 +4374,7 @@ volcanoNoStoneMap:
 	.short	0
 	.short	0
 	.type	volcanoNoStoneTiles, %object
-	.size	volcanoNoStoneTiles, 128
+	.size	volcanoNoStoneTiles, 160
 volcanoNoStoneTiles:
 	.short	0
 	.short	0
@@ -1320,52 +4392,68 @@ volcanoNoStoneTiles:
 	.short	0
 	.short	0
 	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	0
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
-	.short	257
+	.short	8465
+	.short	8721
+	.short	8721
+	.short	8466
+	.short	8721
+	.short	4386
+	.short	8738
+	.short	4659
+	.short	13090
+	.short	4915
+	.short	13090
+	.short	13107
+	.short	13090
+	.short	8723
+	.short	12833
+	.short	4369
+	.short	4386
+	.short	4642
+	.short	4369
+	.short	4385
+	.short	4369
+	.short	4369
+	.short	8465
+	.short	4387
+	.short	12817
+	.short	8755
+	.short	13105
+	.short	9011
+	.short	13074
+	.short	4371
+	.short	12833
+	.short	4369
+	.short	8721
+	.short	4370
+	.short	8721
+	.short	13073
+	.short	8738
+	.short	9010
+	.short	12834
+	.short	13091
+	.short	13073
+	.short	4371
+	.short	13105
+	.short	4386
+	.short	9010
+	.short	4386
+	.short	8721
+	.short	8466
+	.short	4643
+	.short	4369
+	.short	8499
+	.short	4370
+	.short	8978
+	.short	4387
+	.short	13105
+	.short	4659
+	.short	13105
+	.short	4643
+	.short	12833
+	.short	4386
+	.short	4625
+	.short	4641
+	.short	4370
+	.short	4641
 	.ident	"GCC: (devkitARM release 53) 9.1.0"

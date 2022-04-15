@@ -9,6 +9,12 @@
 #include "volcanoNoStone.h"
 #include "spritesheet.h"
 #include "mode0.h"
+#include "ocean.h"
+#include "oceanNoStone.h"
+#include "oceanCM.h"
+#include "forest.h"
+#include "forestNoStone.h"
+#include "forestCM.h"
 
 #define lavaBlobsLen 5
 
@@ -19,6 +25,14 @@ int vOff;
 int hasFireStone;
 int hasWaterStone;
 int hasLeafStone;
+
+int loopCount;
+
+enum {
+    STATIC,
+    SCROLLING
+};
+int scroll;
 
 enum {
     OUTSIDE,
@@ -34,22 +48,41 @@ enum {
     LAVADOORROW = 430,
     LAVADOORCOL = 254,
     LAVADOORWIDTH = 18,
-    HOUSEEXITROW = 212,
-    HOUSEEXITCOL = 179,
-    HOUSEEXITWIDTH = 17,
-    HOUSEEXITHEIGHT = 21,
-    FIRESTONECOL = 224,
-    FIRESTONEROW = 16,
+    HOUSEEXITROW = 159,
+    HOUSEEXITCOL = 106,
+    HOUSEEXITWIDTH = 28,
+    HOUSEEXITHEIGHT = 1,
+    FIRESTONECOL = 464,
+    FIRESTONEROW = 32,
     FIRESTONEWIDTH = 16,
     FIRESTONEHEIGHT = 16,
     LAVABLOBSWIDTH = 16,
-    LAVABLOBSHEIGHT = 16
+    LAVABLOBSHEIGHT = 16,
+    OCEANDOORROW = 382,
+    OCEANDOORCOL = 60,
+    OCEANDOORWIDTH = 3,
+    OCEANDOORHEIGHT = 17,
+    WATERSTONECOL = 496,
+    WATERSTONEROW = 224,
+    WATERSTONEWIDTH = 16,
+    WATERSTONEHEIGHT = 16,
+    WATERSTONEENABLED = 2,
+    FORESTDOORCOL = 449,
+    FORESTDOORROW = 382,
+    FORESTDOORWIDTH = 3,
+    FORESTDOORHEIGHT = 19,
+    LEAFSTONECOL = 496,
+    LEAFSTONEROW = 112,
+    LEAFSTONEWIDTH = 16,
+    LEAFSTONEHEIGHT = 16
 };
 int stage;
 
 enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
-      HOUSEWIDTH = 512, HOUSEHEIGHT = 512,
-      VOLCANOWIDTH = 256, VOLCANOHEIGHT = 256};
+      HOUSEWIDTH = 240, HOUSEHEIGHT = 160,
+      VOLCANOWIDTH = 512, VOLCANOHEIGHT = 512,
+      OCEANWIDTH = 512, OCEANHEIGHT = 240,
+      FORESTWIDTH = 512, FORESTHEIGHT = 160};
 
 OBJ_ATTR shadowOAM[128];
 SPRITE player;
@@ -61,6 +94,7 @@ unsigned char* collisionMap;
 // Initialize the game
 void initGame() {
     collisionMap = (unsigned char *) outsideCMBitmap;
+    scroll = SCROLLING;
     stage = OUTSIDE;
 
 	waitForVBlank();
@@ -72,6 +106,10 @@ void initGame() {
 	vOff = 220;
 	hOff = 144;
 
+    hasFireStone = 0;
+    hasLeafStone = 0;
+    hasWaterStone = 0;
+
     // Set up the sprites
     initNonPlayers();
     initSprites();
@@ -79,10 +117,11 @@ void initGame() {
 }
 
 // Updates the game each frame
-void updateGame() {
+int updateGame() {
     updateStage();
     updateNonPlayers();
 	updatePlayer();
+    return (hasFireStone && hasLeafStone && hasWaterStone);
 }
 
 // Draws the game each frame
@@ -118,21 +157,21 @@ void initPlayer() {
 // Handle basic player movement
 void updatePlayer() {
     if(BUTTON_HELD(BUTTON_UP)) {
-        if (collisionCheck(collisionMap, mapWidth, 
+        if (stage != FOREST && collisionCheck(collisionMap, mapWidth, 
             player.worldCol, player.worldRow, 
             player.width, player.height, 
             0, -player.rdel)) {
             player.worldRow -= player.rdel;
-			vOff --;
-        }
+			vOff -= (vOff - scroll >= 0) ? scroll : 0;
+        }  
     }
 	if(BUTTON_HELD(BUTTON_DOWN)) {
-        if (collisionCheck(collisionMap, mapWidth, 
+        if (stage != FOREST && collisionCheck(collisionMap, mapWidth, 
                 player.worldCol, player.worldRow, 
                 player.width, player.height, 
                 0, player.rdel)) {
             player.worldRow += player.rdel;
-			vOff ++;
+			vOff += ((vOff + scroll + SCREENHEIGHT - 1) < mapHeight) ? scroll : 0;
         }
 
     }
@@ -143,7 +182,7 @@ void updatePlayer() {
             -player.cdel, 0)) {
                 
             player.worldCol -= player.cdel;
-			hOff --;
+			hOff -= (hOff - scroll >= 0) ? scroll : 0;
         }
     }
     if(BUTTON_HELD(BUTTON_RIGHT)) {
@@ -153,7 +192,19 @@ void updatePlayer() {
             player.cdel, 0)) {
                     
             player.worldCol += player.cdel;
-			hOff ++;
+			hOff += ((hOff + scroll + SCREENWIDTH - 1) < mapWidth) ? scroll : 0;
+        }
+    }
+    if (stage == OCEAN) {
+        // move ocean every frame by 1 pixel until end of screen
+        if ((hOff + scroll + SCREENWIDTH - 1) < mapWidth) {
+            hOff = (hOff + 1) % OCEANWIDTH;    
+            loopCount += (hOff == 0) ? 1 : 0;     
+            player.worldCol += player.cdel;
+        } else {
+           if (BUTTON_HELD(BUTTON_LEFT)) {
+               player.worldCol -= player.cdel;
+           } 
         }
     }
     animatePlayer();
@@ -164,22 +215,27 @@ void updateStage() {
 	switch (stage) {
 		case OUTSIDE:
 		    if (player.worldRow == EEVEEDOORROW && player.worldCol == EEVEEDOORCOL) { 
+                // move into house
                 collisionMap = (unsigned char *) houseCMBitmap;
-                vOff = 275;
-                hOff = 137;
-                player.worldRow = SCREENHEIGHT / 2 - player.width / 2 + vOff;
-                player.worldCol = SCREENWIDTH / 2 - player.height / 2 + hOff;
                 stage = HOUSE;
+
+                setStage();
+                vOff = 0;
+                hOff = 0;
+
+                player.worldRow = 142;
+                player.worldCol = 112;
+                
                 hideSprites();
                 player.hide = 0;
-                setHouseBackground();
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
-            }
-            if (player.worldRow + player.height - 1 == LAVADOORROW && player.worldCol == LAVADOORCOL) {
+            } else if (player.worldRow + player.height - 1 == LAVADOORROW && player.worldCol == LAVADOORCOL) {
+                scroll = SCROLLING;
                 collisionMap = (unsigned char *) volcanoCMBitmap;
                 mapHeight = VOLCANOHEIGHT;
+                mapWidth = VOLCANOWIDTH;
                 stage = VOLCANO;
 
                 waitForVBlank();
@@ -192,20 +248,57 @@ void updateStage() {
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
+            } else if (collision(player.worldCol, player.worldRow, player.width, player.height, 
+                OCEANDOORCOL, OCEANDOORROW, OCEANDOORWIDTH, OCEANDOORHEIGHT)) {
+                scroll = SCROLLING;
+                collisionMap = (unsigned char *) oceanCMBitmap;
+                mapHeight = OCEANHEIGHT;
+                mapWidth = OCEANWIDTH;
+                stage = OCEAN;
+
+                waitForVBlank();
+                setStage();
+                vOff = 0;
+                hOff = 0;
+                player.worldRow = SCREENHEIGHT / 2 - player.width / 2 + vOff;
+                player.worldCol = 10;
+                
+                REG_BG0VOFF = vOff;
+                REG_BG0HOFF = hOff;
+                initNonPlayers();
+            } else if (collision(player.worldCol, player.worldRow, player.width, player.height,
+                FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {               
+                scroll = SCROLLING;
+                collisionMap = (unsigned char *) forestCMBitmap;
+                mapHeight = FORESTHEIGHT;
+                mapWidth = FORESTWIDTH;
+                stage = FOREST;
+
+                waitForVBlank();
+                setStage();
+                vOff = 0;
+                hOff = 0;
+                player.worldRow = 112;
+                player.worldCol = 0;
+                
+                REG_BG0VOFF = vOff;
+                REG_BG0HOFF = hOff;
+                initNonPlayers();
             }
 			break;
 		case HOUSE:
-            if (collision(player.worldCol, player.worldRow, player.width, player.height,
-                          HOUSEEXITCOL, HOUSEEXITROW, HOUSEEXITWIDTH, HOUSEEXITHEIGHT)) {
-                initSprites(); // the house tiles overwrote the spritesheet, so reinitializing
-                               // will rectify this issue until I make a new house background
+            if (player.worldRow >= 142 && BUTTON_HELD(BUTTON_DOWN)) {
+                // initSprites(); // the house tiles overwrote the spritesheet, so reinitializing
+                //                // will rectify this issue until I make a new house background
                 returnToOutside();
             }
 			break;
 		case VOLCANO:
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                           FIRESTONECOL, FIRESTONEROW, FIRESTONEWIDTH, FIRESTONEHEIGHT)) {
-                hasFireStone = 1;
+                if (!hasFireStone) {
+                    hasFireStone = 1;
+                }
                 returnToOutside();
             }
             for (int i = 0; i < lavaBlobsLen; i++) {
@@ -215,6 +308,24 @@ void updateStage() {
                 }
             }
 			break;
+        case OCEAN:
+            if (collision(player.worldCol, player.worldRow, player.width, player.height,
+                WATERSTONECOL, WATERSTONEROW, WATERSTONEWIDTH, WATERSTONEHEIGHT)) {
+                    if (!hasWaterStone) {
+                        hasWaterStone = 1;
+                    }
+                    returnToOutside();
+            }
+            break;
+        case FOREST:
+            if (collision(player.worldCol, player.worldRow, player.width, player.height,
+                LEAFSTONECOL, LEAFSTONEROW, LEAFSTONEWIDTH, LEAFSTONEHEIGHT)) {
+                    if (!hasLeafStone) {
+                       hasLeafStone = 1; 
+                    }
+                    returnToOutside();
+            }
+            break;
 	}
 }
 
@@ -309,13 +420,38 @@ void setVolcanoBackground() {
     if (hasFireStone) {
         DMANow(3, volcanoNoStonePal, PALETTE, 256);
         DMANow(3, volcanoNoStoneTiles, &CHARBLOCK[0], volcanoTilesLen / 2);
-        DMANow(3, volcanoNoStoneMap, &SCREENBLOCK[28], volcanoMapLen / 2);
+        DMANow(3, volcanoNoStoneMap, &SCREENBLOCK[24], volcanoMapLen / 2);
     } else {
         DMANow(3, volcanoPal, PALETTE, 256);
         DMANow(3, volcanoTiles, &CHARBLOCK[0], volcanoTilesLen / 2);
-        DMANow(3, volcanoMap, &SCREENBLOCK[28], volcanoMapLen / 2);
+        DMANow(3, volcanoMap, &SCREENBLOCK[24], volcanoMapLen / 2);
     }
+}
 
+void setOceanBackground() {
+    if (hasWaterStone) {        
+        DMANow(3, oceanNoStonePal, PALETTE, 256);
+        DMANow(3, oceanNoStoneTiles, &CHARBLOCK[0], oceanTilesLen / 2);
+        DMANow(3, oceanNoStoneMap, &SCREENBLOCK[24], oceanMapLen / 2);
+        
+    } else {
+        DMANow(3, oceanPal, PALETTE, 256);
+        DMANow(3, oceanTiles, &CHARBLOCK[0], oceanTilesLen / 2);
+        DMANow(3, oceanMap, &SCREENBLOCK[24], oceanMapLen / 2);
+    }
+}
+
+void setForestBackground() {
+    if (hasLeafStone) {        
+        DMANow(3, forestNoStonePal, PALETTE, 256);
+        DMANow(3, forestNoStoneTiles, &CHARBLOCK[0], forestTilesLen / 2);
+        DMANow(3, forestNoStoneMap, &SCREENBLOCK[24], forestMapLen / 2);
+        
+    } else {
+        DMANow(3, forestPal, PALETTE, 256);
+        DMANow(3, forestTiles, &CHARBLOCK[0], forestTilesLen / 2);
+        DMANow(3, forestMap, &SCREENBLOCK[24], forestMapLen / 2);
+    }
 }
 
 void showGame() {
@@ -333,29 +469,52 @@ void setStage() {
             REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
             REG_DISPCTL = MODE0 | BG0_ENABLE |SPRITE_ENABLE;
             mapWidth = OUTSIDEWIDTH;
-	        mapWidth = OUTSIDEHEIGHT;
+	        mapHeight = OUTSIDEHEIGHT;
 
             waitForVBlank();
             setOutsideBackground();
             break;
         case (HOUSE):
-            REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+            REG_BG0CNT = BG_8BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
             REG_DISPCTL = MODE0 | BG0_ENABLE |SPRITE_ENABLE;
+            scroll = STATIC;
             mapWidth = HOUSEWIDTH;
-	        mapWidth = HOUSEHEIGHT;
+	        mapHeight = HOUSEHEIGHT;
 
             waitForVBlank();
             setHouseBackground();
             break;
         case VOLCANO:
-            REG_BG0CNT = BG_8BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+            REG_BG0CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(24);
             REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
+            scroll = SCROLLING;
             mapWidth = VOLCANOWIDTH;
-	        mapWidth = VOLCANOHEIGHT;
+	        mapHeight = VOLCANOHEIGHT;
             
             waitForVBlank();
             setVolcanoBackground();
             break;
+        case OCEAN:
+            REG_BG0CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(24);
+            REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
+            scroll = SCROLLING;
+            mapWidth = OCEANWIDTH;
+	        mapHeight = OCEANHEIGHT;
+            
+            waitForVBlank();
+            setOceanBackground();
+            break;
+        case FOREST:            
+            REG_BG0CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(24);
+            REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
+            scroll = SCROLLING;
+            mapWidth = FORESTWIDTH;
+	        mapHeight = FORESTHEIGHT;
+            
+            waitForVBlank();
+            setForestBackground();
+            break;
+
     }
 }
 
@@ -368,6 +527,7 @@ void initSprites() {
 }
 
 void returnToOutside() {
+    scroll = SCROLLING;
     collisionMap = (unsigned char *) outsideCMBitmap;
     stage = OUTSIDE;
     initNonPlayers();
@@ -403,6 +563,8 @@ void initNonPlayers() {
                 lavaBlobs[i].cdel = 0;
                 lavaBlobs[i].worldCol = rand() % (mapWidth - LAVABLOBSWIDTH);
             }
+            break;
+        case OCEAN:
             break;
     }
 }

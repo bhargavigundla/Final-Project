@@ -1,3 +1,5 @@
+// FOR DETAILED GAME UPDATE, CHECK README!
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "mode0.h"
@@ -76,6 +78,7 @@ int main() {
 
 // Sets up GBA.
 void initialize() {
+    
     buttons = BUTTONS;
     oldButtons = 0;
 
@@ -147,8 +150,12 @@ void game() {
     } else if (BUTTON_PRESSED(BUTTON_SELECT)) {
         goToPause();
     } else {
-        updateGame();
-        drawGame();
+        if (updateGame() == 1) {
+            goToWin();
+        } else {
+            drawGame();
+        }
+        
     }
 }
 

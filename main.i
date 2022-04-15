@@ -1321,7 +1321,7 @@ int collision(int colA, int rowA, int widthA, int heightA, int colB, int rowB, i
 # 4 "main.c" 2
 # 1 "start.h" 1
 # 22 "start.h"
-extern const unsigned short startTiles[22080];
+extern const unsigned short startTiles[19200];
 
 
 extern const unsigned short startMap[1024];
@@ -1387,7 +1387,7 @@ unsigned char* collisionMap;
 
 void play();
 void initGame();
-void updateGame();
+int updateGame();
 void drawGame();
 void initPlayer();
 void initNonPlayers();
@@ -1401,6 +1401,8 @@ void showGame();
 void setOutsideBackground();
 void setHouseBackground();
 void setVolcanoBackground();
+void setOceanBackground();
+void setForestBackground();
 void initSprites();
 void setStage();
 
@@ -1414,10 +1416,10 @@ int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, 
 # 9 "main.c" 2
 # 1 "house.h" 1
 # 22 "house.h"
-extern const unsigned short houseTiles[45600];
+extern const unsigned short houseTiles[13472];
 
 
-extern const unsigned short houseMap[4096];
+extern const unsigned short houseMap[1024];
 
 
 extern const unsigned short housePal[256];
@@ -1506,6 +1508,7 @@ int main() {
 
 
 void initialize() {
+
     buttons = (*(volatile unsigned short *)0x04000130);
     oldButtons = 0;
 
@@ -1522,7 +1525,7 @@ void goToStart() {
 
     waitForVBlank();
     DMANow(3, startPal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, startTiles, &((charblock *)0x6000000)[0], 44160 / 2);
+    DMANow(3, startTiles, &((charblock *)0x6000000)[0], 38400 / 2);
     DMANow(3, startMap, &((screenblock *)0x6000000)[28], 2048 / 2);
 }
 
@@ -1577,8 +1580,12 @@ void game() {
     } else if ((!(~(oldButtons) & ((1 << 2))) && (~buttons & ((1 << 2))))) {
         goToPause();
     } else {
-        updateGame();
-        drawGame();
+        if (updateGame() == 1) {
+            goToWin();
+        } else {
+            drawGame();
+        }
+
     }
 }
 

@@ -22,7 +22,7 @@ unsigned char* collisionMap;
 // Prototypes
 void play();
 void initGame();
-void updateGame();
+int updateGame();
 void drawGame();
 void initPlayer();
 void initNonPlayers();
@@ -36,6 +36,8 @@ void showGame();
 void setOutsideBackground(); 
 void setHouseBackground();
 void setVolcanoBackground();
+void setOceanBackground();
+void setForestBackground();
 void initSprites();
 void setStage();
 

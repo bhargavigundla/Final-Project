@@ -3,13 +3,13 @@
 
 //======================================================================
 //
-//	volcano, 256x256@8, 
+//	volcano, 512x512@4, 
 //	+ palette 256 entries, not compressed
-//	+ 3 tiles (t|f|p reduced) not compressed
-//	+ regular map (in SBBs), not compressed, 32x32 
-//	Total size: 512 + 192 + 2048 = 2752
+//	+ 6 tiles (t|f|p reduced) not compressed
+//	+ regular map (in SBBs), not compressed, 64x64 
+//	Total size: 512 + 192 + 8192 = 8896
 //
-//	Time-stamp: 2022-04-05, 16:48:49
+//	Time-stamp: 2022-04-15, 15:26:15
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.3
 //	( http://www.coranac.com/projects/#grit )
 //
@@ -21,8 +21,8 @@
 #define volcanoTilesLen 192
 extern const unsigned short volcanoTiles[96];
 
-#define volcanoMapLen 2048
-extern const unsigned short volcanoMap[1024];
+#define volcanoMapLen 8192
+extern const unsigned short volcanoMap[4096];
 
 #define volcanoPalLen 512
 extern const unsigned short volcanoPal[256];
