@@ -9,13 +9,14 @@ least four unique sprites, of which two are animated, where "animated" means thr
 more frames of a looping animation. You may not use any sprite art that has been used
 in a lab before.
 - player(animated)
-- sleeping eevee will be animated into the house
-- standing eevee will be animated into the house
+- sleeping eevee will be animated into the house, but for now it is hardcoded into map
+- standing eevee will be animated into the house, but for now it is hardcoded into map
 - lavablobs have a single sprite
 
 Part 3: Sounds
 - one sound for entire game atm(will add more for final project)
 - one sound for collisions
+- this was totally my own sound! hahaha...
 
 Part 4: Changing tiles, tilemap, or palette at runtime
 - volcano palette manipulated each iteration to give illusion of heat
