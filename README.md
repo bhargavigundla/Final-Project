@@ -16,7 +16,6 @@ in a lab before.
 Part 3: Sounds
 - one sound for entire game atm(will add more for final project)
 - one sound for collisions
-- this was totally my own sound! hahaha...
 
 Part 4: Changing tiles, tilemap, or palette at runtime
 - volcano palette manipulated each iteration to give illusion of heat
