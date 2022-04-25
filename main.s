@@ -126,7 +126,7 @@ goToInstructions:
 	mov	r2, #67108864
 	mov	ip, #2
 	mov	r3, #0
-	mov	r0, #7296
+	mov	r0, #7168
 	mov	r4, #256
 	ldr	r1, .L12
 	str	ip, [r1]
@@ -144,7 +144,7 @@ goToInstructions:
 	ldr	r1, .L12+12
 	mov	lr, pc
 	bx	r4
-	mov	r3, #7040
+	mov	r3, #3056
 	mov	r2, #100663296
 	mov	r0, #3
 	ldr	r1, .L12+16

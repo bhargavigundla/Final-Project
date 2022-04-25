@@ -309,6 +309,10 @@ void updateStage() {
             }
 			break;
 		case VOLCANO:
+            for (int i = 0; i < 16; i++) {
+                PALETTE[i] = (PALETTE[i] + 1) % 256;
+            }
+            
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                           FIRESTONECAVEDOORCOL, FIRESTONECAVEDOORROW, FIRESTONECAVEDOORWIDTH, FIRESTONECAVEDOORHEIGHT)) {
                 scroll = STATIC;

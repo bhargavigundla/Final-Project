@@ -1017,7 +1017,7 @@ extern const unsigned short volcanoNoStonePal[256];
 # 11 "game.c" 2
 # 1 "fireStoneCave.h" 1
 # 22 "fireStoneCave.h"
-extern const unsigned short fireStoneCaveTiles[9024];
+extern const unsigned short fireStoneCaveTiles[9008];
 
 
 extern const unsigned short fireStoneCaveMap[1024];
@@ -1027,7 +1027,7 @@ extern const unsigned short fireStoneCavePal[256];
 # 12 "game.c" 2
 # 1 "fireStoneCaveNoStone.h" 1
 # 22 "fireStoneCaveNoStone.h"
-extern const unsigned short fireStoneCaveNoStoneTiles[9024];
+extern const unsigned short fireStoneCaveNoStoneTiles[9008];
 
 
 extern const unsigned short fireStoneCaveNoStoneMap[1024];
@@ -1073,7 +1073,7 @@ extern const unsigned short oceanCMBitmap[61440];
 # 19 "game.c" 2
 # 1 "forest.h" 1
 # 22 "forest.h"
-extern const unsigned short forestTiles[64];
+extern const unsigned short forestTiles[14736];
 
 
 extern const unsigned short forestMap[2048];
@@ -1102,6 +1102,32 @@ extern const unsigned int rowClearSound_sampleRate;
 extern const unsigned int rowClearSound_length;
 extern const signed char rowClearSound_data[];
 # 23 "game.c" 2
+# 1 "sound.h" 1
+void setupSounds();
+void playSoundA(const signed char* sound, int length, int loops);
+void playSoundB(const signed char* sound, int length, int loops);
+
+void setupInterrupts();
+void interruptHandler();
+
+void pauseSound();
+void unpauseSound();
+void stopSound();
+# 49 "sound.h"
+typedef struct{
+    const signed char* data;
+    int length;
+    int frequency;
+    int isPlaying;
+    int loops;
+    int duration;
+    int priority;
+    int vBlankCount;
+} SOUND;
+
+SOUND soundA;
+SOUND soundB;
+# 24 "game.c" 2
 
 
 
@@ -1390,6 +1416,10 @@ void updateStage() {
             }
    break;
   case VOLCANO:
+            for (int i = 0; i < 16; i++) {
+                ((unsigned short *)0x5000000)[i] = (((unsigned short *)0x5000000)[i] + 1) % 256;
+            }
+
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                           FIRESTONECAVEDOORCOL, FIRESTONECAVEDOORROW, FIRESTONECAVEDOORWIDTH, FIRESTONECAVEDOORHEIGHT)) {
                 scroll = STATIC;
@@ -1552,11 +1582,11 @@ void setVolcanoBackground() {
 void setFireCaveBackground() {
     if (hasFireStone) {
         DMANow(3, fireStoneCaveNoStonePal, ((unsigned short *)0x5000000), 256);
-        DMANow(3, fireStoneCaveNoStoneTiles, &((charblock *)0x6000000)[0], 18048 / 2);
+        DMANow(3, fireStoneCaveNoStoneTiles, &((charblock *)0x6000000)[0], 18016 / 2);
         DMANow(3, fireStoneCaveNoStoneMap, &((screenblock *)0x6000000)[28], 2048 / 2);
     } else {
         DMANow(3, fireStoneCavePal, ((unsigned short *)0x5000000), 256);
-        DMANow(3, fireStoneCaveTiles, &((charblock *)0x6000000)[0], 18048 / 2);
+        DMANow(3, fireStoneCaveTiles, &((charblock *)0x6000000)[0], 18016 / 2);
         DMANow(3, fireStoneCaveMap, &((screenblock *)0x6000000)[28], 2048 / 2);
     }
 }
@@ -1577,12 +1607,12 @@ void setOceanBackground() {
 void setForestBackground() {
     if (hasLeafStone) {
         DMANow(3, forestNoStonePal, ((unsigned short *)0x5000000), 256);
-        DMANow(3, forestNoStoneTiles, &((charblock *)0x6000000)[0], 128 / 2);
+        DMANow(3, forestNoStoneTiles, &((charblock *)0x6000000)[0], 29472 / 2);
         DMANow(3, forestNoStoneMap, &((screenblock *)0x6000000)[24], 4096 / 2);
 
     } else {
         DMANow(3, forestPal, ((unsigned short *)0x5000000), 256);
-        DMANow(3, forestTiles, &((charblock *)0x6000000)[0], 128 / 2);
+        DMANow(3, forestTiles, &((charblock *)0x6000000)[0], 29472 / 2);
         DMANow(3, forestMap, &((screenblock *)0x6000000)[24], 4096 / 2);
     }
 }

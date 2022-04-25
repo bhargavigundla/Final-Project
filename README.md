@@ -1,3 +1,28 @@
+# Final-Project Milestone 4
+Every state of the game must have its own background. 
+- I have this!
+
+All sprites must have artwork that is not just a blank square or placeholder from
+previous milestones (if your game requires it to be only a blank square, let us know
+ahead of time, but this is likely not the case for most, if not all, of you). There must be at
+least four unique sprites, of which two are animated, where "animated" means three or
+more frames of a looping animation. You may not use any sprite art that has been used
+in a lab before.
+- player(animated)
+- sleeping eevee will be animated into the house
+- standing eevee will be animated into the house
+- lavablobs have a single sprite
+
+Part 3: Sounds
+- one sound for entire game atm(will add more for final project)
+- one sound for collisions
+
+Part 4: Changing tiles, tilemap, or palette at runtime
+- volcano palette manipulated each iteration to give illusion of heat
+
+Part 5: Timer or interrupt
+- will add a timer into volcano level, so that level ends when pichu overheats. Didn't get to finish for this milestone:(
+
 # Final-Project Milestone 3
 make sure to fix the black parts showing up on the edges of the background 
 for m03, make sure the rest of your core gameplay is implemented: 

@@ -1332,7 +1332,7 @@ extern const unsigned short startPal[256];
 # 7 "main.c" 2
 # 1 "instructions.h" 1
 # 22 "instructions.h"
-extern const unsigned short instructionsTiles[7040];
+extern const unsigned short instructionsTiles[3056];
 
 
 extern const unsigned short instructionsMap[1024];
@@ -1587,14 +1587,14 @@ void start() {
 void goToInstructions() {
     state = INSTRUCTIONS;
 
-    (*(volatile unsigned short*)0x4000008) = (1<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
     (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
     (*(volatile unsigned short *)0x04000012) = 0;
     (*(volatile unsigned short *)0x04000010) = 0;
 
     waitForVBlank();
     DMANow(3, instructionsPal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, instructionsTiles, &((charblock *)0x6000000)[0], 14080 / 2);
+    DMANow(3, instructionsTiles, &((charblock *)0x6000000)[0], 6112 / 2);
     DMANow(3, instructionsMap, &((screenblock *)0x6000000)[28], 2048 / 2);
 }
 
