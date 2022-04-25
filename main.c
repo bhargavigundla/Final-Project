@@ -11,7 +11,7 @@
 #include "house.h"
 #include "outside.h"
 #include "spritesheet.h"
-#include "gameSong.h"
+#include "town.h"
 #include "sound.h"
 
 
@@ -93,7 +93,7 @@ void initialize() {
 
 // Sets up the start state.
 void goToStart() {
-    playSoundA(gameSong_data, gameSong_length, 1);
+    playSoundA(town_data, town_length, 1);
 
     state = START;
     REG_BG0CNT = BG_8BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);

@@ -1443,12 +1443,12 @@ extern const unsigned short spritesheetTiles[16384];
 
 extern const unsigned short spritesheetPal[256];
 # 14 "main.c" 2
-# 1 "gameSong.h" 1
+# 1 "town.h" 1
 
 
-extern const unsigned int gameSong_sampleRate;
-extern const unsigned int gameSong_length;
-extern const signed char gameSong_data[];
+extern const unsigned int town_sampleRate;
+extern const unsigned int town_length;
+extern const signed char town_data[];
 # 15 "main.c" 2
 # 1 "sound.h" 1
 void setupSounds();
@@ -1556,7 +1556,7 @@ void initialize() {
 
 
 void goToStart() {
-    playSoundA(gameSong_data, gameSong_length, 1);
+    playSoundA(town_data, town_length, 1);
 
     state = START;
     (*(volatile unsigned short*)0x4000008) = (1<<7) | (0<<14) | ((0)<<2) | ((28)<<8);

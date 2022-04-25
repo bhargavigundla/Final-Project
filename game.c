@@ -19,7 +19,7 @@
 #include "forest.h"
 #include "forestNoStone.h"
 #include "forestCM.h"
-#include "rowClearSound.h"
+#include "soundB.h"
 #include "sound.h"
 
 #define lavaBlobsLen 5
@@ -243,7 +243,7 @@ void updateStage() {
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
-                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+                playSoundB(soundB_data, soundB_length, 0);
             } else if (player.worldRow + player.height - 1 == LAVADOORROW && player.worldCol == LAVADOORCOL) {
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) volcanoCMBitmap;
@@ -261,7 +261,7 @@ void updateStage() {
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
-                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+                playSoundB(soundB_data, soundB_length, 0);
             } else if (collision(player.worldCol, player.worldRow, player.width, player.height, 
                 OCEANDOORCOL, OCEANDOORROW, OCEANDOORWIDTH, OCEANDOORHEIGHT)) {
                 scroll = SCROLLING;
@@ -280,7 +280,7 @@ void updateStage() {
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
-                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+                playSoundB(soundB_data, soundB_length, 0);
             } else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {               
                 scroll = SCROLLING;
@@ -299,13 +299,13 @@ void updateStage() {
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
-                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+                playSoundB(soundB_data, soundB_length, 0);
             }
 			break;
 		case HOUSE:
             if (player.worldRow >= 142 && BUTTON_HELD(BUTTON_DOWN)) {
                 returnToOutside();
-                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+                playSoundB(soundB_data, soundB_length, 0);
             }
 			break;
 		case VOLCANO:
@@ -331,11 +331,11 @@ void updateStage() {
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
-                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+                playSoundB(soundB_data, soundB_length, 0);
             } else if (!collisionCheck((unsigned char *) lavaPoolCMBitmap, mapWidth,
                 player.worldCol, player.worldRow, player.width, player.height, 0, 0)) {
                 returnToOutside();
-                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+                playSoundB(soundB_data, soundB_length, 0);
             }
 
             for (int i = 0; i < lavaBlobsLen; i++) {
@@ -343,7 +343,7 @@ void updateStage() {
                     lavaBlobs[i].worldCol, lavaBlobs[i].worldRow, lavaBlobs[i].width, lavaBlobs[i].height)) {
                     returnToOutside();
                 }
-                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+                playSoundB(soundB_data, soundB_length, 0);
             }
 			break;
         case FIRESTONEROOM:
@@ -353,7 +353,7 @@ void updateStage() {
                         hasFireStone = 1;
                 }
                 returnToOutside();
-                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+                playSoundB(soundB_data, soundB_length, 0);
             }
             break;
         case OCEAN:
@@ -363,7 +363,7 @@ void updateStage() {
                         hasWaterStone = 1;
                     }
                     returnToOutside();
-                    playSoundB(rowClearSound_data, rowClearSound_length, 0);
+                    playSoundB(soundB_data, soundB_length, 0);
             }
             break;
         case FOREST:
@@ -373,7 +373,7 @@ void updateStage() {
                     hasLeafStone = 1; 
                 }
                 returnToOutside();
-                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+                playSoundB(soundB_data, soundB_length, 0);
             }
             break;
 	}

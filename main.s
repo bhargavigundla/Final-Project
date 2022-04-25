@@ -66,8 +66,8 @@ goToStart:
 .L5:
 	.align	2
 .L4:
-	.word	gameSong_length
-	.word	gameSong_data
+	.word	town_length
+	.word	town_data
 	.word	playSoundA
 	.word	state
 	.word	waitForVBlank

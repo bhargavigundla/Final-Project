@@ -1871,8 +1871,8 @@ updateStage:
 	.word	waitForVBlank
 	.word	vOff
 	.word	hOff
-	.word	rowClearSound_length
-	.word	rowClearSound_data
+	.word	soundB_length
+	.word	soundB_data
 	.word	playSoundB
 	.word	83886112
 	.word	498
