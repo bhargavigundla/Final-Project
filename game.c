@@ -6,7 +6,11 @@
 #include "outside.h"
 #include "volcano.h"
 #include "volcanoCM.h"
+#include "lavaPoolCM.h"
 #include "volcanoNoStone.h"
+#include "fireStoneCave.h"
+#include "fireStoneCaveNoStone.h"
+#include "fireStoneCaveCM.h"
 #include "spritesheet.h"
 #include "mode0.h"
 #include "ocean.h"
@@ -15,6 +19,8 @@
 #include "forest.h"
 #include "forestNoStone.h"
 #include "forestCM.h"
+#include "rowClearSound.h"
+#include "sound.h"
 
 #define lavaBlobsLen 5
 
@@ -39,7 +45,8 @@ enum {
     HOUSE,
     VOLCANO,
     OCEAN,
-    FOREST
+    FOREST,
+    FIRESTONEROOM
 };
 enum {
     EEVEEDOORROW = 256,
@@ -52,10 +59,14 @@ enum {
     HOUSEEXITCOL = 106,
     HOUSEEXITWIDTH = 28,
     HOUSEEXITHEIGHT = 1,
-    FIRESTONECOL = 464,
-    FIRESTONEROW = 32,
+    FIRESTONECOL = 110,
+    FIRESTONEROW = 56,
     FIRESTONEWIDTH = 16,
     FIRESTONEHEIGHT = 16,
+    FIRESTONECAVEDOORCOL = 237,
+    FIRESTONECAVEDOORROW = 498,
+    FIRESTONECAVEDOORHEIGHT = 5,
+    FIRESTONECAVEDOORWIDTH = 22,
     LAVABLOBSWIDTH = 16,
     LAVABLOBSHEIGHT = 16,
     OCEANDOORROW = 382,
@@ -82,12 +93,13 @@ enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
       HOUSEWIDTH = 240, HOUSEHEIGHT = 160,
       VOLCANOWIDTH = 512, VOLCANOHEIGHT = 512,
       OCEANWIDTH = 512, OCEANHEIGHT = 240,
-      FORESTWIDTH = 512, FORESTHEIGHT = 160};
+      FORESTWIDTH = 512, FORESTHEIGHT = 160,
+      FIRESTONEROOMWIDTH = 240, FIRESTONEROOMHEIGHT = 160};
 
 OBJ_ATTR shadowOAM[128];
-SPRITE player;
+ANISPRITE player;
 
-SPRITE lavaBlobs[lavaBlobsLen];
+ANISPRITE lavaBlobs[lavaBlobsLen];
 
 unsigned char* collisionMap;
 
@@ -231,6 +243,7 @@ void updateStage() {
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             } else if (player.worldRow + player.height - 1 == LAVADOORROW && player.worldCol == LAVADOORCOL) {
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) volcanoCMBitmap;
@@ -241,13 +254,14 @@ void updateStage() {
                 waitForVBlank();
                 setStage();
                 vOff = 0;
-                hOff = 0;
-                player.worldRow = SCREENHEIGHT / 2 - player.width / 2 + vOff;
-                player.worldCol = SCREENWIDTH / 2 - player.height / 2 + hOff;
+                hOff = 130;
+                player.worldRow = 33;
+                player.worldCol = 240;
                 
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             } else if (collision(player.worldCol, player.worldRow, player.width, player.height, 
                 OCEANDOORCOL, OCEANDOORROW, OCEANDOORWIDTH, OCEANDOORHEIGHT)) {
                 scroll = SCROLLING;
@@ -266,6 +280,7 @@ void updateStage() {
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             } else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {               
                 scroll = SCROLLING;
@@ -284,30 +299,59 @@ void updateStage() {
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             }
 			break;
 		case HOUSE:
             if (player.worldRow >= 142 && BUTTON_HELD(BUTTON_DOWN)) {
-                // initSprites(); // the house tiles overwrote the spritesheet, so reinitializing
-                //                // will rectify this issue until I make a new house background
                 returnToOutside();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             }
 			break;
 		case VOLCANO:
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
-                          FIRESTONECOL, FIRESTONEROW, FIRESTONEWIDTH, FIRESTONEHEIGHT)) {
-                if (!hasFireStone) {
-                    hasFireStone = 1;
-                }
+                          FIRESTONECAVEDOORCOL, FIRESTONECAVEDOORROW, FIRESTONECAVEDOORWIDTH, FIRESTONECAVEDOORHEIGHT)) {
+                scroll = STATIC;
+                collisionMap = (unsigned char *) fireStoneCaveCMBitmap;
+                mapHeight = 160;
+                mapWidth = 240;
+                stage = FIRESTONEROOM;
+
+                waitForVBlank();
+                setStage();
+                vOff = 0;
+                hOff = 0;
+                player.worldCol = 110;
+                player.worldRow = 127;
+
+                REG_BG0VOFF = vOff;
+                REG_BG0HOFF = hOff;
+                initNonPlayers();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+            } else if (!collisionCheck((unsigned char *) lavaPoolCMBitmap, mapWidth,
+                player.worldCol, player.worldRow, player.width, player.height, 0, 0)) {
                 returnToOutside();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             }
+
             for (int i = 0; i < lavaBlobsLen; i++) {
                 if (collision(player.worldCol, player.worldRow, player.width, player.height,
                     lavaBlobs[i].worldCol, lavaBlobs[i].worldRow, lavaBlobs[i].width, lavaBlobs[i].height)) {
                     returnToOutside();
                 }
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             }
 			break;
+        case FIRESTONEROOM:
+            if (collision(FIRESTONECOL, FIRESTONEROW, FIRESTONEWIDTH, FIRESTONEHEIGHT,
+            player.worldCol, player.worldRow, player.width, player.height)) {
+                if (!hasFireStone) {
+                        hasFireStone = 1;
+                }
+                returnToOutside();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+            }
+            break;
         case OCEAN:
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 WATERSTONECOL, WATERSTONEROW, WATERSTONEWIDTH, WATERSTONEHEIGHT)) {
@@ -315,15 +359,17 @@ void updateStage() {
                         hasWaterStone = 1;
                     }
                     returnToOutside();
+                    playSoundB(rowClearSound_data, rowClearSound_length, 0);
             }
             break;
         case FOREST:
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 LEAFSTONECOL, LEAFSTONEROW, LEAFSTONEWIDTH, LEAFSTONEHEIGHT)) {
-                    if (!hasLeafStone) {
-                       hasLeafStone = 1; 
-                    }
-                    returnToOutside();
+                if (!hasLeafStone) {
+                    hasLeafStone = 1; 
+                }
+                returnToOutside();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             }
             break;
 	}
@@ -417,15 +463,21 @@ void setHouseBackground() {
 }
 
 void setVolcanoBackground() {
-    if (hasFireStone) {
-        DMANow(3, volcanoNoStonePal, PALETTE, 256);
-        DMANow(3, volcanoNoStoneTiles, &CHARBLOCK[0], volcanoTilesLen / 2);
-        DMANow(3, volcanoNoStoneMap, &SCREENBLOCK[24], volcanoMapLen / 2);
-    } else {
-        DMANow(3, volcanoPal, PALETTE, 256);
-        DMANow(3, volcanoTiles, &CHARBLOCK[0], volcanoTilesLen / 2);
-        DMANow(3, volcanoMap, &SCREENBLOCK[24], volcanoMapLen / 2);
-    }
+    DMANow(3, volcanoPal, PALETTE, 256);
+    DMANow(3, volcanoTiles, &CHARBLOCK[0], volcanoTilesLen / 2);
+    DMANow(3, volcanoMap, &SCREENBLOCK[24], volcanoMapLen / 2);
+}
+
+void setFireCaveBackground() {
+    if (hasFireStone) {        
+        DMANow(3, fireStoneCaveNoStonePal, PALETTE, 256);
+        DMANow(3, fireStoneCaveNoStoneTiles, &CHARBLOCK[0], fireStoneCaveTilesLen / 2);
+        DMANow(3, fireStoneCaveNoStoneMap, &SCREENBLOCK[28], fireStoneCaveMapLen / 2);
+    } else {        
+        DMANow(3, fireStoneCavePal, PALETTE, 256);
+        DMANow(3, fireStoneCaveTiles, &CHARBLOCK[0], fireStoneCaveTilesLen / 2);
+        DMANow(3, fireStoneCaveMap, &SCREENBLOCK[28], fireStoneCaveMapLen / 2);
+    }   
 }
 
 void setOceanBackground() {
@@ -514,7 +566,17 @@ void setStage() {
             waitForVBlank();
             setForestBackground();
             break;
+        case FIRESTONEROOM:
+            REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+            REG_DISPCTL = MODE0 | BG0_ENABLE |SPRITE_ENABLE;
+                        
+            scroll = STATIC;
+            mapWidth = FIRESTONEROOMWIDTH;
+	        mapHeight = FIRESTONEROOMHEIGHT;
 
+            waitForVBlank();
+            setFireCaveBackground();
+            break;
     }
 }
 
@@ -562,6 +624,7 @@ void initNonPlayers() {
                 lavaBlobs[i].rdel = 1;
                 lavaBlobs[i].cdel = 0;
                 lavaBlobs[i].worldCol = rand() % (mapWidth - LAVABLOBSWIDTH);
+                lavaBlobs[i].worldRow = rand() % (mapHeight - LAVABLOBSWIDTH);
             }
             break;
         case OCEAN:
@@ -586,10 +649,14 @@ void drawNonPlayers() {
         case HOUSE:
             break;
         case VOLCANO:
-            for (int i = 1; i < lavaBlobsLen + 1; i++) {   
-                shadowOAM[i].attr0 = (ROWMASK &(lavaBlobs[i - 1].worldRow - vOff)) | ATTR0_SQUARE;
-                shadowOAM[i].attr1 = (COLMASK &(lavaBlobs[i - 1].worldCol - hOff)) | ATTR1_SMALL; 
-                shadowOAM[i].attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(0, 6);
+            for (int i = 1; i < lavaBlobsLen + 1; i++) {
+                if (lavaBlobs[i - 1].worldCol > hOff && lavaBlobs[i - 1].worldCol < hOff + SCREENWIDTH) {
+                    shadowOAM[i].attr0 = (ROWMASK &(lavaBlobs[i - 1].worldRow - vOff)) | ATTR0_SQUARE;
+                    shadowOAM[i].attr1 = (COLMASK &(lavaBlobs[i - 1].worldCol - hOff)) | ATTR1_SMALL; 
+                    shadowOAM[i].attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(0, 6);
+                } else {
+                    shadowOAM[i].attr0 |= ATTR0_HIDE;            
+                }   
             }
             break;
     }

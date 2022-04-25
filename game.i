@@ -825,16 +825,16 @@ extern long double strtold (const char *restrict, char **restrict);
 typedef unsigned char u8;
 typedef unsigned short u16;
 typedef unsigned int u32;
-# 62 "mode0.h"
+# 64 "mode0.h"
 extern volatile unsigned short *videoBuffer;
-# 83 "mode0.h"
+# 85 "mode0.h"
 typedef struct {
-    u16 tileimg[8192];
+ u16 tileimg[8192];
 } charblock;
 
 
 typedef struct {
-    u16 tilemap[1024];
+ u16 tilemap[1024];
 } screenblock;
 
 
@@ -857,6 +857,9 @@ void waitForVBlank();
 void flipPage();
 
 
+
+
+
 typedef struct {
     unsigned short attr0;
     unsigned short attr1;
@@ -867,7 +870,7 @@ typedef struct {
 
 
 extern OBJ_ATTR shadowOAM[];
-# 152 "mode0.h"
+# 157 "mode0.h"
 void hideSprites();
 
 
@@ -888,16 +891,11 @@ typedef struct {
     int curFrame;
     int numFrames;
     int hide;
-} SPRITE;
-# 190 "mode0.h"
+} ANISPRITE;
+# 198 "mode0.h"
 extern unsigned short oldButtons;
 extern unsigned short buttons;
-
-
-
-
-
-
+# 209 "mode0.h"
 typedef volatile struct {
     volatile const void *src;
     volatile void *dst;
@@ -906,10 +904,11 @@ typedef volatile struct {
 
 
 extern DMA *dma;
-# 238 "mode0.h"
+# 249 "mode0.h"
 void DMANow(int channel, volatile const void *src, volatile void *dst, unsigned int cnt);
-
-
+# 285 "mode0.h"
+typedef void (*ihp)(void);
+# 305 "mode0.h"
 int collision(int colA, int rowA, int widthA, int heightA, int colB, int rowB, int widthB, int heightB);
 # 5 "game.h" 2
 # 1 "outsideCM.h" 1
@@ -925,7 +924,7 @@ int mapWidth;
 extern int hOff;
 extern int vOff;
 extern OBJ_ATTR shadowOAM[128];
-extern SPRITE player;
+extern ANISPRITE player;
 
 
 enum {PLAYERFRONT, PLAYERBACK, PLAYERRIGHT, PLAYERLEFT, PLAYERIDLE};
@@ -949,6 +948,7 @@ void showGame();
 void setOutsideBackground();
 void setHouseBackground();
 void setVolcanoBackground();
+void setFireCaveBackground();
 void setOceanBackground();
 void setForestBackground();
 void initSprites();
@@ -989,7 +989,7 @@ extern const unsigned short outsidePal[256];
 # 7 "game.c" 2
 # 1 "volcano.h" 1
 # 22 "volcano.h"
-extern const unsigned short volcanoTiles[96];
+extern const unsigned short volcanoTiles[5856];
 
 
 extern const unsigned short volcanoMap[4096];
@@ -1001,6 +1001,10 @@ extern const unsigned short volcanoPal[256];
 # 20 "volcanoCM.h"
 extern const unsigned short volcanoCMBitmap[131072];
 # 9 "game.c" 2
+# 1 "lavaPoolCM.h" 1
+# 20 "lavaPoolCM.h"
+extern const unsigned short lavaPoolCMBitmap[131072];
+# 10 "game.c" 2
 # 1 "volcanoNoStone.h" 1
 # 22 "volcanoNoStone.h"
 extern const unsigned short volcanoNoStoneTiles[80];
@@ -1010,14 +1014,38 @@ extern const unsigned short volcanoNoStoneMap[4096];
 
 
 extern const unsigned short volcanoNoStonePal[256];
-# 10 "game.c" 2
+# 11 "game.c" 2
+# 1 "fireStoneCave.h" 1
+# 22 "fireStoneCave.h"
+extern const unsigned short fireStoneCaveTiles[9024];
+
+
+extern const unsigned short fireStoneCaveMap[1024];
+
+
+extern const unsigned short fireStoneCavePal[256];
+# 12 "game.c" 2
+# 1 "fireStoneCaveNoStone.h" 1
+# 22 "fireStoneCaveNoStone.h"
+extern const unsigned short fireStoneCaveNoStoneTiles[9024];
+
+
+extern const unsigned short fireStoneCaveNoStoneMap[1024];
+
+
+extern const unsigned short fireStoneCaveNoStonePal[256];
+# 13 "game.c" 2
+# 1 "fireStoneCaveCM.h" 1
+# 20 "fireStoneCaveCM.h"
+extern const unsigned short fireStoneCaveCMBitmap[19200];
+# 14 "game.c" 2
 # 1 "spritesheet.h" 1
 # 21 "spritesheet.h"
 extern const unsigned short spritesheetTiles[16384];
 
 
 extern const unsigned short spritesheetPal[256];
-# 11 "game.c" 2
+# 15 "game.c" 2
 
 # 1 "ocean.h" 1
 # 22 "ocean.h"
@@ -1028,7 +1056,7 @@ extern const unsigned short oceanMap[2048];
 
 
 extern const unsigned short oceanPal[256];
-# 13 "game.c" 2
+# 17 "game.c" 2
 # 1 "oceanNoStone.h" 1
 # 22 "oceanNoStone.h"
 extern const unsigned short oceanNoStoneTiles[48];
@@ -1038,11 +1066,11 @@ extern const unsigned short oceanNoStoneMap[2048];
 
 
 extern const unsigned short oceanNoStonePal[256];
-# 14 "game.c" 2
+# 18 "game.c" 2
 # 1 "oceanCM.h" 1
 # 20 "oceanCM.h"
 extern const unsigned short oceanCMBitmap[61440];
-# 15 "game.c" 2
+# 19 "game.c" 2
 # 1 "forest.h" 1
 # 22 "forest.h"
 extern const unsigned short forestTiles[64];
@@ -1052,7 +1080,7 @@ extern const unsigned short forestMap[2048];
 
 
 extern const unsigned short forestPal[256];
-# 16 "game.c" 2
+# 20 "game.c" 2
 # 1 "forestNoStone.h" 1
 # 22 "forestNoStone.h"
 extern const unsigned short forestNoStoneTiles[48];
@@ -1062,11 +1090,18 @@ extern const unsigned short forestNoStoneMap[2048];
 
 
 extern const unsigned short forestNoStonePal[256];
-# 17 "game.c" 2
+# 21 "game.c" 2
 # 1 "forestCM.h" 1
 # 20 "forestCM.h"
 extern const unsigned short forestCMBitmap[40960];
-# 18 "game.c" 2
+# 22 "game.c" 2
+# 1 "rowClearSound.h" 1
+
+
+extern const unsigned int rowClearSound_sampleRate;
+extern const unsigned int rowClearSound_length;
+extern const signed char rowClearSound_data[];
+# 23 "game.c" 2
 
 
 
@@ -1077,8 +1112,6 @@ int vOff;
 int hasFireStone;
 int hasWaterStone;
 int hasLeafStone;
-
-int win;
 
 int loopCount;
 
@@ -1093,7 +1126,8 @@ enum {
     HOUSE,
     VOLCANO,
     OCEAN,
-    FOREST
+    FOREST,
+    FIRESTONEROOM
 };
 enum {
     EEVEEDOORROW = 256,
@@ -1106,10 +1140,14 @@ enum {
     HOUSEEXITCOL = 106,
     HOUSEEXITWIDTH = 28,
     HOUSEEXITHEIGHT = 1,
-    FIRESTONECOL = 464,
-    FIRESTONEROW = 32,
+    FIRESTONECOL = 110,
+    FIRESTONEROW = 56,
     FIRESTONEWIDTH = 16,
     FIRESTONEHEIGHT = 16,
+    FIRESTONECAVEDOORCOL = 237,
+    FIRESTONECAVEDOORROW = 498,
+    FIRESTONECAVEDOORHEIGHT = 5,
+    FIRESTONECAVEDOORWIDTH = 22,
     LAVABLOBSWIDTH = 16,
     LAVABLOBSHEIGHT = 16,
     OCEANDOORROW = 382,
@@ -1136,12 +1174,13 @@ enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
       HOUSEWIDTH = 240, HOUSEHEIGHT = 160,
       VOLCANOWIDTH = 512, VOLCANOHEIGHT = 512,
       OCEANWIDTH = 512, OCEANHEIGHT = 240,
-      FORESTWIDTH = 512, FORESTHEIGHT = 160};
+      FORESTWIDTH = 512, FORESTHEIGHT = 160,
+      FIRESTONEROOMWIDTH = 240, FIRESTONEROOMHEIGHT = 160};
 
 OBJ_ATTR shadowOAM[128];
-SPRITE player;
+ANISPRITE player;
 
-SPRITE lavaBlobs[5];
+ANISPRITE lavaBlobs[5];
 
 unsigned char* collisionMap;
 
@@ -1159,6 +1198,10 @@ void initGame() {
 
  vOff = 220;
  hOff = 144;
+
+    hasFireStone = 0;
+    hasLeafStone = 0;
+    hasWaterStone = 0;
 
 
     initNonPlayers();
@@ -1180,7 +1223,7 @@ void drawGame() {
     drawPlayer();
 
     waitForVBlank();
-    DMANow(3, shadowOAM, ((OBJ_ATTR *)(0x7000000)), 128 * 4);
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 128 * 4);
 
     (*(volatile unsigned short *)0x04000010) = hOff;
     (*(volatile unsigned short *)0x04000012) = vOff;
@@ -1206,7 +1249,7 @@ void initPlayer() {
 
 
 void updatePlayer() {
-    if((~((*(volatile unsigned short *)0x04000130)) & ((1 << 6)))) {
+    if((~((*(volatile unsigned short *)0x04000130)) & ((1<<6)))) {
         if (stage != FOREST && collisionCheck(collisionMap, mapWidth,
             player.worldCol, player.worldRow,
             player.width, player.height,
@@ -1215,7 +1258,7 @@ void updatePlayer() {
    vOff -= (vOff - scroll >= 0) ? scroll : 0;
         }
     }
- if((~((*(volatile unsigned short *)0x04000130)) & ((1 << 7)))) {
+ if((~((*(volatile unsigned short *)0x04000130)) & ((1<<7)))) {
         if (stage != FOREST && collisionCheck(collisionMap, mapWidth,
                 player.worldCol, player.worldRow,
                 player.width, player.height,
@@ -1225,7 +1268,7 @@ void updatePlayer() {
         }
 
     }
-    if((~((*(volatile unsigned short *)0x04000130)) & ((1 << 5)))) {
+    if((~((*(volatile unsigned short *)0x04000130)) & ((1<<5)))) {
         if (collisionCheck(collisionMap, mapWidth,
             player.worldCol, player.worldRow,
             player.width, player.height,
@@ -1235,7 +1278,7 @@ void updatePlayer() {
    hOff -= (hOff - scroll >= 0) ? scroll : 0;
         }
     }
-    if((~((*(volatile unsigned short *)0x04000130)) & ((1 << 4)))) {
+    if((~((*(volatile unsigned short *)0x04000130)) & ((1<<4)))) {
         if (collisionCheck(collisionMap, mapWidth,
             player.worldCol, player.worldRow,
             player.width, player.height,
@@ -1252,7 +1295,7 @@ void updatePlayer() {
             loopCount += (hOff == 0) ? 1 : 0;
             player.worldCol += player.cdel;
         } else {
-           if ((~((*(volatile unsigned short *)0x04000130)) & ((1 << 5)))) {
+           if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<5)))) {
                player.worldCol -= player.cdel;
            }
         }
@@ -1281,6 +1324,7 @@ void updateStage() {
                 (*(volatile unsigned short *)0x04000012) = vOff;
                 (*(volatile unsigned short *)0x04000010) = hOff;
                 initNonPlayers();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             } else if (player.worldRow + player.height - 1 == LAVADOORROW && player.worldCol == LAVADOORCOL) {
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) volcanoCMBitmap;
@@ -1291,13 +1335,14 @@ void updateStage() {
                 waitForVBlank();
                 setStage();
                 vOff = 0;
-                hOff = 0;
-                player.worldRow = 160 / 2 - player.width / 2 + vOff;
-                player.worldCol = 240 / 2 - player.height / 2 + hOff;
+                hOff = 130;
+                player.worldRow = 33;
+                player.worldCol = 240;
 
                 (*(volatile unsigned short *)0x04000012) = vOff;
                 (*(volatile unsigned short *)0x04000010) = hOff;
                 initNonPlayers();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             } else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 OCEANDOORCOL, OCEANDOORROW, OCEANDOORWIDTH, OCEANDOORHEIGHT)) {
                 scroll = SCROLLING;
@@ -1316,6 +1361,7 @@ void updateStage() {
                 (*(volatile unsigned short *)0x04000012) = vOff;
                 (*(volatile unsigned short *)0x04000010) = hOff;
                 initNonPlayers();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             } else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {
                 scroll = SCROLLING;
@@ -1334,30 +1380,59 @@ void updateStage() {
                 (*(volatile unsigned short *)0x04000012) = vOff;
                 (*(volatile unsigned short *)0x04000010) = hOff;
                 initNonPlayers();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             }
    break;
   case HOUSE:
-            if (player.worldRow >= 142 && (~((*(volatile unsigned short *)0x04000130)) & ((1 << 7)))) {
-
-
+            if (player.worldRow >= 142 && (~((*(volatile unsigned short *)0x04000130)) & ((1<<7)))) {
                 returnToOutside();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             }
    break;
   case VOLCANO:
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
-                          FIRESTONECOL, FIRESTONEROW, FIRESTONEWIDTH, FIRESTONEHEIGHT)) {
-                if (!hasFireStone) {
-                    hasFireStone = 1;
-                }
+                          FIRESTONECAVEDOORCOL, FIRESTONECAVEDOORROW, FIRESTONECAVEDOORWIDTH, FIRESTONECAVEDOORHEIGHT)) {
+                scroll = STATIC;
+                collisionMap = (unsigned char *) fireStoneCaveCMBitmap;
+                mapHeight = 160;
+                mapWidth = 240;
+                stage = FIRESTONEROOM;
+
+                waitForVBlank();
+                setStage();
+                vOff = 0;
+                hOff = 0;
+                player.worldCol = 110;
+                player.worldRow = 127;
+
+                (*(volatile unsigned short *)0x04000012) = vOff;
+                (*(volatile unsigned short *)0x04000010) = hOff;
+                initNonPlayers();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+            } else if (!collisionCheck((unsigned char *) lavaPoolCMBitmap, mapWidth,
+                player.worldCol, player.worldRow, player.width, player.height, 0, 0)) {
                 returnToOutside();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             }
+
             for (int i = 0; i < 5; i++) {
                 if (collision(player.worldCol, player.worldRow, player.width, player.height,
                     lavaBlobs[i].worldCol, lavaBlobs[i].worldRow, lavaBlobs[i].width, lavaBlobs[i].height)) {
                     returnToOutside();
                 }
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             }
    break;
+        case FIRESTONEROOM:
+            if (collision(FIRESTONECOL, FIRESTONEROW, FIRESTONEWIDTH, FIRESTONEHEIGHT,
+            player.worldCol, player.worldRow, player.width, player.height)) {
+                if (!hasFireStone) {
+                        hasFireStone = 1;
+                }
+                returnToOutside();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
+            }
+            break;
         case OCEAN:
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 WATERSTONECOL, WATERSTONEROW, WATERSTONEWIDTH, WATERSTONEHEIGHT)) {
@@ -1365,15 +1440,17 @@ void updateStage() {
                         hasWaterStone = 1;
                     }
                     returnToOutside();
+                    playSoundB(rowClearSound_data, rowClearSound_length, 0);
             }
             break;
         case FOREST:
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 LEAFSTONECOL, LEAFSTONEROW, LEAFSTONEWIDTH, LEAFSTONEHEIGHT)) {
-                    if (!hasLeafStone) {
-                       hasLeafStone = 1;
-                    }
-                    returnToOutside();
+                if (!hasLeafStone) {
+                    hasLeafStone = 1;
+                }
+                returnToOutside();
+                playSoundB(rowClearSound_data, rowClearSound_length, 0);
             }
             break;
  }
@@ -1392,13 +1469,13 @@ void animatePlayer() {
     }
 
 
-    if((~((*(volatile unsigned short *)0x04000130)) & ((1 << 6))))
+    if((~((*(volatile unsigned short *)0x04000130)) & ((1<<6))))
         player.aniState = PLAYERBACK;
-    if((~((*(volatile unsigned short *)0x04000130)) & ((1 << 7))))
+    if((~((*(volatile unsigned short *)0x04000130)) & ((1<<7))))
         player.aniState = PLAYERFRONT;
-    if((~((*(volatile unsigned short *)0x04000130)) & ((1 << 5))))
+    if((~((*(volatile unsigned short *)0x04000130)) & ((1<<5))))
         player.aniState = PLAYERLEFT;
-    if((~((*(volatile unsigned short *)0x04000130)) & ((1 << 4))))
+    if((~((*(volatile unsigned short *)0x04000130)) & ((1<<4))))
         player.aniState = PLAYERRIGHT;
 
 
@@ -1414,12 +1491,12 @@ void animatePlayer() {
 
 void drawPlayer() {
     if (player.hide) {
-        shadowOAM[0].attr0 |= (2 << 8);
+        shadowOAM[0].attr0 |= (2<<8);
     } else {
 
-        shadowOAM[0].attr0 = (0xFF &(player.worldRow - vOff)) | (0 << 14);
-        shadowOAM[0].attr1 = (0x1FF &(player.worldCol - hOff)) | (1 << 14);
-        shadowOAM[0].attr2 = ((0) << 12) | ((player.curFrame * 2)*32 + (player.aniState * 2));
+        shadowOAM[0].attr0 = (0xFF &(player.worldRow - vOff)) | (0<<14);
+        shadowOAM[0].attr1 = (0x1FF &(player.worldCol - hOff)) | (1<<14);
+        shadowOAM[0].attr2 = ((0)<<12) | ((player.curFrame * 2)*32+(player.aniState * 2));
     }
 }
 
@@ -1428,25 +1505,25 @@ int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, 
     int current;
 
 
-    current = collisionMap[((row + rowShift) * (mapWidth) + (col + colShift))];
+    current = collisionMap[((row + rowShift)*(mapWidth)+(col + colShift))];
     if (current < smallestSoFar) {
         smallestSoFar = current;
     }
 
 
-    current = collisionMap[((row + rowShift) * (mapWidth) + (col + colShift + width - 1))];
+    current = collisionMap[((row + rowShift)*(mapWidth)+(col + colShift + width - 1))];
     if (current < smallestSoFar) {
         smallestSoFar = current;
     }
 
 
-    current = collisionMap[((row + rowShift + height - 1) * (mapWidth) + (col + colShift))];
+    current = collisionMap[((row + rowShift + height - 1)*(mapWidth)+(col + colShift))];
     if (current < smallestSoFar) {
         smallestSoFar = current;
     }
 
 
-    current = collisionMap[((row + rowShift + height - 1) * (mapWidth) + (col + colShift + width - 1))];
+    current = collisionMap[((row + rowShift + height - 1)*(mapWidth)+(col + colShift + width - 1))];
     if (current < smallestSoFar) {
         smallestSoFar = current;
     }
@@ -1467,14 +1544,20 @@ void setHouseBackground() {
 }
 
 void setVolcanoBackground() {
+    DMANow(3, volcanoPal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, volcanoTiles, &((charblock *)0x6000000)[0], 11712 / 2);
+    DMANow(3, volcanoMap, &((screenblock *)0x6000000)[24], 8192 / 2);
+}
+
+void setFireCaveBackground() {
     if (hasFireStone) {
-        DMANow(3, volcanoNoStonePal, ((unsigned short *)0x5000000), 256);
-        DMANow(3, volcanoNoStoneTiles, &((charblock *)0x6000000)[0], 192 / 2);
-        DMANow(3, volcanoNoStoneMap, &((screenblock *)0x6000000)[24], 8192 / 2);
+        DMANow(3, fireStoneCaveNoStonePal, ((unsigned short *)0x5000000), 256);
+        DMANow(3, fireStoneCaveNoStoneTiles, &((charblock *)0x6000000)[0], 18048 / 2);
+        DMANow(3, fireStoneCaveNoStoneMap, &((screenblock *)0x6000000)[28], 2048 / 2);
     } else {
-        DMANow(3, volcanoPal, ((unsigned short *)0x5000000), 256);
-        DMANow(3, volcanoTiles, &((charblock *)0x6000000)[0], 192 / 2);
-        DMANow(3, volcanoMap, &((screenblock *)0x6000000)[24], 8192 / 2);
+        DMANow(3, fireStoneCavePal, ((unsigned short *)0x5000000), 256);
+        DMANow(3, fireStoneCaveTiles, &((charblock *)0x6000000)[0], 18048 / 2);
+        DMANow(3, fireStoneCaveMap, &((screenblock *)0x6000000)[28], 2048 / 2);
     }
 }
 
@@ -1516,8 +1599,8 @@ void showGame() {
 void setStage() {
     switch (stage) {
         case (OUTSIDE):
-            (*(volatile unsigned short *)0x4000008) = (1 << 7) | (3 << 14) | ((0) << 2) | ((28) << 8);
-            (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8) |(1 << 12);
+            (*(volatile unsigned short*)0x4000008) = (1<<7) | (3<<14) | ((0)<<2) | ((28)<<8);
+            (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) |(1<<12);
             mapWidth = OUTSIDEWIDTH;
          mapHeight = OUTSIDEHEIGHT;
 
@@ -1525,8 +1608,8 @@ void setStage() {
             setOutsideBackground();
             break;
         case (HOUSE):
-            (*(volatile unsigned short *)0x4000008) = (1 << 7) | (0 << 14) | ((0) << 2) | ((28) << 8);
-            (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8) |(1 << 12);
+            (*(volatile unsigned short*)0x4000008) = (1<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
+            (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) |(1<<12);
             scroll = STATIC;
             mapWidth = HOUSEWIDTH;
          mapHeight = HOUSEHEIGHT;
@@ -1535,8 +1618,8 @@ void setStage() {
             setHouseBackground();
             break;
         case VOLCANO:
-            (*(volatile unsigned short *)0x4000008) = (0 << 7) | (3 << 14) | ((0) << 2) | ((24) << 8);
-            (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8) | (1 << 12);
+            (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((24)<<8);
+            (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) | (1<<12);
             scroll = SCROLLING;
             mapWidth = VOLCANOWIDTH;
          mapHeight = VOLCANOHEIGHT;
@@ -1545,8 +1628,8 @@ void setStage() {
             setVolcanoBackground();
             break;
         case OCEAN:
-            (*(volatile unsigned short *)0x4000008) = (0 << 7) | (3 << 14) | ((0) << 2) | ((24) << 8);
-            (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8) | (1 << 12);
+            (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((24)<<8);
+            (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) | (1<<12);
             scroll = SCROLLING;
             mapWidth = OCEANWIDTH;
          mapHeight = OCEANHEIGHT;
@@ -1555,8 +1638,8 @@ void setStage() {
             setOceanBackground();
             break;
         case FOREST:
-            (*(volatile unsigned short *)0x4000008) = (0 << 7) | (3 << 14) | ((0) << 2) | ((24) << 8);
-            (*(volatile unsigned short *)0x4000000) = 0 | (1 << 8) | (1 << 12);
+            (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((24)<<8);
+            (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) | (1<<12);
             scroll = SCROLLING;
             mapWidth = FORESTWIDTH;
          mapHeight = FORESTHEIGHT;
@@ -1564,7 +1647,17 @@ void setStage() {
             waitForVBlank();
             setForestBackground();
             break;
+        case FIRESTONEROOM:
+            (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
+            (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) |(1<<12);
 
+            scroll = STATIC;
+            mapWidth = FIRESTONEROOMWIDTH;
+         mapHeight = FIRESTONEROOMHEIGHT;
+
+            waitForVBlank();
+            setFireCaveBackground();
+            break;
     }
 }
 
@@ -1573,7 +1666,7 @@ void initSprites() {
     DMANow(3, spritesheetTiles, &((charblock *)0x6000000)[4], 32768 / 2);
     DMANow(3, spritesheetPal, ((unsigned short *)0x5000200), 512 / 2);
     hideSprites();
-    DMANow(3, shadowOAM, ((OBJ_ATTR *)(0x7000000)), 128 * 4);
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 128 * 4);
 }
 
 void returnToOutside() {
@@ -1612,6 +1705,7 @@ void initNonPlayers() {
                 lavaBlobs[i].rdel = 1;
                 lavaBlobs[i].cdel = 0;
                 lavaBlobs[i].worldCol = rand() % (mapWidth - LAVABLOBSWIDTH);
+                lavaBlobs[i].worldRow = rand() % (mapHeight - LAVABLOBSWIDTH);
             }
             break;
         case OCEAN:
@@ -1637,9 +1731,13 @@ void drawNonPlayers() {
             break;
         case VOLCANO:
             for (int i = 1; i < 5 + 1; i++) {
-                shadowOAM[i].attr0 = (0xFF &(lavaBlobs[i - 1].worldRow - vOff)) | (0 << 14);
-                shadowOAM[i].attr1 = (0x1FF &(lavaBlobs[i - 1].worldCol - hOff)) | (1 << 14);
-                shadowOAM[i].attr2 = ((0) << 12) | ((6)*32 + (0));
+                if (lavaBlobs[i - 1].worldCol > hOff && lavaBlobs[i - 1].worldCol < hOff + 240) {
+                    shadowOAM[i].attr0 = (0xFF &(lavaBlobs[i - 1].worldRow - vOff)) | (0<<14);
+                    shadowOAM[i].attr1 = (0x1FF &(lavaBlobs[i - 1].worldCol - hOff)) | (1<<14);
+                    shadowOAM[i].attr2 = ((0)<<12) | ((6)*32+(0));
+                } else {
+                    shadowOAM[i].attr0 |= (2<<8);
+                }
             }
             break;
     }

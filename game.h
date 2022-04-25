@@ -12,7 +12,7 @@ int mapWidth;
 extern int hOff;
 extern int vOff;
 extern OBJ_ATTR shadowOAM[128];
-extern SPRITE player;
+extern ANISPRITE player;
 
 // Player animation states for aniState
 enum {PLAYERFRONT, PLAYERBACK, PLAYERRIGHT, PLAYERLEFT, PLAYERIDLE};
@@ -36,6 +36,7 @@ void showGame();
 void setOutsideBackground(); 
 void setHouseBackground();
 void setVolcanoBackground();
+void setFireCaveBackground();
 void setOceanBackground();
 void setForestBackground();
 void initSprites();

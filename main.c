@@ -11,6 +11,9 @@
 #include "house.h"
 #include "outside.h"
 #include "spritesheet.h"
+#include "gameSong.h"
+#include "sound.h"
+
 
 // Prototypes.
 void initialize();
@@ -79,6 +82,9 @@ int main() {
 // Sets up GBA.
 void initialize() {
     
+    setupSounds();
+    setupInterrupts();
+    
     buttons = BUTTONS;
     oldButtons = 0;
 
@@ -87,6 +93,8 @@ void initialize() {
 
 // Sets up the start state.
 void goToStart() {
+    playSoundA(gameSong_data, gameSong_length, 1);
+
     state = START;
     REG_BG0CNT = BG_8BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
     REG_DISPCTL = MODE0 | BG0_ENABLE;
