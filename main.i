@@ -1418,7 +1418,7 @@ int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, 
 # 11 "main.c" 2
 # 1 "house.h" 1
 # 22 "house.h"
-extern const unsigned short houseTiles[13472];
+extern const unsigned short houseTiles[13120];
 
 
 extern const unsigned short houseMap[1024];

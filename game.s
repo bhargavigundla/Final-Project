@@ -726,16 +726,16 @@ setHouseBackground:
 	ldr	r1, .L98+4
 	mov	lr, pc
 	bx	r4
+	mov	r3, #13120
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r3, .L98+8
-	ldr	r1, .L98+12
+	ldr	r1, .L98+8
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1024
 	mov	r0, #3
-	ldr	r2, .L98+16
-	ldr	r1, .L98+20
+	ldr	r2, .L98+12
+	ldr	r1, .L98+16
 	mov	lr, pc
 	bx	r4
 	pop	{r4, lr}
@@ -745,7 +745,6 @@ setHouseBackground:
 .L98:
 	.word	DMANow
 	.word	housePal
-	.word	13472
 	.word	houseTiles
 	.word	100720640
 	.word	houseMap

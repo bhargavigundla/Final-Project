@@ -964,7 +964,7 @@ int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, 
 # 3 "game.c" 2
 # 1 "house.h" 1
 # 22 "house.h"
-extern const unsigned short houseTiles[13472];
+extern const unsigned short houseTiles[13120];
 
 
 extern const unsigned short houseMap[1024];
@@ -1569,7 +1569,7 @@ void setOutsideBackground() {
 
 void setHouseBackground() {
     DMANow(3, housePal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, houseTiles, &((charblock *)0x6000000)[0], 26944 / 2);
+    DMANow(3, houseTiles, &((charblock *)0x6000000)[0], 26240 / 2);
     DMANow(3, houseMap, &((screenblock *)0x6000000)[28], 2048 / 2);
 }
 
