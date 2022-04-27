@@ -964,7 +964,7 @@ int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, 
 # 3 "game.c" 2
 # 1 "house.h" 1
 # 22 "house.h"
-extern const unsigned short houseTiles[13120];
+extern const unsigned short houseTiles[13472];
 
 
 extern const unsigned short houseMap[1024];
@@ -1139,7 +1139,12 @@ int hasFireStone;
 int hasWaterStone;
 int hasLeafStone;
 
+int wait;
+
 int loopCount;
+
+int currEeveeFrame;
+int eeveeTimer;
 
 enum {
     STATIC,
@@ -1156,6 +1161,10 @@ enum {
     FIRESTONEROOM
 };
 enum {
+    SLEEPINGEEVEEROW = 57,
+    SLEEPINGEEVEECOL = 108,
+    STANDINGSLEEPYEEVEEROW = 59,
+    STANDINGSLEEPYEEVEECOL = 158,
     EEVEEDOORROW = 256,
     EEVEEDOORCOL = 256,
     EEVEEDOORWIDTH = 16,
@@ -1174,8 +1183,8 @@ enum {
     FIRESTONECAVEDOORROW = 498,
     FIRESTONECAVEDOORHEIGHT = 5,
     FIRESTONECAVEDOORWIDTH = 22,
-    LAVABLOBSWIDTH = 16,
-    LAVABLOBSHEIGHT = 16,
+    LAVAROCKSWIDTH = 16,
+    LAVAROCKSHEIGHT = 16,
     OCEANDOORROW = 382,
     OCEANDOORCOL = 60,
     OCEANDOORWIDTH = 3,
@@ -1206,7 +1215,7 @@ enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
 OBJ_ATTR shadowOAM[128];
 ANISPRITE player;
 
-ANISPRITE lavaBlobs[5];
+ANISPRITE lavaRocks[10];
 
 unsigned char* collisionMap;
 
@@ -1416,9 +1425,13 @@ void updateStage() {
             }
    break;
   case VOLCANO:
-            for (int i = 0; i < 16; i++) {
-                ((unsigned short *)0x5000000)[i] = (((unsigned short *)0x5000000)[i] + 1) % 256;
+            wait = (wait == 0) ? 1 : 0;
+            if (wait == 1) {
+                for (int i = 0; i < 16; i++) {
+                    ((unsigned short *)0x5000000)[i] = (((unsigned short *)0x5000000)[i] + 1) % 256;
+                }
             }
+
 
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                           FIRESTONECAVEDOORCOL, FIRESTONECAVEDOORROW, FIRESTONECAVEDOORWIDTH, FIRESTONECAVEDOORHEIGHT)) {
@@ -1445,9 +1458,9 @@ void updateStage() {
                 playSoundB(soundB_data, soundB_length, 0);
             }
 
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < 10; i++) {
                 if (collision(player.worldCol, player.worldRow, player.width, player.height,
-                    lavaBlobs[i].worldCol, lavaBlobs[i].worldRow, lavaBlobs[i].width, lavaBlobs[i].height)) {
+                    lavaRocks[i].worldCol, lavaRocks[i].worldRow, lavaRocks[i].width, lavaRocks[i].height)) {
                     returnToOutside();
                 }
                 playSoundB(soundB_data, soundB_length, 0);
@@ -1523,7 +1536,6 @@ void drawPlayer() {
     if (player.hide) {
         shadowOAM[0].attr0 |= (2<<8);
     } else {
-
         shadowOAM[0].attr0 = (0xFF &(player.worldRow - vOff)) | (0<<14);
         shadowOAM[0].attr1 = (0x1FF &(player.worldCol - hOff)) | (1<<14);
         shadowOAM[0].attr2 = ((0)<<12) | ((player.curFrame * 2)*32+(player.aniState * 2));
@@ -1569,7 +1581,7 @@ void setOutsideBackground() {
 
 void setHouseBackground() {
     DMANow(3, housePal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, houseTiles, &((charblock *)0x6000000)[0], 26240 / 2);
+    DMANow(3, houseTiles, &((charblock *)0x6000000)[0], 26944 / 2);
     DMANow(3, houseMap, &((screenblock *)0x6000000)[28], 2048 / 2);
 }
 
@@ -1725,17 +1737,18 @@ void initNonPlayers() {
     hideSprites();
     switch (stage) {
         case OUTSIDE:
+
             break;
         case HOUSE:
             break;
         case VOLCANO:
-            for (int i = 0; i < 5; i++) {
-                lavaBlobs[i].width = 16;
-                lavaBlobs[i].height = 16;
-                lavaBlobs[i].rdel = 1;
-                lavaBlobs[i].cdel = 0;
-                lavaBlobs[i].worldCol = rand() % (mapWidth - LAVABLOBSWIDTH);
-                lavaBlobs[i].worldRow = rand() % (mapHeight - LAVABLOBSWIDTH);
+            for (int i = 0; i < 10; i++) {
+                lavaRocks[i].width = 16;
+                lavaRocks[i].height = 16;
+                lavaRocks[i].rdel = 2;
+                lavaRocks[i].cdel = 0;
+                lavaRocks[i].worldCol = rand() % (mapWidth - LAVAROCKSWIDTH);
+                lavaRocks[i].worldRow = rand() % (mapHeight - LAVAROCKSWIDTH);
             }
             break;
         case OCEAN:
@@ -1746,8 +1759,8 @@ void initNonPlayers() {
 void updateNonPlayers() {
     switch (stage) {
         case VOLCANO:
-            for (int i = 0; i < 5; i++) {
-                lavaBlobs[i].worldRow = (lavaBlobs[i].worldRow + lavaBlobs[i].rdel) % (mapHeight - LAVABLOBSHEIGHT);
+            for (int i = 0; i < 10; i++) {
+                lavaRocks[i].worldRow = (lavaRocks[i].worldRow + lavaRocks[i].rdel) % (mapHeight - LAVAROCKSHEIGHT);
             }
         break;
     }
@@ -1758,12 +1771,32 @@ void drawNonPlayers() {
         case OUTSIDE:
             break;
         case HOUSE:
+            eeveeTimer = (eeveeTimer + 1) % 30;
+            currEeveeFrame = (eeveeTimer == 0) ? (currEeveeFrame + 1) % 3 : currEeveeFrame;
+            if (hasFireStone) {
+                shadowOAM[1].attr0 = (0xFF &(SLEEPINGEEVEEROW - vOff)) | (0<<14);
+                shadowOAM[1].attr1 = (0x1FF &(SLEEPINGEEVEECOL - hOff)) | (2<<14);
+                shadowOAM[1].attr2 = ((0)<<12) | (((currEeveeFrame * 4))*32+(16));
+            } else {
+                shadowOAM[1].attr0 = (0xFF &(SLEEPINGEEVEEROW - vOff)) | (0<<14);
+                shadowOAM[1].attr1 = (0x1FF &(SLEEPINGEEVEECOL - hOff)) | (2<<14);
+                shadowOAM[1].attr2 = ((0)<<12) | (((currEeveeFrame * 4))*32+(8));
+            }
+            if (hasLeafStone) {
+                shadowOAM[2].attr0 = (0xFF &(STANDINGSLEEPYEEVEEROW - vOff)) | (0<<14);
+                shadowOAM[2].attr1 = (0x1FF &(STANDINGSLEEPYEEVEECOL - hOff)) | (2<<14);
+                shadowOAM[2].attr2 = ((0)<<12) | (((currEeveeFrame * 4))*32+(20));
+            } else {
+                shadowOAM[3].attr0 = (0xFF &(STANDINGSLEEPYEEVEEROW - vOff)) | (0<<14);
+                shadowOAM[3].attr1 = (0x1FF &(STANDINGSLEEPYEEVEECOL - hOff)) | (2<<14);
+                shadowOAM[3].attr2 = ((0)<<12) | (((currEeveeFrame * 4))*32+(12));
+            }
             break;
         case VOLCANO:
-            for (int i = 1; i < 5 + 1; i++) {
-                if (lavaBlobs[i - 1].worldCol > hOff && lavaBlobs[i - 1].worldCol < hOff + 240) {
-                    shadowOAM[i].attr0 = (0xFF &(lavaBlobs[i - 1].worldRow - vOff)) | (0<<14);
-                    shadowOAM[i].attr1 = (0x1FF &(lavaBlobs[i - 1].worldCol - hOff)) | (1<<14);
+            for (int i = 1; i < 10 + 1; i++) {
+                if (lavaRocks[i - 1].worldCol > hOff && lavaRocks[i - 1].worldCol < hOff + 240) {
+                    shadowOAM[i].attr0 = (0xFF &(lavaRocks[i - 1].worldRow - vOff)) | (0<<14);
+                    shadowOAM[i].attr1 = (0x1FF &(lavaRocks[i - 1].worldCol - hOff)) | (1<<14);
                     shadowOAM[i].attr2 = ((0)<<12) | ((6)*32+(0));
                 } else {
                     shadowOAM[i].attr0 |= (2<<8);

@@ -1418,7 +1418,7 @@ int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, 
 # 11 "main.c" 2
 # 1 "house.h" 1
 # 22 "house.h"
-extern const unsigned short houseTiles[13120];
+extern const unsigned short houseTiles[13472];
 
 
 extern const unsigned short houseMap[1024];
@@ -1616,6 +1616,7 @@ void goToGame() {
 
 
 void game() {
+    ((unsigned short *)0x5000000)[0] = (((unsigned short *)0x5000000)[0] + 17) % 256;
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         goToWin();
     } else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
