@@ -981,7 +981,7 @@ extern const unsigned short houseCMBitmap[19200];
 
 # 1 "outside.h" 1
 # 22 "outside.h"
-extern const unsigned short outsideTiles[26592];
+extern const unsigned short outsideTiles[12608];
 
 
 extern const unsigned short outsideMap[4096];
@@ -1381,7 +1381,8 @@ void updateStage() {
       if (player.worldRow == EEVEEDOORROW && player.worldCol == EEVEEDOORCOL) {
 
                 returnToHouse();
-            } else if (player.worldRow + player.height - 1 == LAVADOORROW && player.worldCol == LAVADOORCOL) {
+            } else if (collision(player.worldCol, player.worldRow, player.width, player.height,
+                OCEANDOORCOL, OCEANDOORROW, OCEANDOORWIDTH, OCEANDOORHEIGHT)) {
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) volcanoCMBitmap;
                 mapHeight = VOLCANOHEIGHT;
@@ -1400,7 +1401,7 @@ void updateStage() {
                 initNonPlayers();
                 playSoundB(soundB_data, soundB_length, 0);
             }
-# 295 "game.c"
+# 296 "game.c"
             else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {
                 scroll = SCROLLING;
@@ -1482,7 +1483,7 @@ void updateStage() {
                 playSoundB(soundB_data, soundB_length, 0);
             }
             break;
-# 386 "game.c"
+# 387 "game.c"
         case FOREST:
             if (player.worldCol == mapWidth - player.width - 5) {
 
@@ -1598,7 +1599,7 @@ int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, 
 
 void setOutsideBackground() {
     DMANow(3, outsidePal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, outsideTiles, &((charblock *)0x6000000)[0], 53184 / 2);
+    DMANow(3, outsideTiles, &((charblock *)0x6000000)[0], 25216 / 2);
     DMANow(3, outsideMap, &((screenblock *)0x6000000)[28], 8192 / 2);
 }
 
@@ -1689,7 +1690,7 @@ void showGame() {
 void setStage() {
     switch (stage) {
         case (OUTSIDE):
-            (*(volatile unsigned short*)0x4000008) = (1<<7) | (3<<14) | ((0)<<2) | ((28)<<8);
+            (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((28)<<8);
             (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) |(1<<12);
             mapWidth = OUTSIDEWIDTH;
          mapHeight = OUTSIDEHEIGHT;
@@ -1717,7 +1718,7 @@ void setStage() {
             waitForVBlank();
             setVolcanoBackground();
             break;
-# 630 "game.c"
+# 631 "game.c"
         case FOREST:
             (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((20)<<8);
             (*(volatile unsigned short*)0x400000A) = (0<<7) | (3<<14) | ((1)<<2) | ((30)<<8);

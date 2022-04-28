@@ -1405,6 +1405,7 @@ void setVolcanoBackground();
 void setFireCaveBackground();
 void setOceanBackground();
 void setForestBackground();
+void setLeafStoneClearingBackground();
 void initSprites();
 void setStage();
 
@@ -1429,7 +1430,7 @@ extern const unsigned short housePal[256];
 # 12 "main.c" 2
 # 1 "outside.h" 1
 # 22 "outside.h"
-extern const unsigned short outsideTiles[26592];
+extern const unsigned short outsideTiles[12608];
 
 
 extern const unsigned short outsideMap[4096];

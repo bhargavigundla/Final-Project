@@ -253,7 +253,8 @@ void updateStage() {
 		    if (player.worldRow == EEVEEDOORROW && player.worldCol == EEVEEDOORCOL) { 
                 // move into house
                 returnToHouse();
-            } else if (player.worldRow + player.height - 1 == LAVADOORROW && player.worldCol == LAVADOORCOL) {
+            } else if (collision(player.worldCol, player.worldRow, player.width, player.height, 
+                OCEANDOORCOL, OCEANDOORROW, OCEANDOORWIDTH, OCEANDOORHEIGHT)) {
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) volcanoCMBitmap;
                 mapHeight = VOLCANOHEIGHT;
@@ -589,7 +590,7 @@ void showGame() {
 void setStage() {
     switch (stage) {
         case (OUTSIDE):
-            REG_BG0CNT = BG_8BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+            REG_BG0CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
             REG_DISPCTL = MODE0 | BG0_ENABLE |SPRITE_ENABLE;
             mapWidth = OUTSIDEWIDTH;
 	        mapHeight = OUTSIDEHEIGHT;
