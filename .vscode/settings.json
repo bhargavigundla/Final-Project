@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "outsidecm.h": "c",
-        "outside.h": "c"
+        "outside.h": "c",
+        "sound.h": "c"
     }
 }

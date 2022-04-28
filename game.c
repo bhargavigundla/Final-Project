@@ -22,7 +22,8 @@
 #include "soundB.h"
 #include "sound.h"
 
-#define lavaRocksLen 10
+#define lavaRocksLen 15
+#define poopsLen 6
 
 // Variables
 int hOff;
@@ -328,7 +329,6 @@ void updateStage() {
                     PALETTE[i] = (PALETTE[i] + 1) % 256;
                 }
             }
-           
             
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                           FIRESTONECAVEDOORCOL, FIRESTONECAVEDOORROW, FIRESTONECAVEDOORWIDTH, FIRESTONECAVEDOORHEIGHT)) {
@@ -642,7 +642,7 @@ void initNonPlayers() {
             for (int i = 0; i < lavaRocksLen; i++) {
                 lavaRocks[i].width = 16;
                 lavaRocks[i].height = 16;
-                lavaRocks[i].rdel = 2;
+                lavaRocks[i].rdel = (i % 2 == 0) ? 2 : 4;
                 lavaRocks[i].cdel = 0;
                 lavaRocks[i].worldCol = rand() % (mapWidth - LAVAROCKSWIDTH);
                 lavaRocks[i].worldRow = rand() % (mapHeight - LAVAROCKSWIDTH);
@@ -691,7 +691,10 @@ void drawNonPlayers() {
             break;
         case VOLCANO:
             for (int i = 1; i < lavaRocksLen + 1; i++) {
-                if (lavaRocks[i - 1].worldCol > hOff && lavaRocks[i - 1].worldCol < hOff + SCREENWIDTH) {
+                // if (row + height - vOff >= 0 and row - vOff <= SCREENHEIGHT) and
+                // (col + width - hOff >= 0 and col - hOff <= SCREENWIDTH)
+                if ((lavaRocks[i - 1].worldRow + lavaRocks[i - 1].height - vOff >= 0 && lavaRocks[i - 1].worldRow - vOff <= SCREENHEIGHT) && 
+                    (lavaRocks[i - 1].worldCol + lavaRocks[i - 1].width - hOff >= 0 && lavaRocks[i - 1].worldCol - hOff <= SCREENWIDTH)) {
                     shadowOAM[i].attr0 = (ROWMASK &(lavaRocks[i - 1].worldRow - vOff)) | ATTR0_SQUARE;
                     shadowOAM[i].attr1 = (COLMASK &(lavaRocks[i - 1].worldCol - hOff)) | ATTR1_SMALL; 
                     shadowOAM[i].attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(0, 6);
