@@ -22,7 +22,7 @@
 #include "soundB.h"
 #include "sound.h"
 
-#define lavaRocksLen 15
+#define lavaRocksLen 10
 #define poopsLen 6
 
 // Variables

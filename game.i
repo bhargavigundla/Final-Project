@@ -1217,7 +1217,7 @@ enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
 OBJ_ATTR shadowOAM[128];
 ANISPRITE player;
 
-ANISPRITE lavaRocks[15];
+ANISPRITE lavaRocks[10];
 
 unsigned char* collisionMap;
 
@@ -1462,7 +1462,7 @@ void updateStage() {
                 playSoundB(soundB_data, soundB_length, 0);
             }
 
-            for (int i = 0; i < 15; i++) {
+            for (int i = 0; i < 10; i++) {
                 if (collision(player.worldCol, player.worldRow, player.width, player.height,
                     lavaRocks[i].worldCol, lavaRocks[i].worldRow, lavaRocks[i].width, lavaRocks[i].height)) {
                     returnToOutside();
@@ -1746,7 +1746,7 @@ void initNonPlayers() {
         case HOUSE:
             break;
         case VOLCANO:
-            for (int i = 0; i < 15; i++) {
+            for (int i = 0; i < 10; i++) {
                 lavaRocks[i].width = 16;
                 lavaRocks[i].height = 16;
                 lavaRocks[i].rdel = (i % 2 == 0) ? 2 : 4;
@@ -1763,7 +1763,7 @@ void initNonPlayers() {
 void updateNonPlayers() {
     switch (stage) {
         case VOLCANO:
-            for (int i = 0; i < 15; i++) {
+            for (int i = 0; i < 10; i++) {
                 lavaRocks[i].worldRow = (lavaRocks[i].worldRow + lavaRocks[i].rdel) % (mapHeight - LAVAROCKSHEIGHT);
             }
         break;
@@ -1797,7 +1797,7 @@ void drawNonPlayers() {
             }
             break;
         case VOLCANO:
-            for (int i = 1; i < 15 + 1; i++) {
+            for (int i = 1; i < 10 + 1; i++) {
 
 
                 if ((lavaRocks[i - 1].worldRow + lavaRocks[i - 1].height - vOff >= 0 && lavaRocks[i - 1].worldRow - vOff <= 160) &&

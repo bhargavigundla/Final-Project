@@ -68,7 +68,7 @@ updateNonPlayers.part.0:
 	ldr	r5, [r3]
 	ldr	r7, .L10+8
 	sub	r5, r5, #16
-	add	r6, r4, #720
+	add	r6, r4, #480
 .L7:
 	ldr	r0, [r4, #-8]
 	ldr	r3, [r4]
@@ -1177,7 +1177,7 @@ initNonPlayers:
 	mov	lr, pc
 	bx	r6
 	add	r5, r5, #1
-	cmp	r5, #15
+	cmp	r5, #10
 	str	r1, [r4], #48
 	bne	.L129
 	pop	{r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
@@ -1504,11 +1504,11 @@ updateStage:
 .L162:
 	mov	r2, #22
 	mov	r3, #237
-	mov	r8, #5
+	mov	r9, #5
 	ldr	r5, .L190+4
 	str	r2, [sp, #8]
 	ldr	ip, .L190+84
-	str	r8, [sp, #12]
+	str	r9, [sp, #12]
 	str	r3, [sp]
 	add	r2, r5, #16
 	ldm	r2, {r2, r3}
@@ -1556,7 +1556,7 @@ updateStage:
 .L163:
 	ldr	r4, .L190+92
 	ldr	r10, .L190+56
-	add	r9, r4, #720
+	add	r9, r4, #480
 	b	.L165
 .L164:
 	mov	r2, #0
@@ -1672,20 +1672,20 @@ updateStage:
 	bne	.L159
 	b	.L162
 .L189:
-	mov	r9, #0
+	mov	r8, #0
 	mov	r1, #160
 	mov	ip, #240
 	ldr	r2, .L190+20
 	ldr	r3, .L190+24
 	ldr	r0, .L190+28
-	str	r9, [r2]
+	str	r8, [r2]
 	str	r1, [r3]
 	ldr	r2, .L190+32
 	ldr	r1, .L190+116
 	ldr	r3, .L190+40
 	str	ip, [r0]
 	str	r1, [r2]
-	str	r8, [r4]
+	str	r9, [r4]
 	mov	lr, pc
 	bx	r3
 	bl	setStage
@@ -1695,13 +1695,13 @@ updateStage:
 	ldr	ip, .L190+44
 	ldr	r0, .L190+48
 	str	r2, [r5]
-	str	r9, [ip]
-	str	r9, [r0]
+	str	r8, [ip]
+	str	r8, [r0]
 	str	r1, [r5, #4]
-	strh	r9, [r3, #18]	@ movhi
-	strh	r9, [r3, #16]	@ movhi
+	strh	r8, [r3, #18]	@ movhi
+	strh	r8, [r3, #16]	@ movhi
 	bl	initNonPlayers
-	mov	r2, r9
+	mov	r2, r8
 .L184:
 	mov	r1, r7
 	ldr	r0, .L190+56
@@ -1877,7 +1877,7 @@ drawNonPlayers:
 	ldr	r7, .L219+20
 	lsr	r6, r6, #16
 	lsr	r5, r5, #16
-	add	lr, r2, #720
+	add	lr, r2, #480
 .L215:
 	ldr	r0, [r2]
 	ldr	r3, [r2, #20]
@@ -2052,7 +2052,7 @@ drawGame:
 	.word	hOff
 	.word	vOff
 	.size	drawGame, .-drawGame
-	.comm	lavaRocks,720,4
+	.comm	lavaRocks,480,4
 	.comm	player,48,4
 	.comm	shadowOAM,1024,4
 	.comm	stage,4,4
