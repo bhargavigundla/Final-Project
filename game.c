@@ -21,6 +21,7 @@
 #include "forestCM.h"
 #include "soundB.h"
 #include "sound.h"
+#include "LavaLose.h"
 
 #define lavaRocksLen 10
 #define poopsLen 6
@@ -35,6 +36,8 @@ int hasWaterStone;
 int hasLeafStone;
 
 int wait;
+
+int infoScreen;
 
 int loopCount;
 
@@ -221,18 +224,18 @@ void updatePlayer() {
             skyShift += (wait == 0) ? 1 : 0;
         }
     }
-    if (stage == OCEAN) {
-        // move ocean every frame by 1 pixel until end of screen
-        if ((hOff + scroll + SCREENWIDTH - 1) < mapWidth) {
-            hOff = (hOff + 1) % OCEANWIDTH;    
-            loopCount += (hOff == 0) ? 1 : 0;     
-            player.worldCol += player.cdel;
-        } else {
-           if (BUTTON_HELD(BUTTON_LEFT)) {
-               player.worldCol -= player.cdel;
-           } 
-        }
-    }
+    // if (stage == OCEAN) {
+    //     // move ocean every frame by 1 pixel until end of screen
+    //     if ((hOff + scroll + SCREENWIDTH - 1) < mapWidth) {
+    //         hOff = (hOff + 1) % OCEANWIDTH;    
+    //         loopCount += (hOff == 0) ? 1 : 0;     
+    //         player.worldCol += player.cdel;
+    //     } else {
+    //        if (BUTTON_HELD(BUTTON_LEFT)) {
+    //            player.worldCol -= player.cdel;
+    //        } 
+    //     }
+    // }
     REG_BG1HOFF = skyShift;
     animatePlayer();
 }
@@ -243,22 +246,7 @@ void updateStage() {
 		case OUTSIDE:
 		    if (player.worldRow == EEVEEDOORROW && player.worldCol == EEVEEDOORCOL) { 
                 // move into house
-                collisionMap = (unsigned char *) houseCMBitmap;
-                stage = HOUSE;
-
-                setStage();
-                vOff = 0;
-                hOff = 0;
-
-                player.worldRow = 142;
-                player.worldCol = 112;
-                
-                hideSprites();
-                player.hide = 0;
-                REG_BG0VOFF = vOff;
-                REG_BG0HOFF = hOff;
-                initNonPlayers();
-                playSoundB(soundB_data, soundB_length, 0);
+                returnToHouse();
             } else if (player.worldRow + player.height - 1 == LAVADOORROW && player.worldCol == LAVADOORCOL) {
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) volcanoCMBitmap;
@@ -277,26 +265,28 @@ void updateStage() {
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
                 playSoundB(soundB_data, soundB_length, 0);
-            } else if (collision(player.worldCol, player.worldRow, player.width, player.height, 
-                OCEANDOORCOL, OCEANDOORROW, OCEANDOORWIDTH, OCEANDOORHEIGHT)) {
-                scroll = SCROLLING;
-                collisionMap = (unsigned char *) oceanCMBitmap;
-                mapHeight = OCEANHEIGHT;
-                mapWidth = OCEANWIDTH;
-                stage = OCEAN;
+            } 
+            // else if (collision(player.worldCol, player.worldRow, player.width, player.height, 
+            //     OCEANDOORCOL, OCEANDOORROW, OCEANDOORWIDTH, OCEANDOORHEIGHT)) {
+            //     scroll = SCROLLING;
+            //     collisionMap = (unsigned char *) oceanCMBitmap;
+            //     mapHeight = OCEANHEIGHT;
+            //     mapWidth = OCEANWIDTH;
+            //     stage = OCEAN;
 
-                waitForVBlank();
-                setStage();
-                vOff = 0;
-                hOff = 0;
-                player.worldRow = SCREENHEIGHT / 2 - player.width / 2 + vOff;
-                player.worldCol = 10;
+            //     waitForVBlank();
+            //     setStage();
+            //     vOff = 0;
+            //     hOff = 0;
+            //     player.worldRow = SCREENHEIGHT / 2 - player.width / 2 + vOff;
+            //     player.worldCol = 10;
                 
-                REG_BG0VOFF = vOff;
-                REG_BG0HOFF = hOff;
-                initNonPlayers();
-                playSoundB(soundB_data, soundB_length, 0);
-            } else if (collision(player.worldCol, player.worldRow, player.width, player.height,
+            //     REG_BG0VOFF = vOff;
+            //     REG_BG0HOFF = hOff;
+            //     initNonPlayers();
+            //     playSoundB(soundB_data, soundB_length, 0);
+            // } 
+            else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {               
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) forestCMBitmap;
@@ -351,14 +341,18 @@ void updateStage() {
                 playSoundB(soundB_data, soundB_length, 0);
             } else if (!collisionCheck((unsigned char *) lavaPoolCMBitmap, mapWidth,
                 player.worldCol, player.worldRow, player.width, player.height, 0, 0)) {
-                returnToOutside();
-                playSoundB(soundB_data, soundB_length, 0);
+                // infoScreen = 10000;
+                // waitForVBlank();
+                // setLavaHitBackground();
+                // while (--infoScreen > 0) {
+                // }
+                returnToHouse();
             }
 
             for (int i = 0; i < lavaRocksLen; i++) {
                 if (collision(player.worldCol, player.worldRow, player.width, player.height,
                     lavaRocks[i].worldCol, lavaRocks[i].worldRow, lavaRocks[i].width, lavaRocks[i].height)) {
-                    returnToOutside();
+                    returnToHouse();
                 }
                 playSoundB(soundB_data, soundB_length, 0);
             }
@@ -369,26 +363,26 @@ void updateStage() {
                 if (!hasFireStone) {
                         hasFireStone = 1;
                 }
-                returnToOutside();
+                returnToHouse();
                 playSoundB(soundB_data, soundB_length, 0);
             }
             break;
-        case OCEAN:
-            if (collision(player.worldCol, player.worldRow, player.width, player.height,
-                WATERSTONECOL, WATERSTONEROW, WATERSTONEWIDTH, WATERSTONEHEIGHT)) {
-                    if (!hasWaterStone) {
-                        hasWaterStone = 1;
-                    }
-                    returnToOutside();
-                    playSoundB(soundB_data, soundB_length, 0);
-            }
-            break;
+        // case OCEAN:
+        //     if (collision(player.worldCol, player.worldRow, player.width, player.height,
+        //         WATERSTONECOL, WATERSTONEROW, WATERSTONEWIDTH, WATERSTONEHEIGHT)) {
+        //             if (!hasWaterStone) {
+        //                 hasWaterStone = 1;
+        //             }
+        //             returnToOutside();
+        //             playSoundB(soundB_data, soundB_length, 0);
+        //     }
+        //     break;
         case FOREST:
             if (player.worldCol == mapWidth - player.width - 5) {
                 if (!hasLeafStone) {
                     hasLeafStone = 1; 
                 }
-                returnToOutside();
+                returnToHouse();
                 playSoundB(soundB_data, soundB_length, 0);
             }
             break;
@@ -487,6 +481,19 @@ void setVolcanoBackground() {
     DMANow(3, volcanoMap, &SCREENBLOCK[24], volcanoMapLen / 2);
 }
 
+void setLavaHitBackground() {
+    REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    REG_BG0VOFF = 0;
+    REG_BG0HOFF = 0;
+
+    waitForVBlank();
+
+    DMANow(3, LavaLosePal, PALETTE, 256);
+    DMANow(3, LavaLoseTiles, &CHARBLOCK[0], LavaLoseTilesLen / 2);
+    DMANow(3, LavaLoseMap, &SCREENBLOCK[24], LavaLoseMapLen / 2);
+}
+
 void setFireCaveBackground() {
     if (hasFireStone) {        
         DMANow(3, fireStoneCaveNoStonePal, PALETTE, 256);
@@ -565,16 +572,16 @@ void setStage() {
             waitForVBlank();
             setVolcanoBackground();
             break;
-        case OCEAN:
-            REG_BG0CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(24);
-            REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
-            scroll = SCROLLING;
-            mapWidth = OCEANWIDTH;
-	        mapHeight = OCEANHEIGHT;
+        // case OCEAN:
+        //     REG_BG0CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(24);
+        //     REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
+        //     scroll = SCROLLING;
+        //     mapWidth = OCEANWIDTH;
+	    //     mapHeight = OCEANHEIGHT;
             
-            waitForVBlank();
-            setOceanBackground();
-            break;
+        //     waitForVBlank();
+        //     setOceanBackground();
+        //     break;
         case FOREST:            
             REG_BG0CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(20);
             REG_BG1CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(1) | BG_SCREENBLOCK(30);
@@ -648,8 +655,8 @@ void initNonPlayers() {
                 lavaRocks[i].worldRow = rand() % (mapHeight - LAVAROCKSWIDTH);
             }
             break;
-        case OCEAN:
-            break;
+        // case OCEAN:
+        //     break;
     }
 }
 
@@ -704,4 +711,24 @@ void drawNonPlayers() {
             }
             break;
     }
+}
+
+void returnToHouse() {                
+    // move into house
+    collisionMap = (unsigned char *) houseCMBitmap;
+    stage = HOUSE;
+
+    setStage();
+    vOff = 0;
+    hOff = 0;
+
+    player.worldRow = 142;
+    player.worldCol = 112;
+                
+    hideSprites();
+    player.hide = 0;
+    REG_BG0VOFF = vOff;
+    REG_BG0HOFF = hOff;
+    initNonPlayers();
+    playSoundB(soundB_data, soundB_length, 0);
 }

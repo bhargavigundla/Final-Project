@@ -1478,7 +1478,6 @@ SOUND soundB;
 # 16 "main.c" 2
 
 
-
 void initialize();
 
 int seed;
@@ -1491,6 +1490,17 @@ enum {
     PAUSE,
     WIN
 };
+
+void goToStart();
+void start();
+void goToInstructions();
+void instructions();
+void goToGame();
+void game();
+void goToWin();
+void win();
+void goToPause();
+void pause();
 
 int state;
 

@@ -14,7 +14,6 @@
 #include "town.h"
 #include "sound.h"
 
-
 // Prototypes.
 void initialize();
 
@@ -28,6 +27,17 @@ enum {
     PAUSE,
     WIN
 };
+
+void goToStart();
+void start();
+void goToInstructions();
+void instructions();
+void goToGame();
+void game();
+void goToWin();
+void win();
+void goToPause();
+void pause();
 
 int state;
 

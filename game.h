@@ -43,6 +43,7 @@ void initSprites();
 void setStage();
 
 void returnToOutside();
+void returnToHouse();
 void initNonPlayerSprites();
 void clearSprites();
 

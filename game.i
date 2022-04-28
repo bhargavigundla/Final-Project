@@ -955,6 +955,7 @@ void initSprites();
 void setStage();
 
 void returnToOutside();
+void returnToHouse();
 void initNonPlayerSprites();
 void clearSprites();
 
@@ -1128,6 +1129,16 @@ typedef struct{
 SOUND soundA;
 SOUND soundB;
 # 24 "game.c" 2
+# 1 "LavaLose.h" 1
+# 22 "LavaLose.h"
+extern const unsigned short LavaLoseTiles[5952];
+
+
+extern const unsigned short LavaLoseMap[1024];
+
+
+extern const unsigned short LavaLosePal[256];
+# 25 "game.c" 2
 
 
 
@@ -1142,6 +1153,8 @@ int hasWaterStone;
 int hasLeafStone;
 
 int wait;
+
+int infoScreen;
 
 int loopCount;
 
@@ -1328,18 +1341,7 @@ void updatePlayer() {
             skyShift += (wait == 0) ? 1 : 0;
         }
     }
-    if (stage == OCEAN) {
-
-        if ((hOff + scroll + 240 - 1) < mapWidth) {
-            hOff = (hOff + 1) % OCEANWIDTH;
-            loopCount += (hOff == 0) ? 1 : 0;
-            player.worldCol += player.cdel;
-        } else {
-           if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<5)))) {
-               player.worldCol -= player.cdel;
-           }
-        }
-    }
+# 239 "game.c"
     (*(volatile unsigned short *)0x04000014) = skyShift;
     animatePlayer();
 }
@@ -1350,22 +1352,7 @@ void updateStage() {
   case OUTSIDE:
       if (player.worldRow == EEVEEDOORROW && player.worldCol == EEVEEDOORCOL) {
 
-                collisionMap = (unsigned char *) houseCMBitmap;
-                stage = HOUSE;
-
-                setStage();
-                vOff = 0;
-                hOff = 0;
-
-                player.worldRow = 142;
-                player.worldCol = 112;
-
-                hideSprites();
-                player.hide = 0;
-                (*(volatile unsigned short *)0x04000012) = vOff;
-                (*(volatile unsigned short *)0x04000010) = hOff;
-                initNonPlayers();
-                playSoundB(soundB_data, soundB_length, 0);
+                returnToHouse();
             } else if (player.worldRow + player.height - 1 == LAVADOORROW && player.worldCol == LAVADOORCOL) {
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) volcanoCMBitmap;
@@ -1384,26 +1371,9 @@ void updateStage() {
                 (*(volatile unsigned short *)0x04000010) = hOff;
                 initNonPlayers();
                 playSoundB(soundB_data, soundB_length, 0);
-            } else if (collision(player.worldCol, player.worldRow, player.width, player.height,
-                OCEANDOORCOL, OCEANDOORROW, OCEANDOORWIDTH, OCEANDOORHEIGHT)) {
-                scroll = SCROLLING;
-                collisionMap = (unsigned char *) oceanCMBitmap;
-                mapHeight = OCEANHEIGHT;
-                mapWidth = OCEANWIDTH;
-                stage = OCEAN;
-
-                waitForVBlank();
-                setStage();
-                vOff = 0;
-                hOff = 0;
-                player.worldRow = 160 / 2 - player.width / 2 + vOff;
-                player.worldCol = 10;
-
-                (*(volatile unsigned short *)0x04000012) = vOff;
-                (*(volatile unsigned short *)0x04000010) = hOff;
-                initNonPlayers();
-                playSoundB(soundB_data, soundB_length, 0);
-            } else if (collision(player.worldCol, player.worldRow, player.width, player.height,
+            }
+# 289 "game.c"
+            else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) forestCMBitmap;
@@ -1458,14 +1428,18 @@ void updateStage() {
                 playSoundB(soundB_data, soundB_length, 0);
             } else if (!collisionCheck((unsigned char *) lavaPoolCMBitmap, mapWidth,
                 player.worldCol, player.worldRow, player.width, player.height, 0, 0)) {
-                returnToOutside();
-                playSoundB(soundB_data, soundB_length, 0);
+
+
+
+
+
+                returnToHouse();
             }
 
             for (int i = 0; i < 10; i++) {
                 if (collision(player.worldCol, player.worldRow, player.width, player.height,
                     lavaRocks[i].worldCol, lavaRocks[i].worldRow, lavaRocks[i].width, lavaRocks[i].height)) {
-                    returnToOutside();
+                    returnToHouse();
                 }
                 playSoundB(soundB_data, soundB_length, 0);
             }
@@ -1476,26 +1450,17 @@ void updateStage() {
                 if (!hasFireStone) {
                         hasFireStone = 1;
                 }
-                returnToOutside();
+                returnToHouse();
                 playSoundB(soundB_data, soundB_length, 0);
             }
             break;
-        case OCEAN:
-            if (collision(player.worldCol, player.worldRow, player.width, player.height,
-                WATERSTONECOL, WATERSTONEROW, WATERSTONEWIDTH, WATERSTONEHEIGHT)) {
-                    if (!hasWaterStone) {
-                        hasWaterStone = 1;
-                    }
-                    returnToOutside();
-                    playSoundB(soundB_data, soundB_length, 0);
-            }
-            break;
+# 380 "game.c"
         case FOREST:
             if (player.worldCol == mapWidth - player.width - 5) {
                 if (!hasLeafStone) {
                     hasLeafStone = 1;
                 }
-                returnToOutside();
+                returnToHouse();
                 playSoundB(soundB_data, soundB_length, 0);
             }
             break;
@@ -1594,6 +1559,19 @@ void setVolcanoBackground() {
     DMANow(3, volcanoMap, &((screenblock *)0x6000000)[24], 8192 / 2);
 }
 
+void setLavaHitBackground() {
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
+    (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
+    (*(volatile unsigned short *)0x04000012) = 0;
+    (*(volatile unsigned short *)0x04000010) = 0;
+
+    waitForVBlank();
+
+    DMANow(3, LavaLosePal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, LavaLoseTiles, &((charblock *)0x6000000)[0], 11904 / 2);
+    DMANow(3, LavaLoseMap, &((screenblock *)0x6000000)[24], 2048 / 2);
+}
+
 void setFireCaveBackground() {
     if (hasFireStone) {
         DMANow(3, fireStoneCaveNoStonePal, ((unsigned short *)0x5000000), 256);
@@ -1672,16 +1650,7 @@ void setStage() {
             waitForVBlank();
             setVolcanoBackground();
             break;
-        case OCEAN:
-            (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((24)<<8);
-            (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) | (1<<12);
-            scroll = SCROLLING;
-            mapWidth = OCEANWIDTH;
-         mapHeight = OCEANHEIGHT;
-
-            waitForVBlank();
-            setOceanBackground();
-            break;
+# 585 "game.c"
         case FOREST:
             (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((20)<<8);
             (*(volatile unsigned short*)0x400000A) = (0<<7) | (3<<14) | ((1)<<2) | ((30)<<8);
@@ -1755,8 +1724,8 @@ void initNonPlayers() {
                 lavaRocks[i].worldRow = rand() % (mapHeight - LAVAROCKSWIDTH);
             }
             break;
-        case OCEAN:
-            break;
+
+
     }
 }
 
@@ -1811,4 +1780,24 @@ void drawNonPlayers() {
             }
             break;
     }
+}
+
+void returnToHouse() {
+
+    collisionMap = (unsigned char *) houseCMBitmap;
+    stage = HOUSE;
+
+    setStage();
+    vOff = 0;
+    hOff = 0;
+
+    player.worldRow = 142;
+    player.worldCol = 112;
+
+    hideSprites();
+    player.hide = 0;
+    (*(volatile unsigned short *)0x04000012) = vOff;
+    (*(volatile unsigned short *)0x04000010) = hOff;
+    initNonPlayers();
+    playSoundB(soundB_data, soundB_length, 0);
 }

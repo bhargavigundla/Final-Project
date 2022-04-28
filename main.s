@@ -575,14 +575,14 @@ main:
 	ldr	r8, .L127+28
 	ldr	r4, .L127+32
 .L116:
-	ldr	r1, [r6]
+	ldr	r2, [r6]
 	ldrh	r3, [r7]
 .L117:
 	strh	r3, [r5]	@ movhi
 	ldrh	r3, [r4, #48]
 	strh	r3, [r7]	@ movhi
-	cmp	r1, #4
-	ldrls	pc, [pc, r1, asl #2]
+	cmp	r2, #4
+	ldrls	pc, [pc, r2, asl #2]
 	b	.L117
 .L119:
 	.word	.L123
