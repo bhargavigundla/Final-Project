@@ -1,3 +1,52 @@
+# Final-Project Submission Requirements
+● At least 4 unique sprites, 2 of which must be animated
+- player(animated)
+- sleeping eevee will be animated into the house, but for now it is hardcoded into map
+- standing eevee will be animated into the house, but for now it is hardcoded into map
+- lavablobs have a single sprite
+
+● One of the two following background requirements are implemented (you do not
+need to implement both)
+○ used parallax movement in forest level
+
+● Modify background tiles, sprite tiles, and/or palette (either) at runtime
+○ Palette Modification at runtime in volcano level
+
+● The following states: START, INSTRUCTIONS, GAME, PAUSE
+○ The GAME state must be implemented in a tiled mode, such as Mode 0
+○ You may (but are not required to) use other modes for other states (ask
+your TAs for tips if you’re confused)
+
+● A WIN and/or LOSE state
+○ Win state when both evolution stones are collected
+
+● Meaningful collision
+○ collision with doors, lava pools, lava rocks, and evolution stones
+
+CS 2261 Spring 2022
+● Includes meaningful use of timers and/or interrupts (other than vBlank interrupt
+and digital sound)
+
+● At least two sounds that can play simultaneously, of which at least one must use
+digital sound
+○ At least one must be looping
+○ At least one must not loop
+
+● A cheat to make the game easier
+○ The game must be winnable (if your game includes a win state) without
+the cheat
+○ Not just skipping to the win state; not just an “invincible” mode; not just
+removing a conditional. It must meaningfully change existing mechanics or
+introduce an entirely new one – please be creative (and ask your TA for
+ideas/guidance). This is an area where people tend to lose points when
+they haven't consulted their TA for guidance.
+● The ability to play the game correctly without being told how to do so ahead of
+time
+○ Aided only be the in-game instructions and menus
+● Bug-free gameplay
+● Multiple.c and .h files
+● A recorded demo of gameplay (unless you volunteer for early demo)
+
 # Final-Project Milestone 4
 Every state of the game must have its own background. 
 - I have this!
