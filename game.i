@@ -1247,6 +1247,7 @@ void initGame() {
 
 
 int updateGame() {
+    wait = (wait == 0) ? 1 : 0;
     updateStage();
     updateNonPlayers();
  updatePlayer();
@@ -1312,7 +1313,7 @@ void updatePlayer() {
 
             player.worldCol -= player.cdel;
    hOff -= (hOff - scroll >= 0) ? scroll : 0;
-            skyShift += 1;
+            skyShift -= (wait == 0) ? 1 : 0;
         }
     }
     if((~((*(volatile unsigned short *)0x04000130)) & ((1<<4)))) {
@@ -1323,7 +1324,7 @@ void updatePlayer() {
 
             player.worldCol += player.cdel;
    hOff += ((hOff + scroll + 240 - 1) < mapWidth) ? scroll : 0;
-            skyShift -= 1;
+            skyShift += (wait == 0) ? 1 : 0;
         }
     }
     if (stage == OCEAN) {
@@ -1414,7 +1415,7 @@ void updateStage() {
                 vOff = 0;
                 hOff = 0;
                 player.worldRow = 112;
-                player.worldCol = 0;
+                player.worldCol = 50;
 
                 (*(volatile unsigned short *)0x04000012) = vOff;
                 (*(volatile unsigned short *)0x04000010) = hOff;
@@ -1429,7 +1430,6 @@ void updateStage() {
             }
    break;
   case VOLCANO:
-            wait = (wait == 0) ? 1 : 0;
             if (wait == 1) {
                 for (int i = 0; i < 16; i++) {
                     ((unsigned short *)0x5000000)[i] = (((unsigned short *)0x5000000)[i] + 1) % 256;

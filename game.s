@@ -314,15 +314,18 @@ updatePlayer:
 	cmp	r2, #0
 	beq	.L40
 	ldr	ip, .L67+32
+	ldr	r5, .L67+36
 	ldr	r2, .L67+24
-	ldr	r5, [ip]
+	ldr	r6, [r5]
 	ldr	r2, [r2]
+	ldr	r5, [ip]
 	subs	r2, r5, r2
 	movmi	r2, r5
-	add	r3, r3, #1
-	str	r3, [r0]
+	cmp	r6, #0
+	subeq	r3, r3, #1
 	str	r4, [lr, #4]
 	str	r2, [ip]
+	str	r3, [r0]
 .L40:
 	ldr	r2, .L67
 	ldrh	r2, [r2, #48]
@@ -362,16 +365,19 @@ updatePlayer:
 	beq	.L42
 	ldr	ip, .L67+32
 	ldr	r2, .L67+24
+	ldr	r7, .L67+36
 	ldr	r6, [r2]
 	ldr	r2, [ip]
+	ldr	r7, [r7]
 	add	r6, r2, r6
+	cmp	r7, #0
+	addeq	r3, r3, #1
 	add	r7, r6, #239
 	cmp	r5, r7
 	movgt	r2, r6
-	sub	r3, r3, #1
-	str	r3, [r0]
 	str	r4, [lr, #4]
 	str	r2, [ip]
+	str	r3, [r0]
 .L42:
 	cmp	r1, #3
 	beq	.L66
@@ -425,7 +431,7 @@ updatePlayer:
 	ldr	r2, .L67+24
 	ldr	r3, [r5]
 	ldr	r2, [r2]
-	ldr	r0, .L67+36
+	ldr	r0, .L67+40
 	add	r2, r3, r2
 	ldr	r0, [r0]
 	add	lr, r2, #159
@@ -445,12 +451,12 @@ updatePlayer:
 	add	r1, r1, #239
 	cmp	r1, ip
 	bge	.L45
-	ldr	r1, .L67+40
+	ldr	r1, .L67+44
 	add	r2, r2, #1
 	and	lr, r2, r1
 	rsbs	ip, r2, #0
 	mov	r2, lr
-	ldr	r4, .L67+44
+	ldr	r4, .L67+48
 	and	ip, ip, r1
 	ldr	r1, [r4]
 	rsbpl	lr, ip, #0
@@ -490,6 +496,7 @@ updatePlayer:
 	.word	scroll
 	.word	skyShift
 	.word	hOff
+	.word	wait
 	.word	mapHeight
 	.word	511
 	.word	loopCount
@@ -1488,11 +1495,8 @@ updateStage:
 	b	.L184
 .L149:
 	ldr	r3, .L188+80
-	ldr	r2, [r3]
-	cmp	r2, #0
-	moveq	r2, #1
-	movne	r2, #0
-	str	r2, [r3]
+	ldr	r3, [r3]
+	cmp	r3, #1
 	beq	.L167
 .L160:
 	mov	r2, #22
@@ -1611,11 +1615,13 @@ updateStage:
 	mov	lr, pc
 	bx	r3
 	bl	setStage
+	mov	r2, #112
 	mov	r3, #67108864
-	mov	r0, #112
+	mov	r0, #50
+	str	r2, [r5]
 	ldr	r1, .L188+44
 	ldr	r2, .L188+48
-	stm	r5, {r0, r8}
+	str	r0, [r5, #4]
 	str	r8, [r1]
 	str	r8, [r2]
 	strh	r8, [r3, #18]	@ movhi
@@ -1786,19 +1792,24 @@ updateGame:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
+	ldr	r2, .L197
+	ldr	r3, [r2]
+	rsbs	r3, r3, #1
+	movcc	r3, #0
 	push	{r4, lr}
+	str	r3, [r2]
 	bl	updateStage
-	ldr	r3, .L197
+	ldr	r3, .L197+4
 	ldr	r3, [r3]
 	cmp	r3, #2
 	bleq	updateNonPlayers.part.0
 .L191:
 	bl	updatePlayer
-	ldr	r3, .L197+4
+	ldr	r3, .L197+8
 	ldr	r0, [r3]
 	cmp	r0, #0
 	beq	.L190
-	ldr	r3, .L197+8
+	ldr	r3, .L197+12
 	ldr	r0, [r3]
 	subs	r0, r0, #0
 	movne	r0, #1
@@ -1808,6 +1819,7 @@ updateGame:
 .L198:
 	.align	2
 .L197:
+	.word	wait
 	.word	stage
 	.word	hasFireStone
 	.word	hasLeafStone

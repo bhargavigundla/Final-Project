@@ -140,6 +140,7 @@ void initGame() {
 
 // Updates the game each frame
 int updateGame() {
+    wait = (wait == 0) ? 1 : 0;
     updateStage();
     updateNonPlayers();
 	updatePlayer();
@@ -205,7 +206,7 @@ void updatePlayer() {
                 
             player.worldCol -= player.cdel;
 			hOff -= (hOff - scroll >= 0) ? scroll : 0;
-            skyShift += 1;
+            skyShift -= (wait == 0) ? 1 : 0;
         }
     }
     if(BUTTON_HELD(BUTTON_RIGHT)) {
@@ -216,7 +217,7 @@ void updatePlayer() {
                     
             player.worldCol += player.cdel;
 			hOff += ((hOff + scroll + SCREENWIDTH - 1) < mapWidth) ? scroll : 0;
-            skyShift -= 1;
+            skyShift += (wait == 0) ? 1 : 0;
         }
     }
     if (stage == OCEAN) {
@@ -307,7 +308,7 @@ void updateStage() {
                 vOff = 0;
                 hOff = 0;
                 player.worldRow = 112;
-                player.worldCol = 0;
+                player.worldCol = 50;
                 
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
@@ -322,7 +323,6 @@ void updateStage() {
             }
 			break;
 		case VOLCANO:
-            wait = (wait == 0) ? 1 : 0;
             if (wait == 1) {
                 for (int i = 0; i < 16; i++) {
                     PALETTE[i] = (PALETTE[i] + 1) % 256;
