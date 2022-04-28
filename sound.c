@@ -1,6 +1,7 @@
 #include "mode0.h"
 #include "sound.h"
 #include "game.h"
+#include "main.h"
 
 int time_s;
 
@@ -112,9 +113,8 @@ void interruptHandler() {
 
 		REG_IF = INT_VBLANK;
 	} else if (REG_IF & INT_TM1) {
-        time_s++;
-        if (time_s > 59) {
-            time_s = time_s - 60;
+        if (state == START) {
+            goToIdle();
         }
   }
 

@@ -181,6 +181,36 @@ void clearSprites();
 int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, int width, int height,
         int colShift, int rowShift);
 # 4 "sound.c" 2
+# 1 "main.h" 1
+
+
+
+enum {
+    START,
+    GAME,
+    INSTRUCTIONS,
+    PAUSE,
+    WIN,
+    IDLE
+};
+
+int state;
+
+void goToStart();
+void start();
+void goToGame();
+void game();
+void goToInstructions();
+void instructions();
+void goToPause();
+void pause();
+void goToWin();
+void win();
+void goToIdle();
+void idle();
+
+void enableTimerInterrupts(void);
+# 5 "sound.c" 2
 
 int time_s;
 
@@ -292,9 +322,8 @@ void interruptHandler() {
 
   *(volatile unsigned short*)0x4000202 = 1 << 0;
  } else if (*(volatile unsigned short*)0x4000202 & 1<<4) {
-        time_s++;
-        if (time_s > 59) {
-            time_s = time_s - 60;
+        if (state == START) {
+            goToIdle();
         }
   }
 

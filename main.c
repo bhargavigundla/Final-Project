@@ -14,23 +14,13 @@
 #include "town.h"
 #include "sound.h"
 #include "main.h"
+#include "print.h"
 
 
 // Prototypes.
 void initialize();
 
 int seed;
-
-// States.
-enum {
-    START,
-    GAME,
-    INSTRUCTIONS,
-    PAUSE,
-    WIN
-};
-
-int state;
 
 // Button Variables.
 unsigned short buttons;
@@ -64,6 +54,9 @@ int main() {
         case WIN:
             win();
             break;
+        case IDLE:
+            idle();
+            break;        
         }
     }
 }
@@ -197,6 +190,24 @@ void goToWin() {
 
 // Runs every frame of the win state.
 void win() {
+    if (BUTTON_PRESSED(BUTTON_A) || BUTTON_PRESSED(BUTTON_B) || BUTTON_PRESSED(BUTTON_START)) {
+        goToStart();
+    }   
+}
+
+void goToIdle() {
+    state = IDLE;
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    REG_BG0VOFF = 0;
+    REG_BG0HOFF = 0;
+
+    waitForVBlank();
+    DMANow(3, winPal, PALETTE, 256);
+    DMANow(3, winTiles, &CHARBLOCK[0], winTilesLen / 2);
+    DMANow(3, winMap, &SCREENBLOCK[28], winMapLen / 2);
+}
+
+void idle() {
     if (BUTTON_PRESSED(BUTTON_A) || BUTTON_PRESSED(BUTTON_B) || BUTTON_PRESSED(BUTTON_START)) {
         goToStart();
     }   

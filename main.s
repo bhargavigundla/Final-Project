@@ -605,21 +605,21 @@ main:
 	mov	lr, pc
 	bx	r3
 	ldr	r6, .L148+4
-	ldr	r7, .L148+8
+	ldr	r8, .L148+8
 	ldr	r5, .L148+12
 	ldr	fp, .L148+16
 	ldr	r10, .L148+20
 	ldr	r9, .L148+24
-	ldr	r8, .L148+28
+	ldr	r7, .L148+28
 	ldr	r4, .L148+32
 .L137:
 	ldr	r2, [r6]
-	ldrh	r3, [r7]
+	ldrh	r3, [r8]
 .L138:
 	strh	r3, [r5]	@ movhi
 	ldrh	r3, [r4, #48]
-	strh	r3, [r7]	@ movhi
-	cmp	r2, #4
+	strh	r3, [r8]	@ movhi
+	cmp	r2, #5
 	ldrls	pc, [pc, r2, asl #2]
 	b	.L138
 .L140:
@@ -628,14 +628,15 @@ main:
 	.word	.L142
 	.word	.L141
 	.word	.L139
+	.word	.L139
 .L139:
+	mov	lr, pc
+	bx	r7
+	b	.L137
+.L141:
 	ldr	r3, .L148+36
 	mov	lr, pc
 	bx	r3
-	b	.L137
-.L141:
-	mov	lr, pc
-	bx	r8
 	b	.L137
 .L142:
 	mov	lr, pc
@@ -659,15 +660,84 @@ main:
 	.word	start
 	.word	game
 	.word	instructions
-	.word	pause
-	.word	67109120
 	.word	win
+	.word	67109120
+	.word	pause
 	.size	main, .-main
+	.text
+	.align	2
+	.global	goToIdle
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	goToIdle, %function
+goToIdle:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, lr}
+	mov	r2, #67108864
+	mov	r3, #0
+	mov	r0, #5
+	mov	r4, #256
+	ldr	r1, .L152
+	str	r0, [r1]
+	strh	r4, [r2]	@ movhi
+	ldr	r1, .L152+4
+	strh	r3, [r2, #18]	@ movhi
+	strh	r3, [r2, #16]	@ movhi
+	mov	lr, pc
+	bx	r1
+	mov	r3, r4
+	mov	r2, #83886080
+	ldr	r4, .L152+8
+	mov	r0, #3
+	ldr	r1, .L152+12
+	mov	lr, pc
+	bx	r4
+	mov	r3, #7616
+	mov	r2, #100663296
+	mov	r0, #3
+	ldr	r1, .L152+16
+	mov	lr, pc
+	bx	r4
+	mov	r3, #1024
+	mov	r0, #3
+	ldr	r2, .L152+20
+	ldr	r1, .L152+24
+	mov	lr, pc
+	bx	r4
+	pop	{r4, lr}
+	bx	lr
+.L153:
+	.align	2
+.L152:
+	.word	state
+	.word	waitForVBlank
+	.word	DMANow
+	.word	winPal
+	.word	winTiles
+	.word	100720640
+	.word	winMap
+	.size	goToIdle, .-goToIdle
+	.align	2
+	.global	idle
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	idle, %function
+idle:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	@ link register save eliminated.
+	b	win
+	.size	idle, .-idle
 	.comm	shadowOAM,1024,4
 	.comm	oldButtons,2,2
 	.comm	buttons,2,2
-	.comm	state,4,4
 	.comm	seed,4,4
+	.comm	state,4,4
 	.comm	soundB,32,4
 	.comm	soundA,32,4
 	.comm	time_s,4,4

@@ -261,13 +261,13 @@ interruptHandler:
 	ldrh	r3, [r3, #2]
 	tst	r3, #16
 	beq	.L23
-	ldr	r2, .L31+20
-	ldr	r3, [r2]
-	add	r1, r3, #1
-	cmp	r1, #59
-	subgt	r3, r3, #59
-	strle	r1, [r2]
-	strgt	r3, [r2]
+	ldr	r3, .L31+20
+	ldr	r3, [r3]
+	cmp	r3, #0
+	bne	.L23
+	ldr	r3, .L31+24
+	mov	lr, pc
+	bx	r3
 	b	.L23
 .L28:
 	ldm	r3, {r0, r1}
@@ -285,7 +285,8 @@ interruptHandler:
 	.word	dma
 	.word	67109120
 	.word	soundB
-	.word	time_s
+	.word	state
+	.word	goToIdle
 	.size	interruptHandler, .-interruptHandler
 	.align	2
 	.global	setupInterrupts
@@ -455,6 +456,7 @@ enableTimerInterrupts:
 	.word	67109376
 	.word	67109120
 	.size	enableTimerInterrupts, .-enableTimerInterrupts
+	.comm	state,4,4
 	.comm	collisionMap,4,4
 	.comm	mapWidth,4,4
 	.comm	mapHeight,4,4
