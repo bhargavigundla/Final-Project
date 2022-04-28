@@ -951,6 +951,7 @@ void setVolcanoBackground();
 void setFireCaveBackground();
 void setOceanBackground();
 void setForestBackground();
+void setLeafStoneClearingBackground();
 void initSprites();
 void setStage();
 
@@ -1139,6 +1140,30 @@ extern const unsigned short LavaLoseMap[1024];
 
 extern const unsigned short LavaLosePal[256];
 # 25 "game.c" 2
+# 1 "forestClearing.h" 1
+# 22 "forestClearing.h"
+extern const unsigned short forestClearingTiles[9056];
+
+
+extern const unsigned short forestClearingMap[1024];
+
+
+extern const unsigned short forestClearingPal[256];
+# 26 "game.c" 2
+# 1 "forestClearingNoStone.h" 1
+# 22 "forestClearingNoStone.h"
+extern const unsigned short forestClearingNoStoneTiles[8944];
+
+
+extern const unsigned short forestClearingNoStoneMap[1024];
+
+
+extern const unsigned short forestClearingNoStonePal[256];
+# 27 "game.c" 2
+# 1 "forestClearingCM.h" 1
+# 20 "forestClearingCM.h"
+extern const unsigned short forestClearingCMBitmap[19200];
+# 28 "game.c" 2
 
 
 
@@ -1173,7 +1198,8 @@ enum {
     VOLCANO,
     OCEAN,
     FOREST,
-    FIRESTONEROOM
+    FIRESTONEROOM,
+    LEAFSTONECLEARING
 };
 enum {
     SLEEPINGEEVEEROW = 57,
@@ -1213,10 +1239,12 @@ enum {
     FORESTDOORROW = 382,
     FORESTDOORWIDTH = 3,
     FORESTDOORHEIGHT = 19,
-    LEAFSTONECOL = 496,
-    LEAFSTONEROW = 112,
-    LEAFSTONEWIDTH = 16,
-    LEAFSTONEHEIGHT = 16
+    LEAFSTONECOL = 80,
+    LEAFSTONEROW = 107,
+    LEAFSTONEWIDTH = 21,
+    LEAFSTONEHEIGHT = 23,
+    FORESTCLEARINGHEIGHT = 160,
+    FORESTCLEARINGWIDTH = 240
 };
 int stage;
 
@@ -1230,7 +1258,7 @@ enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
 OBJ_ATTR shadowOAM[128];
 ANISPRITE player;
 
-ANISPRITE lavaRocks[10];
+ANISPRITE lavaRocks[4];
 
 unsigned char* collisionMap;
 
@@ -1341,7 +1369,7 @@ void updatePlayer() {
             skyShift += (wait == 0) ? 1 : 0;
         }
     }
-# 239 "game.c"
+# 245 "game.c"
     (*(volatile unsigned short *)0x04000014) = skyShift;
     animatePlayer();
 }
@@ -1372,7 +1400,7 @@ void updateStage() {
                 initNonPlayers();
                 playSoundB(soundB_data, soundB_length, 0);
             }
-# 289 "game.c"
+# 295 "game.c"
             else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {
                 scroll = SCROLLING;
@@ -1436,7 +1464,7 @@ void updateStage() {
                 returnToHouse();
             }
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 4; i++) {
                 if (collision(player.worldCol, player.worldRow, player.width, player.height,
                     lavaRocks[i].worldCol, lavaRocks[i].worldRow, lavaRocks[i].width, lavaRocks[i].height)) {
                     returnToHouse();
@@ -1454,14 +1482,41 @@ void updateStage() {
                 playSoundB(soundB_data, soundB_length, 0);
             }
             break;
-# 380 "game.c"
+# 386 "game.c"
         case FOREST:
             if (player.worldCol == mapWidth - player.width - 5) {
+
+
+
+
+
+                scroll = STATIC;
+                collisionMap = (unsigned char *) forestClearingCMBitmap;
+                mapHeight = 160;
+                mapWidth = 240;
+                stage = LEAFSTONECLEARING;
+
+                waitForVBlank();
+                setStage();
+                vOff = 0;
+                hOff = 0;
+                player.worldCol = 152;
+                player.worldRow = 143;
+
+                (*(volatile unsigned short *)0x04000012) = vOff;
+                (*(volatile unsigned short *)0x04000010) = hOff;
+                initNonPlayers();
+                playSoundB(soundB_data, soundB_length, 0);
+
+            }
+            break;
+        case LEAFSTONECLEARING:
+            if (collision(player.worldCol, player.worldRow, player.width, player.height,
+            LEAFSTONECOL, LEAFSTONEROW, LEAFSTONEWIDTH, LEAFSTONEHEIGHT)) {
                 if (!hasLeafStone) {
                     hasLeafStone = 1;
                 }
                 returnToHouse();
-                playSoundB(soundB_data, soundB_length, 0);
             }
             break;
  }
@@ -1610,6 +1665,18 @@ void setForestBackground() {
 
 }
 
+void setLeafStoneClearingBackground() {
+    if (hasLeafStone) {
+        DMANow(3, forestClearingNoStonePal, ((unsigned short *)0x5000000), 256);
+        DMANow(3, forestClearingNoStoneTiles, &((charblock *)0x6000000)[0], 18112 / 2);
+        DMANow(3, forestClearingNoStoneMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    } else {
+        DMANow(3, forestClearingPal, ((unsigned short *)0x5000000), 256);
+        DMANow(3, forestClearingTiles, &((charblock *)0x6000000)[0], 18112 / 2);
+        DMANow(3, forestClearingMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+    }
+}
+
 void showGame() {
 
     setStage();
@@ -1650,7 +1717,7 @@ void setStage() {
             waitForVBlank();
             setVolcanoBackground();
             break;
-# 585 "game.c"
+# 630 "game.c"
         case FOREST:
             (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((20)<<8);
             (*(volatile unsigned short*)0x400000A) = (0<<7) | (3<<14) | ((1)<<2) | ((30)<<8);
@@ -1672,6 +1739,17 @@ void setStage() {
 
             waitForVBlank();
             setFireCaveBackground();
+            break;
+        case LEAFSTONECLEARING:
+            (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
+            (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) |(1<<12);
+
+            scroll = STATIC;
+            mapWidth = FORESTCLEARINGWIDTH;
+         mapHeight = FORESTCLEARINGHEIGHT;
+
+            waitForVBlank();
+            setLeafStoneClearingBackground();
             break;
     }
 }
@@ -1715,7 +1793,7 @@ void initNonPlayers() {
         case HOUSE:
             break;
         case VOLCANO:
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 4; i++) {
                 lavaRocks[i].width = 16;
                 lavaRocks[i].height = 16;
                 lavaRocks[i].rdel = (i % 2 == 0) ? 2 : 4;
@@ -1732,7 +1810,7 @@ void initNonPlayers() {
 void updateNonPlayers() {
     switch (stage) {
         case VOLCANO:
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 4; i++) {
                 lavaRocks[i].worldRow = (lavaRocks[i].worldRow + lavaRocks[i].rdel) % (mapHeight - LAVAROCKSHEIGHT);
             }
         break;
@@ -1766,7 +1844,7 @@ void drawNonPlayers() {
             }
             break;
         case VOLCANO:
-            for (int i = 1; i < 10 + 1; i++) {
+            for (int i = 1; i < 4 + 1; i++) {
 
 
                 if ((lavaRocks[i - 1].worldRow + lavaRocks[i - 1].height - vOff >= 0 && lavaRocks[i - 1].worldRow - vOff <= 160) &&

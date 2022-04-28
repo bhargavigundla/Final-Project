@@ -22,8 +22,11 @@
 #include "soundB.h"
 #include "sound.h"
 #include "LavaLose.h"
+#include "forestClearing.h"
+#include "forestClearingNoStone.h"
+#include "forestClearingCM.h"
 
-#define lavaRocksLen 10
+#define lavaRocksLen 4
 #define poopsLen 6
 
 // Variables
@@ -56,7 +59,8 @@ enum {
     VOLCANO,
     OCEAN,
     FOREST,
-    FIRESTONEROOM
+    FIRESTONEROOM,
+    LEAFSTONECLEARING
 };
 enum {
     SLEEPINGEEVEEROW = 57,
@@ -96,10 +100,12 @@ enum {
     FORESTDOORROW = 382,
     FORESTDOORWIDTH = 3,
     FORESTDOORHEIGHT = 19,
-    LEAFSTONECOL = 496,
-    LEAFSTONEROW = 112,
-    LEAFSTONEWIDTH = 16,
-    LEAFSTONEHEIGHT = 16
+    LEAFSTONECOL = 80,
+    LEAFSTONEROW = 107,
+    LEAFSTONEWIDTH = 21,
+    LEAFSTONEHEIGHT = 23,
+    FORESTCLEARINGHEIGHT = 160,
+    FORESTCLEARINGWIDTH = 240
 };
 int stage;
 
@@ -379,11 +385,38 @@ void updateStage() {
         //     break;
         case FOREST:
             if (player.worldCol == mapWidth - player.width - 5) {
+                // if (!hasLeafStone) {
+                //     hasLeafStone = 1; 
+                // }
+                // returnToHouse();
+                // playSoundB(soundB_data, soundB_length, 0);                
+                scroll = STATIC;
+                collisionMap = (unsigned char *) forestClearingCMBitmap;
+                mapHeight = 160;
+                mapWidth = 240;
+                stage = LEAFSTONECLEARING;
+
+                waitForVBlank();
+                setStage();
+                vOff = 0;
+                hOff = 0;
+                player.worldCol = 152;
+                player.worldRow = 143;
+
+                REG_BG0VOFF = vOff;
+                REG_BG0HOFF = hOff;
+                initNonPlayers();
+                playSoundB(soundB_data, soundB_length, 0);
+                
+            }
+            break;
+        case LEAFSTONECLEARING:
+            if (collision(player.worldCol, player.worldRow, player.width, player.height,
+            LEAFSTONECOL, LEAFSTONEROW, LEAFSTONEWIDTH, LEAFSTONEHEIGHT)) {
                 if (!hasLeafStone) {
                     hasLeafStone = 1; 
                 }
                 returnToHouse();
-                playSoundB(soundB_data, soundB_length, 0);
             }
             break;
 	}
@@ -532,6 +565,18 @@ void setForestBackground() {
     // DMANow(3, forestNoStoneMap, &SCREENBLOCK[24], forestMapLen / 2);
 }
 
+void setLeafStoneClearingBackground() {
+    if (hasLeafStone) {        
+        DMANow(3, forestClearingNoStonePal, PALETTE, 256);
+        DMANow(3, forestClearingNoStoneTiles, &CHARBLOCK[0], forestClearingTilesLen / 2);
+        DMANow(3, forestClearingNoStoneMap, &SCREENBLOCK[28], forestClearingMapLen / 2);
+    } else {        
+        DMANow(3, forestClearingPal, PALETTE, 256);
+        DMANow(3, forestClearingTiles, &CHARBLOCK[0], forestClearingTilesLen / 2);
+        DMANow(3, forestClearingMap, &SCREENBLOCK[28], forestClearingMapLen / 2);
+    } 
+}
+
 void showGame() {
     // sets registers and initializes backgrounds for correct stage
     setStage();
@@ -603,6 +648,17 @@ void setStage() {
 
             waitForVBlank();
             setFireCaveBackground();
+            break;
+        case LEAFSTONECLEARING:
+            REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+            REG_DISPCTL = MODE0 | BG0_ENABLE |SPRITE_ENABLE;
+
+            scroll = STATIC;
+            mapWidth = FORESTCLEARINGWIDTH;
+	        mapHeight = FORESTCLEARINGHEIGHT;
+
+            waitForVBlank();
+            setLeafStoneClearingBackground();
             break;
     }
 }

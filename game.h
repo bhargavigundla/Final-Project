@@ -39,6 +39,7 @@ void setVolcanoBackground();
 void setFireCaveBackground();
 void setOceanBackground();
 void setForestBackground();
+void setLeafStoneClearingBackground();
 void initSprites();
 void setStage();
 
