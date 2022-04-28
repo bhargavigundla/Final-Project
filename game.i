@@ -1073,7 +1073,7 @@ extern const unsigned short oceanCMBitmap[61440];
 # 19 "game.c" 2
 # 1 "forestForeground.h" 1
 # 22 "forestForeground.h"
-extern const unsigned short forestForegroundTiles[544];
+extern const unsigned short forestForegroundTiles[416];
 
 
 extern const unsigned short forestForegroundMap[2048];
@@ -1134,6 +1134,7 @@ SOUND soundB;
 
 int hOff;
 int vOff;
+int skyShift;
 
 int hasFireStone;
 int hasWaterStone;
@@ -1249,7 +1250,7 @@ int updateGame() {
     updateStage();
     updateNonPlayers();
  updatePlayer();
-    return (hasFireStone && hasLeafStone && hasWaterStone);
+    return (hasFireStone && hasLeafStone);
 }
 
 
@@ -1311,6 +1312,7 @@ void updatePlayer() {
 
             player.worldCol -= player.cdel;
    hOff -= (hOff - scroll >= 0) ? scroll : 0;
+            skyShift += 1;
         }
     }
     if((~((*(volatile unsigned short *)0x04000130)) & ((1<<4)))) {
@@ -1321,6 +1323,7 @@ void updatePlayer() {
 
             player.worldCol += player.cdel;
    hOff += ((hOff + scroll + 240 - 1) < mapWidth) ? scroll : 0;
+            skyShift -= 1;
         }
     }
     if (stage == OCEAN) {
@@ -1335,6 +1338,7 @@ void updatePlayer() {
            }
         }
     }
+    (*(volatile unsigned short *)0x04000014) = skyShift;
     animatePlayer();
 }
 
@@ -1414,8 +1418,6 @@ void updateStage() {
 
                 (*(volatile unsigned short *)0x04000012) = vOff;
                 (*(volatile unsigned short *)0x04000010) = hOff;
-                (*(volatile unsigned short *)0x04000016) = vOff;
-                (*(volatile unsigned short *)0x04000014) = hOff;
                 initNonPlayers();
                 playSoundB(soundB_data, soundB_length, 0);
             }
@@ -1489,7 +1491,7 @@ void updateStage() {
             }
             break;
         case FOREST:
-            if (player.worldCol == mapWidth - player.width) {
+            if (player.worldCol == mapWidth - player.width - 5) {
                 if (!hasLeafStone) {
                     hasLeafStone = 1;
                 }
@@ -1621,7 +1623,7 @@ void setForestBackground() {
 
 
     DMANow(3, forestForegroundPal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, forestForegroundTiles, &((charblock *)0x6000000)[0], 1088 / 2);
+    DMANow(3, forestForegroundTiles, &((charblock *)0x6000000)[0], 832 / 2);
     DMANow(3, forestForegroundMap, &((screenblock *)0x6000000)[20], 4096 / 2);
     DMANow(3, skyTiles, &((charblock *)0x6000000)[1], 128 / 2);
     DMANow(3, skyMap, &((screenblock *)0x6000000)[30], 4096 / 2);

@@ -27,6 +27,7 @@
 // Variables
 int hOff;
 int vOff;
+int skyShift;
 
 int hasFireStone;
 int hasWaterStone;
@@ -142,7 +143,7 @@ int updateGame() {
     updateStage();
     updateNonPlayers();
 	updatePlayer();
-    return (hasFireStone && hasLeafStone && hasWaterStone);
+    return (hasFireStone && hasLeafStone);
 }
 
 // Draws the game each frame
@@ -204,6 +205,7 @@ void updatePlayer() {
                 
             player.worldCol -= player.cdel;
 			hOff -= (hOff - scroll >= 0) ? scroll : 0;
+            skyShift += 1;
         }
     }
     if(BUTTON_HELD(BUTTON_RIGHT)) {
@@ -214,6 +216,7 @@ void updatePlayer() {
                     
             player.worldCol += player.cdel;
 			hOff += ((hOff + scroll + SCREENWIDTH - 1) < mapWidth) ? scroll : 0;
+            skyShift -= 1;
         }
     }
     if (stage == OCEAN) {
@@ -228,6 +231,7 @@ void updatePlayer() {
            } 
         }
     }
+    REG_BG1HOFF = skyShift;
     animatePlayer();
 }
 
@@ -307,8 +311,6 @@ void updateStage() {
                 
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
-                REG_BG1VOFF = vOff;
-                REG_BG1HOFF = hOff;
                 initNonPlayers();
                 playSoundB(soundB_data, soundB_length, 0);
             }
@@ -382,7 +384,7 @@ void updateStage() {
             }
             break;
         case FOREST:
-            if (player.worldCol == mapWidth - player.width) {
+            if (player.worldCol == mapWidth - player.width - 5) {
                 if (!hasLeafStone) {
                     hasLeafStone = 1; 
                 }
