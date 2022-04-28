@@ -1,5 +1,8 @@
 #include "mode0.h"
 #include "sound.h"
+#include "game.h"
+
+int time_s;
 
 void setupSounds() {
 
@@ -68,7 +71,9 @@ void setupInterrupts() {
     REG_DISPSTAT |= INT_VBLANK_ENABLE;
 
     REG_INTERRUPT = interruptHandler;
+    enableTimerInterrupts();
 	REG_IME = 1;
+
 }
 
 void interruptHandler() {
@@ -106,7 +111,14 @@ void interruptHandler() {
 
 
 		REG_IF = INT_VBLANK;
-	}
+	} else if (REG_IF & INT_TM1) {
+        time_s++;
+        if (time_s > 59) {
+            time_s = time_s - 60;
+        }
+  }
+
+    REG_IF = REG_IF;
 
 	REG_IME = 1;
 }
@@ -132,4 +144,16 @@ void stopSound() {
     REG_TM1CNT = TIMER_OFF;
     dma[1].cnt = 0;
     dma[2].cnt = 0;
+}
+
+void enableTimerInterrupts(void) {
+    REG_IE |= INT_TM0 | INT_TM1;
+
+    REG_TM0CNT = 0; // Turn off timer 0
+    REG_TM0D = 65536-16384; //a one second timer
+    REG_TM0CNT = TM_FREQ_1024 | TIMER_ON;
+
+    REG_TM1CNT = 0; // Turn off timer 1
+    REG_TM1D = 65536-10; // 10 secs != 1 minute
+    REG_TM1CNT = TM_IRQ | TM_CASCADE | TIMER_ON;
 }

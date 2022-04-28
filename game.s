@@ -2069,6 +2069,7 @@ drawGame:
 	.comm	hOff,4,4
 	.comm	soundB,32,4
 	.comm	soundA,32,4
+	.comm	time_s,4,4
 	.comm	collisionMap,4,4
 	.comm	mapWidth,4,4
 	.comm	mapHeight,4,4

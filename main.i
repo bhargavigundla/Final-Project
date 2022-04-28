@@ -1451,17 +1451,20 @@ extern const unsigned int town_length;
 extern const signed char town_data[];
 # 15 "main.c" 2
 # 1 "sound.h" 1
+int time_s;
+
 void setupSounds();
 void playSoundA(const signed char* sound, int length, int loops);
 void playSoundB(const signed char* sound, int length, int loops);
 
 void setupInterrupts();
+void enableTimerInterrupts();
 void interruptHandler();
 
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 49 "sound.h"
+# 52 "sound.h"
 typedef struct{
     const signed char* data;
     int length;
@@ -1476,10 +1479,8 @@ typedef struct{
 SOUND soundA;
 SOUND soundB;
 # 16 "main.c" 2
+# 1 "main.h" 1
 
-
-
-void initialize();
 
 
 void goToStart();
@@ -1492,6 +1493,13 @@ void goToPause();
 void pause();
 void goToWin();
 void win();
+
+void enableTimerInterrupts(void);
+# 17 "main.c" 2
+
+
+
+void initialize();
 
 int seed;
 

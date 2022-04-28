@@ -13,22 +13,11 @@
 #include "spritesheet.h"
 #include "town.h"
 #include "sound.h"
+#include "main.h"
 
 
 // Prototypes.
 void initialize();
-
-// State Prototypes.
-void goToStart();
-void start();
-void goToGame();
-void game();
-void goToInstructions();
-void instructions();
-void goToPause();
-void pause();
-void goToWin();
-void win();
 
 int seed;
 

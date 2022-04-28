@@ -1103,17 +1103,20 @@ extern const unsigned int soundB_length;
 extern const signed char soundB_data[];
 # 23 "game.c" 2
 # 1 "sound.h" 1
+int time_s;
+
 void setupSounds();
 void playSoundA(const signed char* sound, int length, int loops);
 void playSoundB(const signed char* sound, int length, int loops);
 
 void setupInterrupts();
+void enableTimerInterrupts();
 void interruptHandler();
 
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 49 "sound.h"
+# 52 "sound.h"
 typedef struct{
     const signed char* data;
     int length;
