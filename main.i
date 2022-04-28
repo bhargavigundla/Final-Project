@@ -1616,7 +1616,6 @@ void goToGame() {
 
 
 void game() {
-    ((unsigned short *)0x5000000)[0] = (((unsigned short *)0x5000000)[0] + 17) % 256;
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         goToWin();
     } else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
@@ -1627,7 +1626,6 @@ void game() {
         } else {
             drawGame();
         }
-
     }
 }
 

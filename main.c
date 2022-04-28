@@ -163,7 +163,6 @@ void game() {
         } else {
             drawGame();
         }
-        
     }
 }
 

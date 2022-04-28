@@ -1071,25 +1071,25 @@ extern const unsigned short oceanNoStonePal[256];
 # 20 "oceanCM.h"
 extern const unsigned short oceanCMBitmap[61440];
 # 19 "game.c" 2
-# 1 "forest.h" 1
-# 22 "forest.h"
-extern const unsigned short forestTiles[14736];
+# 1 "forestForeground.h" 1
+# 22 "forestForeground.h"
+extern const unsigned short forestForegroundTiles[544];
 
 
-extern const unsigned short forestMap[2048];
+extern const unsigned short forestForegroundMap[2048];
 
 
-extern const unsigned short forestPal[256];
+extern const unsigned short forestForegroundPal[256];
 # 20 "game.c" 2
-# 1 "forestNoStone.h" 1
-# 22 "forestNoStone.h"
-extern const unsigned short forestNoStoneTiles[48];
+# 1 "sky.h" 1
+# 22 "sky.h"
+extern const unsigned short skyTiles[64];
 
 
-extern const unsigned short forestNoStoneMap[2048];
+extern const unsigned short skyMap[2048];
 
 
-extern const unsigned short forestNoStonePal[256];
+extern const unsigned short skyPal[256];
 # 21 "game.c" 2
 # 1 "forestCM.h" 1
 # 20 "forestCM.h"
@@ -1414,6 +1414,8 @@ void updateStage() {
 
                 (*(volatile unsigned short *)0x04000012) = vOff;
                 (*(volatile unsigned short *)0x04000010) = hOff;
+                (*(volatile unsigned short *)0x04000016) = vOff;
+                (*(volatile unsigned short *)0x04000014) = hOff;
                 initNonPlayers();
                 playSoundB(soundB_data, soundB_length, 0);
             }
@@ -1487,8 +1489,7 @@ void updateStage() {
             }
             break;
         case FOREST:
-            if (collision(player.worldCol, player.worldRow, player.width, player.height,
-                LEAFSTONECOL, LEAFSTONEROW, LEAFSTONEWIDTH, LEAFSTONEHEIGHT)) {
+            if (player.worldCol == mapWidth - player.width) {
                 if (!hasLeafStone) {
                     hasLeafStone = 1;
                 }
@@ -1617,16 +1618,16 @@ void setOceanBackground() {
 }
 
 void setForestBackground() {
-    if (hasLeafStone) {
-        DMANow(3, forestNoStonePal, ((unsigned short *)0x5000000), 256);
-        DMANow(3, forestNoStoneTiles, &((charblock *)0x6000000)[0], 29472 / 2);
-        DMANow(3, forestNoStoneMap, &((screenblock *)0x6000000)[24], 4096 / 2);
 
-    } else {
-        DMANow(3, forestPal, ((unsigned short *)0x5000000), 256);
-        DMANow(3, forestTiles, &((charblock *)0x6000000)[0], 29472 / 2);
-        DMANow(3, forestMap, &((screenblock *)0x6000000)[24], 4096 / 2);
-    }
+
+    DMANow(3, forestForegroundPal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, forestForegroundTiles, &((charblock *)0x6000000)[0], 1088 / 2);
+    DMANow(3, forestForegroundMap, &((screenblock *)0x6000000)[20], 4096 / 2);
+    DMANow(3, skyTiles, &((charblock *)0x6000000)[1], 128 / 2);
+    DMANow(3, skyMap, &((screenblock *)0x6000000)[30], 4096 / 2);
+
+
+
 }
 
 void showGame() {
@@ -1680,8 +1681,9 @@ void setStage() {
             setOceanBackground();
             break;
         case FOREST:
-            (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((24)<<8);
-            (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) | (1<<12);
+            (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((20)<<8);
+            (*(volatile unsigned short*)0x400000A) = (0<<7) | (3<<14) | ((1)<<2) | ((30)<<8);
+            (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) | (1<<9) | (1<<12);
             scroll = SCROLLING;
             mapWidth = FORESTWIDTH;
          mapHeight = FORESTHEIGHT;

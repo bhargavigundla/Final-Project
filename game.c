@@ -16,8 +16,8 @@
 #include "ocean.h"
 #include "oceanNoStone.h"
 #include "oceanCM.h"
-#include "forest.h"
-#include "forestNoStone.h"
+#include "forestForeground.h"
+#include "sky.h"
 #include "forestCM.h"
 #include "soundB.h"
 #include "sound.h"
@@ -307,6 +307,8 @@ void updateStage() {
                 
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
+                REG_BG1VOFF = vOff;
+                REG_BG1HOFF = hOff;
                 initNonPlayers();
                 playSoundB(soundB_data, soundB_length, 0);
             }
@@ -380,8 +382,7 @@ void updateStage() {
             }
             break;
         case FOREST:
-            if (collision(player.worldCol, player.worldRow, player.width, player.height,
-                LEAFSTONECOL, LEAFSTONEROW, LEAFSTONEWIDTH, LEAFSTONEHEIGHT)) {
+            if (player.worldCol == mapWidth - player.width) {
                 if (!hasLeafStone) {
                     hasLeafStone = 1; 
                 }
@@ -509,17 +510,17 @@ void setOceanBackground() {
     }
 }
 
-void setForestBackground() {
-    if (hasLeafStone) {        
-        DMANow(3, forestNoStonePal, PALETTE, 256);
-        DMANow(3, forestNoStoneTiles, &CHARBLOCK[0], forestTilesLen / 2);
-        DMANow(3, forestNoStoneMap, &SCREENBLOCK[24], forestMapLen / 2);
-        
-    } else {
-        DMANow(3, forestPal, PALETTE, 256);
-        DMANow(3, forestTiles, &CHARBLOCK[0], forestTilesLen / 2);
-        DMANow(3, forestMap, &SCREENBLOCK[24], forestMapLen / 2);
-    }
+void setForestBackground() {                
+    // REG_BG0CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(20);
+    // REG_BG1CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(1) | BG_SCREENBLOCK(30);
+    DMANow(3, forestForegroundPal, PALETTE, 256);
+    DMANow(3, forestForegroundTiles, &CHARBLOCK[0], forestForegroundTilesLen / 2);
+    DMANow(3, forestForegroundMap, &SCREENBLOCK[20], forestForegroundMapLen / 2);
+    DMANow(3, skyTiles, &CHARBLOCK[1], skyTilesLen / 2);
+    DMANow(3, skyMap, &SCREENBLOCK[30], skyMapLen / 2);
+    // DMANow(3, forestNoStonePal, PALETTE, 256);
+    // DMANow(3, forestNoStoneTiles, &CHARBLOCK[0], forestTilesLen / 2);
+    // DMANow(3, forestNoStoneMap, &SCREENBLOCK[24], forestMapLen / 2);
 }
 
 void showGame() {
@@ -573,8 +574,9 @@ void setStage() {
             setOceanBackground();
             break;
         case FOREST:            
-            REG_BG0CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(24);
-            REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
+            REG_BG0CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(20);
+            REG_BG1CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(1) | BG_SCREENBLOCK(30);
+            REG_DISPCTL = MODE0 | BG0_ENABLE | BG1_ENABLE | SPRITE_ENABLE;
             scroll = SCROLLING;
             mapWidth = FORESTWIDTH;
 	        mapHeight = FORESTHEIGHT;

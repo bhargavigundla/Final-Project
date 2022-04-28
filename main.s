@@ -441,11 +441,6 @@ game:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r2, #83886080
-	ldrh	r3, [r2]
-	add	r3, r3, #17
-	and	r3, r3, #255
-	strh	r3, [r2]	@ movhi
 	ldr	r3, .L85
 	ldrh	r3, [r3]
 	tst	r3, #8
