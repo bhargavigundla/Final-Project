@@ -18,18 +18,6 @@
 // Prototypes.
 void initialize();
 
-// State Prototypes.
-void goToStart();
-void start();
-void goToGame();
-void game();
-void goToInstructions();
-void instructions();
-void goToPause();
-void pause();
-void goToWin();
-void win();
-
 int seed;
 
 // States.
@@ -112,8 +100,6 @@ void start() {
     if (BUTTON_PRESSED(BUTTON_START)) {
         srand(seed);
         initGame();
-        goToGame();
-    } else if (BUTTON_PRESSED(BUTTON_SELECT)) {
         goToInstructions();
     } else {
         seed++;
@@ -153,9 +139,7 @@ void goToGame() {
 
 // Runs every frame of the game state.
 void game() {
-    if (BUTTON_PRESSED(BUTTON_START)) {
-        goToWin();
-    } else if (BUTTON_PRESSED(BUTTON_SELECT)) {
+    if (BUTTON_PRESSED(BUTTON_SELECT)) {
         goToPause();
     } else {
         if (updateGame() == 1) {
@@ -183,11 +167,11 @@ void goToPause() {
 
 // Runs every frame of the pause state.
 void pause() {
-    if (BUTTON_PRESSED(BUTTON_A) || BUTTON_PRESSED(BUTTON_B)) {
+    if (BUTTON_PRESSED(BUTTON_START)) { // resume play
         goToGame();
-    } else if (BUTTON_PRESSED(BUTTON_SELECT)) {
-        goToWin();
-    } else if (BUTTON_PRESSED(BUTTON_START)) {
+    } else if (BUTTON_PRESSED(BUTTON_SELECT)) { // restart game
+        goToInstructions();
+    } else if (BUTTON_PRESSED(BUTTON_B)) {
         goToStart();
     }
 }

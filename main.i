@@ -1481,18 +1481,6 @@ SOUND soundB;
 
 void initialize();
 
-
-void goToStart();
-void start();
-void goToGame();
-void game();
-void goToInstructions();
-void instructions();
-void goToPause();
-void pause();
-void goToWin();
-void win();
-
 int seed;
 
 
@@ -1575,8 +1563,6 @@ void start() {
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         srand(seed);
         initGame();
-        goToGame();
-    } else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
         goToInstructions();
     } else {
         seed++;
@@ -1616,9 +1602,7 @@ void goToGame() {
 
 
 void game() {
-    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
-        goToWin();
-    } else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+    if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
         goToPause();
     } else {
         if (updateGame() == 1) {
@@ -1646,11 +1630,11 @@ void goToPause() {
 
 
 void pause() {
-    if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0)))) || (!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         goToGame();
     } else if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
-        goToWin();
-    } else if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+        goToInstructions();
+    } else if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
         goToStart();
     }
 }
