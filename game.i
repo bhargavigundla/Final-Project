@@ -977,6 +977,8 @@ void returnToHouse();
 void initNonPlayerSprites();
 void clearSprites();
 
+void waitSeconds();
+
 
 int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, int width, int height,
         int colShift, int rowShift);
@@ -1731,9 +1733,19 @@ void setLavaHitBackground() {
     DMANow(3, LavaLoseMap, &((screenblock *)0x6000000)[30], 2048 / 2);
 
 
+    waitSeconds();
+}
+
+
+void waitSeconds() {
     mgba_printf("seconds before wait: (%d)", seconds);
     int secondsBeforeWait = seconds;
-    while (seconds < secondsBeforeWait + 4){
+    int secChange = 0;
+    while (secChange < 5){
+        if (secondsBeforeWait != seconds) {
+            secChange += 1;
+            secondsBeforeWait = seconds;
+        }
         mgba_printf("seconds before wait: (%d)", seconds);
     }
 }
@@ -1753,10 +1765,7 @@ void setObtainedFlareonBackground() {
     DMANow(3, gotFireTiles, &((charblock *)0x6000000)[0], 6048 / 2);
     DMANow(3, gotFireMap, &((screenblock *)0x6000000)[30], 2048 / 2);
     mgba_printf("seconds before wait: (%d)", seconds);
-    int secondsBeforeWait = seconds;
-    while (seconds < secondsBeforeWait + 4){
-        mgba_printf("seconds before wait: (%d)", seconds);
-    }
+    waitSeconds();
 }
 
 void setPoopHitBackground() {
@@ -1772,11 +1781,7 @@ void setPoopHitBackground() {
     DMANow(3, PoopHitPal, ((unsigned short *)0x5000000), 256);
     DMANow(3, PoopHitTiles, &((charblock *)0x6000000)[0], 11936 / 2);
     DMANow(3, PoopHitMap, &((screenblock *)0x6000000)[30], 2048 / 2);
-    mgba_printf("seconds before wait: (%d)", seconds);
-    int secondsBeforeWait = seconds;
-    while (seconds < secondsBeforeWait + 4){
-        mgba_printf("seconds before wait: (%d)", seconds);
-    }
+    waitSeconds();
 }
 
 void setObtainedLeafeonBackground() {
@@ -1794,10 +1799,7 @@ void setObtainedLeafeonBackground() {
     DMANow(3, gotLeafTiles, &((charblock *)0x6000000)[0], 4352 / 2);
     DMANow(3, gotLeafMap, &((screenblock *)0x6000000)[30], 2048 / 2);
     mgba_printf("seconds before wait: (%d)", seconds);
-    int secondsBeforeWait = seconds;
-    while (seconds < secondsBeforeWait + 4){
-        mgba_printf("seconds before wait: (%d)", seconds);
-    }
+    waitSeconds();
 }
 
 void setFireCaveBackground() {

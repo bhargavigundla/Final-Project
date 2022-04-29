@@ -569,6 +569,9 @@ game:
 	.align	2
 .LC0:
 	.ascii	"debug init\000"
+	.align	2
+.LC1:
+	.ascii	"seconds: (%d)\000"
 	.section	.text.startup,"ax",%progbits
 	.align	2
 	.global	main
@@ -582,33 +585,36 @@ main:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r7, fp, lr}
-	ldr	r3, .L95
+	ldr	r3, .L96
 	mov	lr, pc
 	bx	r3
-	ldr	r6, .L95+4
-	ldr	r3, .L95+8
-	ldr	fp, .L95+12
+	ldr	r4, .L96+4
+	ldr	r3, .L96+8
 	mov	lr, pc
 	bx	r3
-	ldr	r0, .L95+16
-	ldr	r3, .L95+20
+	ldr	r6, .L96+12
+	ldr	r0, .L96+16
 	mov	lr, pc
-	bx	r3
-	ldr	r5, .L95+24
-	ldr	r1, [r6]
-	ldrh	r0, [fp]
-	ldr	r10, .L95+28
-	ldr	r9, .L95+32
-	ldr	r8, .L95+36
-	ldr	r7, .L95+40
-	ldr	r4, .L95+44
-.L82:
-	strh	r0, [r5]	@ movhi
-	ldrh	r3, [r4, #48]
-	strh	r3, [fp]	@ movhi
-	cmp	r1, #4
-	ldrls	pc, [pc, r1, asl #2]
-	b	.L90
+	bx	r6
+	ldr	r5, .L96+20
+	ldrh	r3, [r4]
+	ldr	r10, .L96+24
+	ldr	r9, .L96+28
+	ldr	fp, .L96+32
+	ldr	r8, .L96+36
+	ldr	r7, .L96+40
+.L89:
+	strh	r3, [r5]	@ movhi
+	ldrh	r3, [r8, #48]
+	mov	r0, r7
+	ldr	r1, [r10]
+	strh	r3, [r4]	@ movhi
+	mov	lr, pc
+	bx	r6
+	ldr	r3, [r9]
+	cmp	r3, #4
+	ldrls	pc, [pc, r3, asl #2]
+	b	.L95
 .L84:
 	.word	.L88
 	.word	.L87
@@ -616,60 +622,59 @@ main:
 	.word	.L85
 	.word	.L83
 .L83:
-	tst	r0, #8
-	beq	.L90
+	ldrh	r3, [r5]
 	tst	r3, #8
-	beq	.L94
-.L90:
-	mov	r0, r3
-	b	.L82
-.L85:
-	mov	lr, pc
-	bx	r7
-	ldr	r1, [r6]
-	ldrh	r0, [fp]
-	b	.L82
-.L86:
-	mov	lr, pc
-	bx	r8
-	ldr	r1, [r6]
-	ldrh	r0, [fp]
-	b	.L82
-.L88:
-	mov	lr, pc
-	bx	r10
-	ldr	r1, [r6]
-	ldrh	r0, [fp]
-	b	.L82
-.L87:
-	mov	lr, pc
-	bx	r9
-	ldr	r1, [r6]
-	ldrh	r0, [fp]
-	b	.L82
-.L94:
-	ldr	r3, .L95+48
+	ldrh	r3, [r4]
+	beq	.L89
+	tst	r3, #8
+	bne	.L89
+	ldr	r3, .L96+44
 	mov	lr, pc
 	bx	r3
-	ldr	r1, [r6]
-	ldrh	r0, [fp]
-	b	.L82
-.L96:
-	.align	2
+	ldrh	r3, [r4]
+	b	.L89
+.L85:
+	ldr	r3, .L96+48
+	mov	lr, pc
+	bx	r3
 .L95:
+	ldrh	r3, [r4]
+	b	.L89
+.L86:
+	ldr	r3, .L96+52
+	mov	lr, pc
+	bx	r3
+	ldrh	r3, [r4]
+	b	.L89
+.L88:
+	mov	lr, pc
+	bx	fp
+	ldrh	r3, [r4]
+	b	.L89
+.L87:
+	ldr	r3, .L96+56
+	mov	lr, pc
+	bx	r3
+	ldrh	r3, [r4]
+	b	.L89
+.L97:
+	.align	2
+.L96:
 	.word	initialize
-	.word	state
-	.word	mgba_open
 	.word	buttons
-	.word	.LC0
+	.word	mgba_open
 	.word	mgba_printf
+	.word	.LC0
 	.word	oldButtons
+	.word	seconds
+	.word	state
 	.word	start
-	.word	game
-	.word	instructions
-	.word	pause
 	.word	67109120
+	.word	.LC1
 	.word	goToStart
+	.word	pause
+	.word	instructions
+	.word	game
 	.size	main, .-main
 	.text
 	.align	2
@@ -683,18 +688,18 @@ win:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
-	ldr	r3, .L102
+	ldr	r3, .L103
 	ldrh	r3, [r3]
 	tst	r3, #8
 	bxeq	lr
-	ldr	r3, .L102+4
+	ldr	r3, .L103+4
 	ldrh	r3, [r3]
 	tst	r3, #8
 	bxne	lr
 	b	goToStart
-.L103:
+.L104:
 	.align	2
-.L102:
+.L103:
 	.word	oldButtons
 	.word	buttons
 	.size	win, .-win

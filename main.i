@@ -1563,7 +1563,7 @@ int main() {
         oldButtons = buttons;
         buttons = (*(volatile unsigned short *)0x04000130);
 
-
+        mgba_printf("seconds: (%d)", seconds);
 
 
         switch (state) {
