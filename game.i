@@ -953,7 +953,9 @@ void setOceanBackground();
 void setForestBackground();
 void setLeafStoneClearingBackground();
 void setLavaHitBackground();
+void setPoopHitBackground();
 void setObtainedFlareonBackground();
+void setObtainedLeafeonBackground();
 void initSprites();
 void setStage();
 

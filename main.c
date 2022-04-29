@@ -12,6 +12,7 @@
 #include "outside.h"
 #include "spritesheet.h"
 #include "town.h"
+#include "winSong.h"
 #include "sound.h"
 
 // Prototypes.
@@ -186,6 +187,7 @@ void pause() {
 
 // Sets up the win state.
 void goToWin() {
+    playSoundA(winSong_data, winSong_length, 1);
     state = WIN;
 
     REG_DISPCTL = MODE0 | BG0_ENABLE;

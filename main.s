@@ -403,36 +403,43 @@ goToWin:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
+	ldr	r3, .L67
 	push	{r4, lr}
+	ldr	r1, [r3]
+	mov	r2, #1
+	ldr	r0, .L67+4
+	ldr	r3, .L67+8
+	mov	lr, pc
+	bx	r3
+	mov	r4, #256
 	mov	r2, #67108864
 	mov	r3, #0
 	mov	r0, #4
-	mov	r4, #256
-	ldr	r1, .L67
+	ldr	r1, .L67+12
 	str	r0, [r1]
 	strh	r4, [r2]	@ movhi
-	ldr	r1, .L67+4
+	ldr	r1, .L67+16
 	strh	r3, [r2, #18]	@ movhi
 	strh	r3, [r2, #16]	@ movhi
 	mov	lr, pc
 	bx	r1
 	mov	r3, r4
 	mov	r2, #83886080
-	ldr	r4, .L67+8
+	ldr	r4, .L67+20
 	mov	r0, #3
-	ldr	r1, .L67+12
+	ldr	r1, .L67+24
 	mov	lr, pc
 	bx	r4
 	mov	r3, #7616
 	mov	r2, #100663296
 	mov	r0, #3
-	ldr	r1, .L67+16
+	ldr	r1, .L67+28
 	mov	lr, pc
 	bx	r4
 	mov	r3, #1024
 	mov	r0, #3
-	ldr	r2, .L67+20
-	ldr	r1, .L67+24
+	ldr	r2, .L67+32
+	ldr	r1, .L67+36
 	mov	lr, pc
 	bx	r4
 	pop	{r4, lr}
@@ -440,6 +447,9 @@ goToWin:
 .L68:
 	.align	2
 .L67:
+	.word	winSong_length
+	.word	winSong_data
+	.word	playSoundA
 	.word	state
 	.word	waitForVBlank
 	.word	DMANow

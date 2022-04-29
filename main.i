@@ -1407,7 +1407,9 @@ void setOceanBackground();
 void setForestBackground();
 void setLeafStoneClearingBackground();
 void setLavaHitBackground();
+void setPoopHitBackground();
 void setObtainedFlareonBackground();
+void setObtainedLeafeonBackground();
 void initSprites();
 void setStage();
 
@@ -1454,6 +1456,13 @@ extern const unsigned int town_sampleRate;
 extern const unsigned int town_length;
 extern const signed char town_data[];
 # 15 "main.c" 2
+# 1 "winSong.h" 1
+
+
+extern const unsigned int winSong_sampleRate;
+extern const unsigned int winSong_length;
+extern const signed char winSong_data[];
+# 16 "main.c" 2
 # 1 "sound.h" 1
 void setupSounds();
 void playSoundA(const signed char* sound, int length, int loops);
@@ -1479,7 +1488,7 @@ typedef struct{
 
 SOUND soundA;
 SOUND soundB;
-# 16 "main.c" 2
+# 17 "main.c" 2
 
 
 void initialize();
@@ -1653,6 +1662,7 @@ void pause() {
 
 
 void goToWin() {
+    playSoundA(winSong_data, winSong_length, 1);
     state = WIN;
 
     (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
