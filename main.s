@@ -414,27 +414,27 @@ goToWin:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	ldr	r3, .L67
-	push	{r4, lr}
+	push	{r4, r5, r6, lr}
 	ldr	r1, [r3]
 	mov	r2, #1
 	ldr	r0, .L67+4
 	ldr	r3, .L67+8
 	mov	lr, pc
 	bx	r3
-	mov	r4, #256
+	mov	ip, #4
 	mov	r3, #67108864
-	mov	r0, #4
 	mov	r1, #7168
-	ldr	r2, .L67+12
-	str	r0, [r2]
+	mov	r2, #4352
+	ldr	r0, .L67+12
+	ldr	r5, .L67+16
+	str	ip, [r0]
 	strh	r1, [r3, #8]	@ movhi
-	ldr	r2, .L67+16
-	strh	r4, [r3]	@ movhi
+	strh	r2, [r3]	@ movhi
 	mov	lr, pc
-	bx	r2
-	mov	r3, r4
-	mov	r2, #83886080
+	bx	r5
 	ldr	r4, .L67+20
+	mov	r3, #256
+	mov	r2, #83886080
 	mov	r0, #3
 	ldr	r1, .L67+24
 	mov	lr, pc
@@ -445,13 +445,50 @@ goToWin:
 	ldr	r1, .L67+28
 	mov	lr, pc
 	bx	r4
-	mov	r3, #1024
 	mov	r0, #3
 	ldr	r2, .L67+32
 	ldr	r1, .L67+36
+	mov	r3, #1024
 	mov	lr, pc
 	bx	r4
-	pop	{r4, lr}
+	ldr	r3, .L67+40
+	mov	lr, pc
+	bx	r3
+	mov	lr, pc
+	bx	r5
+	ldr	r2, .L67+44
+	ldr	r3, .L67+48
+	ldr	r0, .L67+52
+	ldrh	r2, [r2]
+	ldr	r3, [r3]
+	ldr	r1, .L67+56
+	ldr	ip, [r0]
+	rsb	lr, r2, #20
+	ldr	r0, .L67+60
+	rsb	r2, r2, #80
+	lsl	r3, r3, #23
+	lsr	r3, r3, #16
+	and	lr, lr, r1
+	and	r2, r2, r1
+	rsb	ip, ip, #80
+	ldr	r1, .L67+64
+	orr	lr, lr, r0
+	orr	r2, r2, r0
+	and	ip, ip, #255
+	add	r5, r3, #16
+	add	r0, r3, #20
+	strh	lr, [r1, #10]	@ movhi
+	strh	r2, [r1, #18]	@ movhi
+	strh	r5, [r1, #12]	@ movhi
+	strh	r0, [r1, #20]	@ movhi
+	mov	r3, #512
+	mov	r2, #117440512
+	mov	r0, #3
+	strh	ip, [r1, #8]	@ movhi
+	strh	ip, [r1, #16]	@ movhi
+	mov	lr, pc
+	bx	r4
+	pop	{r4, r5, r6, lr}
 	bx	lr
 .L68:
 	.align	2
@@ -466,6 +503,13 @@ goToWin:
 	.word	winTiles
 	.word	100720640
 	.word	winMap
+	.word	hideSprites
+	.word	hOff
+	.word	currEeveeFrame
+	.word	vOff
+	.word	511
+	.word	-32768
+	.word	shadowOAM
 	.size	goToWin, .-goToWin
 	.align	2
 	.global	game
@@ -644,6 +688,8 @@ win:
 	.comm	oldButtons,2,2
 	.comm	buttons,2,2
 	.comm	state,4,4
+	.comm	currEeveeFrame,4,4
+	.comm	eeveeTimer,4,4
 	.comm	seed,4,4
 	.comm	soundB,32,4
 	.comm	soundA,32,4

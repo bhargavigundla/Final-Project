@@ -1501,7 +1501,8 @@ extern const signed char idleSong_data[];
 void initialize();
 
 int seed;
-
+int eeveeTimer;
+int currEeveeFrame;
 
 enum {
     START,
@@ -1674,12 +1675,24 @@ void goToWin() {
     playSoundA(winSong_data, winSong_length, 1);
     state = WIN;
     (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
-    (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
+    (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) | (1<<12);
 
     waitForVBlank();
     DMANow(3, winPal, ((unsigned short *)0x5000000), 256);
     DMANow(3, winTiles, &((charblock *)0x6000000)[0], 2784 / 2);
     DMANow(3, winMap, &((screenblock *)0x6000000)[28], 2048 / 2);
+
+    hideSprites();
+
+    waitForVBlank();
+    shadowOAM[1].attr0 = (0xFF &(80 - vOff)) | (0<<14);
+    shadowOAM[1].attr1 = (0x1FF &(20 - hOff)) | (2<<14);
+    shadowOAM[1].attr2 = ((0)<<12) | (((currEeveeFrame * 4))*32+(16));
+
+    shadowOAM[2].attr0 = (0xFF &(80 - vOff)) | (0<<14);
+    shadowOAM[2].attr1 = (0x1FF &(80 - hOff)) | (2<<14);
+    shadowOAM[2].attr2 = ((0)<<12) | (((currEeveeFrame * 4))*32+(20));
+    DMANow(3, shadowOAM, ((OBJ_ATTR*)(0x7000000)), 128 * 4);
 }
 
 

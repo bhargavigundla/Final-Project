@@ -20,7 +20,8 @@
 void initialize();
 
 int seed;
-
+int eeveeTimer;
+int currEeveeFrame;
 // States.
 enum {
     START,
@@ -193,12 +194,24 @@ void goToWin() {
     playSoundA(winSong_data, winSong_length, 1);
     state = WIN;
     REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
-    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
 
     waitForVBlank();
     DMANow(3, winPal, PALETTE, 256);
     DMANow(3, winTiles, &CHARBLOCK[0], winTilesLen / 2);
     DMANow(3, winMap, &SCREENBLOCK[28], winMapLen / 2);
+
+    hideSprites();
+
+    waitForVBlank();
+    shadowOAM[1].attr0 = (ROWMASK &(80 - vOff)) | ATTR0_SQUARE;
+    shadowOAM[1].attr1 = (COLMASK &(20 - hOff)) | ATTR1_MEDIUM;
+    shadowOAM[1].attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(16, (currEeveeFrame * 4));
+
+    shadowOAM[2].attr0 = (ROWMASK &(80 - vOff)) | ATTR0_SQUARE;
+    shadowOAM[2].attr1 = (COLMASK &(80 - hOff)) | ATTR1_MEDIUM;
+    shadowOAM[2].attr2 = ATTR2_PALROW(0) | ATTR2_TILEID(20, (currEeveeFrame * 4));  
+    DMANow(3, shadowOAM, OAM, 128 * 4);
 }
 
 // Runs every frame of the win state.
