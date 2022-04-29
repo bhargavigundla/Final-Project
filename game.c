@@ -31,8 +31,11 @@
 #include "volcanoSong.h"
 #include "idleSong.h"
 #include "evolvedSong.h"
+#include "town.h"
+#include "houseSong.h"
+#include "forestSong.h"
 
-#define lavaRocksLen 12
+#define lavaRocksLen 14
 #define poopsLen 10
 
 // Variables
@@ -285,7 +288,6 @@ void updateStage() {
                 returnToHouse();
             } else if (collision(player.worldCol, player.worldRow, player.width, player.height, 
                 HOTDOORCOL, HOTDOORROW, HOTDOORWIDTH, HOTDOORHEIGHT)) {
-                playSoundA(volcanoSong_data, volcanoSong_length, 1);
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) volcanoCMBitmap;
                 mapHeight = VOLCANOHEIGHT;
@@ -324,7 +326,7 @@ void updateStage() {
             //     playSoundB(soundB_data, soundB_length, 0);
             // } 
             else if (collision(player.worldCol, player.worldRow, player.width, player.height,
-                FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {               
+                FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {    
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) forestCMBitmap;
                 mapHeight = FORESTHEIGHT;
@@ -357,7 +359,6 @@ void updateStage() {
             
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                           FIRESTONECAVEDOORCOL, FIRESTONECAVEDOORROW, FIRESTONECAVEDOORWIDTH, FIRESTONECAVEDOORHEIGHT)) {
-                playSoundA(caveMusic_data, caveMusic_length, 1);
                 scroll = STATIC;
                 collisionMap = (unsigned char *) fireStoneCaveCMBitmap;
                 mapHeight = 160;
@@ -428,13 +429,12 @@ void updateStage() {
                     }
                 } 
 
-            if (player.worldCol == mapWidth - player.width - 5) {
+            if (player.worldCol >= mapWidth - player.width - 10) {
                 // if (!hasLeafStone) {
                 //     hasLeafStone = 1; 
                 // }
                 // returnToHouse();
                 // playSoundB(soundB_data, soundB_length, 0); 
-                playSoundA(caveMusic_data, caveMusic_length, 1);               
                 scroll = STATIC;
                 collisionMap = (unsigned char *) forestClearingCMBitmap;
                 mapHeight = 160;
@@ -699,6 +699,7 @@ void showGame() {
 void setStage() {
     switch (stage) {
         case (OUTSIDE):
+            playSoundA(houseSong_data, houseSong_length, 1);
             REG_BG0CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
             REG_DISPCTL = MODE0 | BG0_ENABLE |SPRITE_ENABLE;
             mapWidth = OUTSIDEWIDTH;
@@ -708,6 +709,7 @@ void setStage() {
             setOutsideBackground();
             break;
         case (HOUSE):
+            playSoundA(houseSong_data, houseSong_length, 1);
             REG_BG0CNT = BG_8BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
             REG_DISPCTL = MODE0 | BG0_ENABLE |SPRITE_ENABLE;
             scroll = STATIC;
@@ -718,6 +720,7 @@ void setStage() {
             setHouseBackground();
             break;
         case VOLCANO:
+            playSoundA(volcanoSong_data, volcanoSong_length, 1);
             REG_BG0CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(24);
             REG_DISPCTL = MODE0 | BG0_ENABLE | SPRITE_ENABLE;
             scroll = SCROLLING;
@@ -737,7 +740,8 @@ void setStage() {
         //     waitForVBlank();
         //     setOceanBackground();
         //     break;
-        case FOREST:            
+        case FOREST: 
+            playSoundA(forestSong_data, forestSong_length, 1);           
             REG_BG0CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(0) | BG_SCREENBLOCK(20);
             REG_BG1CNT = BG_4BPP | BG_SIZE_LARGE | BG_CHARBLOCK(1) | BG_SCREENBLOCK(30);
             REG_DISPCTL = MODE0 | BG0_ENABLE | BG1_ENABLE | SPRITE_ENABLE;
@@ -749,6 +753,7 @@ void setStage() {
             setForestBackground();
             break;
         case FIRESTONEROOM:
+            playSoundA(caveMusic_data, caveMusic_length, 1);
             REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
             REG_DISPCTL = MODE0 | BG0_ENABLE |SPRITE_ENABLE;
                         
@@ -760,6 +765,7 @@ void setStage() {
             setFireCaveBackground();
             break;
         case LEAFSTONECLEARING:
+            playSoundA(caveMusic_data, caveMusic_length, 1);
             REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
             REG_DISPCTL = MODE0 | BG0_ENABLE |SPRITE_ENABLE;
 

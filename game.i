@@ -1219,6 +1219,27 @@ extern const unsigned int evolvedSong_sampleRate;
 extern const unsigned int evolvedSong_length;
 extern const signed char evolvedSong_data[];
 # 34 "game.c" 2
+# 1 "town.h" 1
+
+
+extern const unsigned int town_sampleRate;
+extern const unsigned int town_length;
+extern const signed char town_data[];
+# 35 "game.c" 2
+# 1 "houseSong.h" 1
+
+
+extern const unsigned int houseSong_sampleRate;
+extern const unsigned int houseSong_length;
+extern const signed char houseSong_data[];
+# 36 "game.c" 2
+# 1 "forestSong.h" 1
+
+
+extern const unsigned int forestSong_sampleRate;
+extern const unsigned int forestSong_length;
+extern const signed char forestSong_data[];
+# 37 "game.c" 2
 
 
 
@@ -1319,7 +1340,7 @@ OBJ_ATTR shadowOAM[128];
 ANISPRITE player;
 ANISPRITE togekiss;
 
-ANISPRITE lavaRocks[12];
+ANISPRITE lavaRocks[14];
 ANISPRITE poops[10];
 
 unsigned char* collisionMap;
@@ -1445,7 +1466,7 @@ void updatePlayer() {
             }
         }
     }
-# 272 "game.c"
+# 275 "game.c"
     (*(volatile unsigned short *)0x04000014) = skyShift;
     if (stage == FOREST && (!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
         cheat = 1;
@@ -1462,7 +1483,6 @@ void updateStage() {
                 returnToHouse();
             } else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 HOTDOORCOL, HOTDOORROW, HOTDOORWIDTH, HOTDOORHEIGHT)) {
-                playSoundA(volcanoSong_data, volcanoSong_length, 1);
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) volcanoCMBitmap;
                 mapHeight = VOLCANOHEIGHT;
@@ -1480,7 +1500,7 @@ void updateStage() {
                 (*(volatile unsigned short *)0x04000010) = hOff;
                 initNonPlayers();
             }
-# 326 "game.c"
+# 328 "game.c"
             else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {
                 scroll = SCROLLING;
@@ -1515,7 +1535,6 @@ void updateStage() {
 
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                           FIRESTONECAVEDOORCOL, FIRESTONECAVEDOORROW, FIRESTONECAVEDOORWIDTH, FIRESTONECAVEDOORHEIGHT)) {
-                playSoundA(caveMusic_data, caveMusic_length, 1);
                 scroll = STATIC;
                 collisionMap = (unsigned char *) fireStoneCaveCMBitmap;
                 mapHeight = 160;
@@ -1538,7 +1557,7 @@ void updateStage() {
                 returnToHouse();
             }
 
-            for (int i = 0; i < 12; i++) {
+            for (int i = 0; i < 14; i++) {
                 if (collision(player.worldCol, player.worldRow, player.width, player.height,
                     lavaRocks[i].worldCol, lavaRocks[i].worldRow, lavaRocks[i].width, lavaRocks[i].height)) {
                     setLavaHitBackground();
@@ -1559,7 +1578,7 @@ void updateStage() {
                 returnToHouse();
             }
             break;
-# 414 "game.c"
+# 415 "game.c"
         case FOREST:
             for (int i = 0; i < 10; i++) {
                     if (poops[i].worldRow > player.worldRow) {
@@ -1577,13 +1596,12 @@ void updateStage() {
                     }
                 }
 
-            if (player.worldCol == mapWidth - player.width - 5) {
+            if (player.worldCol >= mapWidth - player.width - 10) {
 
 
 
 
 
-                playSoundA(caveMusic_data, caveMusic_length, 1);
                 scroll = STATIC;
                 collisionMap = (unsigned char *) forestClearingCMBitmap;
                 mapHeight = 160;
@@ -1848,6 +1866,7 @@ void showGame() {
 void setStage() {
     switch (stage) {
         case (OUTSIDE):
+            playSoundA(houseSong_data, houseSong_length, 1);
             (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((28)<<8);
             (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) |(1<<12);
             mapWidth = OUTSIDEWIDTH;
@@ -1857,6 +1876,7 @@ void setStage() {
             setOutsideBackground();
             break;
         case (HOUSE):
+            playSoundA(houseSong_data, houseSong_length, 1);
             (*(volatile unsigned short*)0x4000008) = (1<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
             (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) |(1<<12);
             scroll = STATIC;
@@ -1867,6 +1887,7 @@ void setStage() {
             setHouseBackground();
             break;
         case VOLCANO:
+            playSoundA(volcanoSong_data, volcanoSong_length, 1);
             (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((24)<<8);
             (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) | (1<<12);
             scroll = SCROLLING;
@@ -1876,8 +1897,9 @@ void setStage() {
             waitForVBlank();
             setVolcanoBackground();
             break;
-# 740 "game.c"
+# 743 "game.c"
         case FOREST:
+            playSoundA(forestSong_data, forestSong_length, 1);
             (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((20)<<8);
             (*(volatile unsigned short*)0x400000A) = (0<<7) | (3<<14) | ((1)<<2) | ((30)<<8);
             (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) | (1<<9) | (1<<12);
@@ -1889,6 +1911,7 @@ void setStage() {
             setForestBackground();
             break;
         case FIRESTONEROOM:
+            playSoundA(caveMusic_data, caveMusic_length, 1);
             (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
             (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) |(1<<12);
 
@@ -1900,6 +1923,7 @@ void setStage() {
             setFireCaveBackground();
             break;
         case LEAFSTONECLEARING:
+            playSoundA(caveMusic_data, caveMusic_length, 1);
             (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
             (*(volatile unsigned short *)0x4000000) = 0 | (1<<8) |(1<<12);
 
@@ -1951,7 +1975,7 @@ void initNonPlayers() {
         case HOUSE:
             break;
         case VOLCANO:
-            for (int i = 0; i < 12; i++) {
+            for (int i = 0; i < 14; i++) {
                 lavaRocks[i].width = 16;
                 lavaRocks[i].height = 16;
                 lavaRocks[i].rdel = (i % 2 == 0) ? 2 : 3;
@@ -1981,7 +2005,7 @@ void initNonPlayers() {
 void updateNonPlayers() {
     switch (stage) {
         case VOLCANO:
-            for (int i = 0; i < 12; i++) {
+            for (int i = 0; i < 14; i++) {
                 lavaRocks[i].worldRow = (lavaRocks[i].worldRow + lavaRocks[i].rdel) % (mapHeight - LAVAROCKSHEIGHT);
             }
         break;
@@ -2033,7 +2057,7 @@ void drawNonPlayers() {
             }
             break;
         case VOLCANO:
-            for (int i = 1; i < 12 + 1; i++) {
+            for (int i = 1; i < 14 + 1; i++) {
 
 
                 if ((lavaRocks[i - 1].worldRow + lavaRocks[i - 1].height - vOff >= 0 && lavaRocks[i - 1].worldRow - vOff <= 160) &&

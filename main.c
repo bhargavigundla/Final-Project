@@ -112,6 +112,7 @@ void start() {
     if (BUTTON_PRESSED(BUTTON_START)) {
         srand(seed);
         initGame();
+        playSoundA(idleSong_data, idleSong_length, 1);
         goToInstructions();
     } else {
         seed++;
@@ -163,7 +164,6 @@ void game() {
 
 // Sets up the pause state.
 void goToPause() {
-    playSoundA(idleSong_data, idleSong_length, 1);
     state = PAUSE;
 
     REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
@@ -181,7 +181,7 @@ void goToPause() {
 void pause() {
     if (BUTTON_PRESSED(BUTTON_START)) { // resume play
         goToGame();
-    } else if (BUTTON_PRESSED(BUTTON_SELECT)) { // restart game
+    } else if (BUTTON_PRESSED(BUTTON_SELECT)) { 
         goToInstructions();
     } else if (BUTTON_PRESSED(BUTTON_B)) {
         goToStart();
@@ -192,10 +192,8 @@ void pause() {
 void goToWin() {
     playSoundA(winSong_data, winSong_length, 1);
     state = WIN;
-
+    REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
     REG_DISPCTL = MODE0 | BG0_ENABLE;
-    REG_BG0VOFF = 0;
-    REG_BG0HOFF = 0;
 
     waitForVBlank();
     DMANow(3, winPal, PALETTE, 256);
@@ -205,7 +203,7 @@ void goToWin() {
 
 // Runs every frame of the win state.
 void win() {
-    if (BUTTON_PRESSED(BUTTON_A) || BUTTON_PRESSED(BUTTON_B) || BUTTON_PRESSED(BUTTON_START)) {
+    if (BUTTON_PRESSED(BUTTON_START)) {
         goToStart();
     }   
 }

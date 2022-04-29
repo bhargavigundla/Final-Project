@@ -1342,7 +1342,7 @@ extern const unsigned short instructionsPal[256];
 # 8 "main.c" 2
 # 1 "win.h" 1
 # 22 "win.h"
-extern const unsigned short winTiles[7616];
+extern const unsigned short winTiles[1392];
 
 
 extern const unsigned short winMap[1024];
@@ -1593,6 +1593,7 @@ void start() {
     if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         srand(seed);
         initGame();
+        playSoundA(idleSong_data, idleSong_length, 1);
         goToInstructions();
     } else {
         seed++;
@@ -1644,7 +1645,6 @@ void game() {
 
 
 void goToPause() {
-    playSoundA(idleSong_data, idleSong_length, 1);
     state = PAUSE;
 
     (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
@@ -1673,20 +1673,18 @@ void pause() {
 void goToWin() {
     playSoundA(winSong_data, winSong_length, 1);
     state = WIN;
-
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
     (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
-    (*(volatile unsigned short *)0x04000012) = 0;
-    (*(volatile unsigned short *)0x04000010) = 0;
 
     waitForVBlank();
     DMANow(3, winPal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, winTiles, &((charblock *)0x6000000)[0], 15232 / 2);
+    DMANow(3, winTiles, &((charblock *)0x6000000)[0], 2784 / 2);
     DMANow(3, winMap, &((screenblock *)0x6000000)[28], 2048 / 2);
 }
 
 
 void win() {
-    if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0)))) || (!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1)))) || (!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         goToStart();
     }
 }
