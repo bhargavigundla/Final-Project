@@ -28,6 +28,7 @@ your TAs for tips if you’re confused)
 CS 2261 Spring 2022
 ● Includes meaningful use of timers and/or interrupts (other than vBlank interrupt
 and digital sound)
+○ I used timers for the 'you got hurt', and 'you evolved an eevee' screens!
 
 ● At least two sounds that can play simultaneously, of which at least one must use
 digital sound
