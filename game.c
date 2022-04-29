@@ -28,6 +28,8 @@
 #include "PoopHit.h"
 #include "gotLeaf.h"
 #include "gotFire.h"
+#include "caveMusic.h"
+#include "volcanoSong.h"
 
 #define lavaRocksLen 12
 #define poopsLen 10
@@ -282,6 +284,7 @@ void updateStage() {
                 returnToHouse();
             } else if (collision(player.worldCol, player.worldRow, player.width, player.height, 
                 HOTDOORCOL, HOTDOORROW, HOTDOORWIDTH, HOTDOORHEIGHT)) {
+                playSoundA(volcanoSong_data, volcanoSong_length, 1);
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) volcanoCMBitmap;
                 mapHeight = VOLCANOHEIGHT;
@@ -356,6 +359,7 @@ void updateStage() {
             
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                           FIRESTONECAVEDOORCOL, FIRESTONECAVEDOORROW, FIRESTONECAVEDOORWIDTH, FIRESTONECAVEDOORHEIGHT)) {
+                playSoundA(caveMusic_data, caveMusic_length, 1);
                 scroll = STATIC;
                 collisionMap = (unsigned char *) fireStoneCaveCMBitmap;
                 mapHeight = 160;
@@ -434,7 +438,8 @@ void updateStage() {
                 //     hasLeafStone = 1; 
                 // }
                 // returnToHouse();
-                // playSoundB(soundB_data, soundB_length, 0);                
+                // playSoundB(soundB_data, soundB_length, 0); 
+                playSoundA(caveMusic_data, caveMusic_length, 1);               
                 scroll = STATIC;
                 collisionMap = (unsigned char *) forestClearingCMBitmap;
                 mapHeight = 160;

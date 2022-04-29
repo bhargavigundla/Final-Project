@@ -1198,6 +1198,20 @@ extern const unsigned short gotFireMap[1024];
 
 extern const unsigned short gotFirePal[256];
 # 31 "game.c" 2
+# 1 "caveMusic.h" 1
+
+
+extern const unsigned int caveMusic_sampleRate;
+extern const unsigned int caveMusic_length;
+extern const signed char caveMusic_data[];
+# 32 "game.c" 2
+# 1 "volcanoSong.h" 1
+
+
+extern const unsigned int volcanoSong_sampleRate;
+extern const unsigned int volcanoSong_length;
+extern const signed char volcanoSong_data[];
+# 33 "game.c" 2
 
 
 
@@ -1424,7 +1438,7 @@ void updatePlayer() {
             }
         }
     }
-# 269 "game.c"
+# 271 "game.c"
     (*(volatile unsigned short *)0x04000014) = skyShift;
     if (stage == FOREST && (!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
         cheat = 1;
@@ -1441,6 +1455,7 @@ void updateStage() {
                 returnToHouse();
             } else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 HOTDOORCOL, HOTDOORROW, HOTDOORWIDTH, HOTDOORHEIGHT)) {
+                playSoundA(volcanoSong_data, volcanoSong_length, 1);
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) volcanoCMBitmap;
                 mapHeight = VOLCANOHEIGHT;
@@ -1459,7 +1474,7 @@ void updateStage() {
                 initNonPlayers();
                 playSoundB(soundB_data, soundB_length, 0);
             }
-# 323 "game.c"
+# 326 "game.c"
             else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {
                 scroll = SCROLLING;
@@ -1496,6 +1511,7 @@ void updateStage() {
 
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
                           FIRESTONECAVEDOORCOL, FIRESTONECAVEDOORROW, FIRESTONECAVEDOORWIDTH, FIRESTONECAVEDOORHEIGHT)) {
+                playSoundA(caveMusic_data, caveMusic_length, 1);
                 scroll = STATIC;
                 collisionMap = (unsigned char *) fireStoneCaveCMBitmap;
                 mapHeight = 160;
@@ -1542,7 +1558,7 @@ void updateStage() {
                 playSoundB(soundB_data, soundB_length, 0);
             }
             break;
-# 415 "game.c"
+# 419 "game.c"
         case FOREST:
             for (int i = 0; i < 10; i++) {
                     if (poops[i].worldRow > player.worldRow) {
@@ -1566,6 +1582,7 @@ void updateStage() {
 
 
 
+                playSoundA(caveMusic_data, caveMusic_length, 1);
                 scroll = STATIC;
                 collisionMap = (unsigned char *) forestClearingCMBitmap;
                 mapHeight = 160;
@@ -1857,7 +1874,7 @@ void setStage() {
             waitForVBlank();
             setVolcanoBackground();
             break;
-# 739 "game.c"
+# 744 "game.c"
         case FOREST:
             (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((20)<<8);
             (*(volatile unsigned short*)0x400000A) = (0<<7) | (3<<14) | ((1)<<2) | ((30)<<8);
