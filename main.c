@@ -54,8 +54,8 @@ OBJ_ATTR shadowOAM[128];
 
 int main() {
     initialize();
-    mgba_open();
-    mgba_printf("debug init");
+    // mgba_open();
+    // mgba_printf("debug init");
     while (1) {
         // Update button variables.
         oldButtons = buttons;
