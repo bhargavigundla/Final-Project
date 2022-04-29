@@ -14,6 +14,7 @@
 #include "town.h"
 #include "winSong.h"
 #include "sound.h"
+#include "idleSong.h"
 
 // Prototypes.
 void initialize();
@@ -149,6 +150,7 @@ void goToGame() {
 // Runs every frame of the game state.
 void game() {
     if (BUTTON_PRESSED(BUTTON_SELECT)) {
+        playSoundA(idleSong_data, idleSong_length, 1);
         goToPause();
     } else {
         if (updateGame() == 1) {
@@ -161,6 +163,7 @@ void game() {
 
 // Sets up the pause state.
 void goToPause() {
+    playSoundA(idleSong_data, idleSong_length, 1);
     state = PAUSE;
 
     REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);

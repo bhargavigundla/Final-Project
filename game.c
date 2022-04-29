@@ -19,7 +19,6 @@
 #include "forestForeground.h"
 #include "sky.h"
 #include "forestCM.h"
-#include "soundB.h"
 #include "sound.h"
 #include "LavaLose.h"
 #include "forestClearing.h"
@@ -30,6 +29,8 @@
 #include "gotFire.h"
 #include "caveMusic.h"
 #include "volcanoSong.h"
+#include "idleSong.h"
+#include "evolvedSong.h"
 
 #define lavaRocksLen 12
 #define poopsLen 10
@@ -301,7 +302,6 @@ void updateStage() {
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
-                playSoundB(soundB_data, soundB_length, 0);
             } 
             // else if (collision(player.worldCol, player.worldRow, player.width, player.height, 
             //     OCEANDOORCOL, OCEANDOORROW, OCEANDOORWIDTH, OCEANDOORHEIGHT)) {
@@ -341,13 +341,11 @@ void updateStage() {
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
-                playSoundB(soundB_data, soundB_length, 0);
             }
 			break;
 		case HOUSE:
             if (player.worldRow >= 142 && BUTTON_HELD(BUTTON_DOWN)) {
                 returnToOutside();
-                playSoundB(soundB_data, soundB_length, 0);
             }
 			break;
 		case VOLCANO:
@@ -376,7 +374,6 @@ void updateStage() {
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
-                playSoundB(soundB_data, soundB_length, 0);
             } else if (!collisionCheck((unsigned char *) lavaPoolCMBitmap, mapWidth,
                 player.worldCol, player.worldRow, player.width, player.height, 0, 0)) {
                 setLavaHitBackground();
@@ -392,7 +389,6 @@ void updateStage() {
                     }
                     returnToHouse();
                 }
-                playSoundB(soundB_data, soundB_length, 0);
             }
 			break;
         case FIRESTONEROOM:
@@ -403,7 +399,6 @@ void updateStage() {
                         setObtainedFlareonBackground();
                 }
                 returnToHouse();
-                playSoundB(soundB_data, soundB_length, 0);
             }
             break;
         // case OCEAN:
@@ -456,7 +451,6 @@ void updateStage() {
                 REG_BG0VOFF = vOff;
                 REG_BG0HOFF = hOff;
                 initNonPlayers();
-                playSoundB(soundB_data, soundB_length, 0);
                 
             }
             break;
@@ -585,7 +579,8 @@ void setLavaHitBackground() {
 }
 
 void setObtainedFlareonBackground() {
-    infoScreen = 500;
+    playSoundB(evolvedSong_data, evolvedSong_length, 0);
+    infoScreen = 1000;
     REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(30);
     REG_DISPCTL = MODE0 | BG0_ENABLE;
     scroll = STATIC;
@@ -623,7 +618,8 @@ void setPoopHitBackground() {
 }
 
 void setObtainedLeafeonBackground() {
-    infoScreen = 500;
+    playSoundB(evolvedSong_data, evolvedSong_length, 0);
+    infoScreen = 1400;
     REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(30);
     REG_DISPCTL = MODE0 | BG0_ENABLE;
     scroll = STATIC;
@@ -960,5 +956,4 @@ void returnToHouse() {
     REG_BG0VOFF = vOff;
     REG_BG0HOFF = hOff;
     initNonPlayers();
-    playSoundB(soundB_data, soundB_length, 0);
 }

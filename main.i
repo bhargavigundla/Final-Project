@@ -1489,6 +1489,13 @@ typedef struct{
 SOUND soundA;
 SOUND soundB;
 # 17 "main.c" 2
+# 1 "idleSong.h" 1
+
+
+extern const unsigned int idleSong_sampleRate;
+extern const unsigned int idleSong_length;
+extern const signed char idleSong_data[];
+# 18 "main.c" 2
 
 
 void initialize();
@@ -1624,6 +1631,7 @@ void goToGame() {
 
 void game() {
     if ((!(~(oldButtons)&((1<<2))) && (~buttons & ((1<<2))))) {
+        playSoundA(idleSong_data, idleSong_length, 1);
         goToPause();
     } else {
         if (updateGame() == 1) {
@@ -1636,6 +1644,7 @@ void game() {
 
 
 void goToPause() {
+    playSoundA(idleSong_data, idleSong_length, 1);
     state = PAUSE;
 
     (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((28)<<8);

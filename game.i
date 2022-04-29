@@ -1101,13 +1101,6 @@ extern const unsigned short skyPal[256];
 # 20 "forestCM.h"
 extern const unsigned short forestCMBitmap[40960];
 # 22 "game.c" 2
-# 1 "soundB.h" 1
-
-
-extern const unsigned int soundB_sampleRate;
-extern const unsigned int soundB_length;
-extern const signed char soundB_data[];
-# 23 "game.c" 2
 # 1 "sound.h" 1
 void setupSounds();
 void playSoundA(const signed char* sound, int length, int loops);
@@ -1133,7 +1126,7 @@ typedef struct{
 
 SOUND soundA;
 SOUND soundB;
-# 24 "game.c" 2
+# 23 "game.c" 2
 # 1 "LavaLose.h" 1
 # 22 "LavaLose.h"
 extern const unsigned short LavaLoseTiles[5952];
@@ -1143,7 +1136,7 @@ extern const unsigned short LavaLoseMap[1024];
 
 
 extern const unsigned short LavaLosePal[256];
-# 25 "game.c" 2
+# 24 "game.c" 2
 # 1 "forestClearing.h" 1
 # 22 "forestClearing.h"
 extern const unsigned short forestClearingTiles[9056];
@@ -1153,7 +1146,7 @@ extern const unsigned short forestClearingMap[1024];
 
 
 extern const unsigned short forestClearingPal[256];
-# 26 "game.c" 2
+# 25 "game.c" 2
 # 1 "forestClearingNoStone.h" 1
 # 22 "forestClearingNoStone.h"
 extern const unsigned short forestClearingNoStoneTiles[8944];
@@ -1163,11 +1156,11 @@ extern const unsigned short forestClearingNoStoneMap[1024];
 
 
 extern const unsigned short forestClearingNoStonePal[256];
-# 27 "game.c" 2
+# 26 "game.c" 2
 # 1 "forestClearingCM.h" 1
 # 20 "forestClearingCM.h"
 extern const unsigned short forestClearingCMBitmap[19200];
-# 28 "game.c" 2
+# 27 "game.c" 2
 # 1 "PoopHit.h" 1
 # 22 "PoopHit.h"
 extern const unsigned short PoopHitTiles[5968];
@@ -1177,7 +1170,7 @@ extern const unsigned short PoopHitMap[1024];
 
 
 extern const unsigned short PoopHitPal[256];
-# 29 "game.c" 2
+# 28 "game.c" 2
 # 1 "gotLeaf.h" 1
 # 22 "gotLeaf.h"
 extern const unsigned short gotLeafTiles[2176];
@@ -1187,7 +1180,7 @@ extern const unsigned short gotLeafMap[1024];
 
 
 extern const unsigned short gotLeafPal[256];
-# 30 "game.c" 2
+# 29 "game.c" 2
 # 1 "gotFire.h" 1
 # 22 "gotFire.h"
 extern const unsigned short gotFireTiles[3024];
@@ -1197,21 +1190,35 @@ extern const unsigned short gotFireMap[1024];
 
 
 extern const unsigned short gotFirePal[256];
-# 31 "game.c" 2
+# 30 "game.c" 2
 # 1 "caveMusic.h" 1
 
 
 extern const unsigned int caveMusic_sampleRate;
 extern const unsigned int caveMusic_length;
 extern const signed char caveMusic_data[];
-# 32 "game.c" 2
+# 31 "game.c" 2
 # 1 "volcanoSong.h" 1
 
 
 extern const unsigned int volcanoSong_sampleRate;
 extern const unsigned int volcanoSong_length;
 extern const signed char volcanoSong_data[];
+# 32 "game.c" 2
+# 1 "idleSong.h" 1
+
+
+extern const unsigned int idleSong_sampleRate;
+extern const unsigned int idleSong_length;
+extern const signed char idleSong_data[];
 # 33 "game.c" 2
+# 1 "evolvedSong.h" 1
+
+
+extern const unsigned int evolvedSong_sampleRate;
+extern const unsigned int evolvedSong_length;
+extern const signed char evolvedSong_data[];
+# 34 "game.c" 2
 
 
 
@@ -1438,7 +1445,7 @@ void updatePlayer() {
             }
         }
     }
-# 271 "game.c"
+# 272 "game.c"
     (*(volatile unsigned short *)0x04000014) = skyShift;
     if (stage == FOREST && (!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
         cheat = 1;
@@ -1472,7 +1479,6 @@ void updateStage() {
                 (*(volatile unsigned short *)0x04000012) = vOff;
                 (*(volatile unsigned short *)0x04000010) = hOff;
                 initNonPlayers();
-                playSoundB(soundB_data, soundB_length, 0);
             }
 # 326 "game.c"
             else if (collision(player.worldCol, player.worldRow, player.width, player.height,
@@ -1493,13 +1499,11 @@ void updateStage() {
                 (*(volatile unsigned short *)0x04000012) = vOff;
                 (*(volatile unsigned short *)0x04000010) = hOff;
                 initNonPlayers();
-                playSoundB(soundB_data, soundB_length, 0);
             }
    break;
   case HOUSE:
             if (player.worldRow >= 142 && (~((*(volatile unsigned short *)0x04000130)) & ((1<<7)))) {
                 returnToOutside();
-                playSoundB(soundB_data, soundB_length, 0);
             }
    break;
   case VOLCANO:
@@ -1528,7 +1532,6 @@ void updateStage() {
                 (*(volatile unsigned short *)0x04000012) = vOff;
                 (*(volatile unsigned short *)0x04000010) = hOff;
                 initNonPlayers();
-                playSoundB(soundB_data, soundB_length, 0);
             } else if (!collisionCheck((unsigned char *) lavaPoolCMBitmap, mapWidth,
                 player.worldCol, player.worldRow, player.width, player.height, 0, 0)) {
                 setLavaHitBackground();
@@ -1544,7 +1547,6 @@ void updateStage() {
                     }
                     returnToHouse();
                 }
-                playSoundB(soundB_data, soundB_length, 0);
             }
    break;
         case FIRESTONEROOM:
@@ -1555,10 +1557,9 @@ void updateStage() {
                         setObtainedFlareonBackground();
                 }
                 returnToHouse();
-                playSoundB(soundB_data, soundB_length, 0);
             }
             break;
-# 419 "game.c"
+# 414 "game.c"
         case FOREST:
             for (int i = 0; i < 10; i++) {
                     if (poops[i].worldRow > player.worldRow) {
@@ -1599,7 +1600,6 @@ void updateStage() {
                 (*(volatile unsigned short *)0x04000012) = vOff;
                 (*(volatile unsigned short *)0x04000010) = hOff;
                 initNonPlayers();
-                playSoundB(soundB_data, soundB_length, 0);
 
             }
             break;
@@ -1728,7 +1728,8 @@ void setLavaHitBackground() {
 }
 
 void setObtainedFlareonBackground() {
-    infoScreen = 500;
+    playSoundB(evolvedSong_data, evolvedSong_length, 0);
+    infoScreen = 1000;
     (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((30)<<8);
     (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
     scroll = STATIC;
@@ -1766,7 +1767,8 @@ void setPoopHitBackground() {
 }
 
 void setObtainedLeafeonBackground() {
-    infoScreen = 500;
+    playSoundB(evolvedSong_data, evolvedSong_length, 0);
+    infoScreen = 1400;
     (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((30)<<8);
     (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
     scroll = STATIC;
@@ -1874,7 +1876,7 @@ void setStage() {
             waitForVBlank();
             setVolcanoBackground();
             break;
-# 744 "game.c"
+# 740 "game.c"
         case FOREST:
             (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((20)<<8);
             (*(volatile unsigned short*)0x400000A) = (0<<7) | (3<<14) | ((1)<<2) | ((30)<<8);
@@ -2094,5 +2096,4 @@ void returnToHouse() {
     (*(volatile unsigned short *)0x04000012) = vOff;
     (*(volatile unsigned short *)0x04000010) = hOff;
     initNonPlayers();
-    playSoundB(soundB_data, soundB_length, 0);
 }
