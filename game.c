@@ -834,7 +834,7 @@ void updateNonPlayers() {
             }
         break;
         case FOREST:
-            poopCount = (poopCount + 1) % 30;
+            poopCount = (poopCount + 1) % 40;
             for (int i = 0; i < poopsLen; i++) {
                 if (poops[i].worldRow <= SCREENHEIGHT) {
                     poops[i].worldRow += poops[i].rdel;

@@ -2008,7 +2008,7 @@ void updateNonPlayers() {
             }
         break;
         case FOREST:
-            poopCount = (poopCount + 1) % 30;
+            poopCount = (poopCount + 1) % 40;
             for (int i = 0; i < 10; i++) {
                 if (poops[i].worldRow <= 160) {
                     poops[i].worldRow += poops[i].rdel;

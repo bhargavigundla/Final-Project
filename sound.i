@@ -194,6 +194,8 @@ void returnToHouse();
 void initNonPlayerSprites();
 void clearSprites();
 
+void waitSeconds();
+
 
 int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, int width, int height,
         int colShift, int rowShift);

@@ -1798,14 +1798,13 @@ updateNonPlayers:
 	bne	.L175
 	ldr	r5, .L191+4
 	ldr	r3, [r5]
-	ldr	r2, .L191+8
+	ldr	ip, .L191+8
 	add	r3, r3, #1
-	smull	r1, r2, r3, r2
+	smull	r1, r2, ip, r3
 	asr	ip, r3, #31
-	add	r2, r2, r3
 	rsb	ip, ip, r2, asr #4
-	rsb	ip, ip, ip, lsl #4
-	sub	ip, r3, ip, lsl #1
+	add	ip, ip, ip, lsl #2
+	sub	ip, r3, ip, lsl #3
 	ldr	r3, .L191+12
 	str	ip, [r5]
 	sub	r10, r3, #8
@@ -1884,7 +1883,7 @@ updateNonPlayers:
 .L191:
 	.word	stage
 	.word	poopCount
-	.word	-2004318071
+	.word	1717986919
 	.word	poops+8
 	.word	poops+4
 	.word	player
