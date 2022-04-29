@@ -7,6 +7,19 @@
 // Constants
 int mapHeight;
 int mapWidth;
+int seconds;
+int cseconds;
+
+int stage;
+enum {
+    OUTSIDE,
+    HOUSE,
+    VOLCANO,
+    OCEAN,
+    FOREST,
+    FIRESTONEROOM,
+    LEAFSTONECLEARING
+};
 
 // Variables
 extern int hOff;

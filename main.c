@@ -15,6 +15,7 @@
 #include "winSong.h"
 #include "sound.h"
 #include "idleSong.h"
+#include "print.h"
 
 // Prototypes.
 void initialize();
@@ -53,11 +54,14 @@ OBJ_ATTR shadowOAM[128];
 
 int main() {
     initialize();
-
+    mgba_open();
+    mgba_printf("debug init");
     while (1) {
         // Update button variables.
         oldButtons = buttons;
         buttons = BUTTONS;
+    // mgba_printf(seconds);
+        // mgba_printf("seconds: (%d)", seconds);
 
         // State Machine.
         switch (state) {

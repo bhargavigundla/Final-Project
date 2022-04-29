@@ -1,3 +1,5 @@
+Welcome to my game, Pokemon: Evolution Expedition! Travel to two minigames to find evolution stones, to evolve your eevees.
+
 # Final-Project Submission Requirements
 ● At least 4 unique sprites, 2 of which must be animated
 - player(animated)

@@ -66,16 +66,6 @@ enum {
     SCROLLING
 };
 int scroll;
-
-enum {
-    OUTSIDE,
-    HOUSE,
-    VOLCANO,
-    OCEAN,
-    FOREST,
-    FIRESTONEROOM,
-    LEAFSTONECLEARING
-};
 enum {
     SLEEPINGEEVEEROW = 57,
     SLEEPINGEEVEECOL = 108,
@@ -121,7 +111,6 @@ enum {
     FORESTCLEARINGHEIGHT = 160,
     FORESTCLEARINGWIDTH = 240
 };
-int stage;
 
 enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
       HOUSEWIDTH = 240, HOUSEHEIGHT = 160,
@@ -234,13 +223,6 @@ void updatePlayer() {
             player.worldCol -= player.cdel;
 			hOff -= (hOff - scroll >= 0) ? scroll : 0;
             skyShift -= (wait == 0) ? 1 : 0;
-            if (BUTTON_HELD(BUTTON_B)) {
-                player.worldCol -= player.cdel;
-                if (player.worldCol - 100 > 0) {
-                    hOff -= (hOff - scroll >= 0) ? scroll : 0;
-                }
-                
-            }
         }
     }
     if(BUTTON_HELD(BUTTON_RIGHT)) {
@@ -252,12 +234,6 @@ void updatePlayer() {
             player.worldCol += player.cdel;
 			hOff += ((hOff + scroll + SCREENWIDTH - 1) < mapWidth) ? scroll : 0;
             skyShift += (wait == 0) ? 1 : 0;
-            if (BUTTON_HELD(BUTTON_B)) {
-                player.worldCol += player.cdel;
-                if (player.worldCol + player.width + 100 > mapWidth) {
-                    hOff += ((hOff + scroll + SCREENWIDTH - 1) < mapWidth) ? scroll : 0;
-                }
-            }
         }
     }
     // if (stage == OCEAN) {
@@ -560,7 +536,6 @@ void setVolcanoBackground() {
 }
 
 void setLavaHitBackground() {
-    infoScreen = 500;
     REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(30);
     REG_DISPCTL = MODE0 | BG0_ENABLE;
     scroll = STATIC;
@@ -572,15 +547,18 @@ void setLavaHitBackground() {
     waitForVBlank();
     DMANow(3, LavaLosePal, PALETTE, 256);
     DMANow(3, LavaLoseTiles, &CHARBLOCK[0], LavaLoseTilesLen / 2);
-    DMANow(3, LavaLoseMap, &SCREENBLOCK[30], LavaLoseMapLen / 2);                
-    while (--infoScreen > 0) {
-        waitForVBlank();
-    } 
+    DMANow(3, LavaLoseMap, &SCREENBLOCK[30], LavaLoseMapLen / 2);     
+    // int timechange = 0;
+    // int currSec = seconds;
+    mgba_printf("seconds before wait: (%d)", seconds);
+    int secondsBeforeWait = seconds;
+    while (seconds < secondsBeforeWait + 4){
+        mgba_printf("seconds before wait: (%d)", seconds);
+    }
 }
 
 void setObtainedFlareonBackground() {
     playSoundB(evolvedSong_data, evolvedSong_length, 0);
-    infoScreen = 1000;
     REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(30);
     REG_DISPCTL = MODE0 | BG0_ENABLE;
     scroll = STATIC;
@@ -592,14 +570,15 @@ void setObtainedFlareonBackground() {
     waitForVBlank();
     DMANow(3, gotFirePal, PALETTE, 256);
     DMANow(3, gotFireTiles, &CHARBLOCK[0], gotFireTilesLen / 2);
-    DMANow(3, gotFireMap, &SCREENBLOCK[30], gotFireMapLen / 2);                
-    while (--infoScreen > 0) {
-        waitForVBlank();
-    } 
+    DMANow(3, gotFireMap, &SCREENBLOCK[30], gotFireMapLen / 2); 
+    mgba_printf("seconds before wait: (%d)", seconds);
+    int secondsBeforeWait = seconds;
+    while (seconds < secondsBeforeWait + 4){
+        mgba_printf("seconds before wait: (%d)", seconds);
+    }
 }
 
 void setPoopHitBackground() {
-    infoScreen = 500;
     REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(30);
     REG_DISPCTL = MODE0 | BG0_ENABLE;
     scroll = STATIC;
@@ -612,14 +591,15 @@ void setPoopHitBackground() {
     DMANow(3, PoopHitPal, PALETTE, 256);
     DMANow(3, PoopHitTiles, &CHARBLOCK[0], PoopHitTilesLen / 2);
     DMANow(3, PoopHitMap, &SCREENBLOCK[30], PoopHitMapLen / 2);                
-    while (--infoScreen > 0) {
-        waitForVBlank();
-    } 
+    mgba_printf("seconds before wait: (%d)", seconds);
+    int secondsBeforeWait = seconds;
+    while (seconds < secondsBeforeWait + 4){
+        mgba_printf("seconds before wait: (%d)", seconds);
+    }
 }
 
 void setObtainedLeafeonBackground() {
     playSoundB(evolvedSong_data, evolvedSong_length, 0);
-    infoScreen = 1400;
     REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(30);
     REG_DISPCTL = MODE0 | BG0_ENABLE;
     scroll = STATIC;
@@ -632,9 +612,11 @@ void setObtainedLeafeonBackground() {
     DMANow(3, gotLeafPal, PALETTE, 256);
     DMANow(3, gotLeafTiles, &CHARBLOCK[0], gotLeafTilesLen / 2);
     DMANow(3, gotLeafMap, &SCREENBLOCK[30], gotLeafMapLen / 2);                
-    while (--infoScreen > 0) {
-        waitForVBlank();
-    } 
+    mgba_printf("seconds before wait: (%d)", seconds);
+    int secondsBeforeWait = seconds;
+    while (seconds < secondsBeforeWait + 4){
+        mgba_printf("seconds before wait: (%d)", seconds);
+    }
 }
 
 void setFireCaveBackground() {

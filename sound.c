@@ -1,5 +1,6 @@
 #include "mode0.h"
 #include "sound.h"
+#include "game.h"
 
 void setupSounds() {
 
@@ -60,6 +61,8 @@ void playSoundB( const signed char* sound, int length, int loops) {
     soundB.vBlankCount = 0;
 }
 
+
+
 void setupInterrupts() {
 
 	REG_IME = 0;
@@ -68,12 +71,39 @@ void setupInterrupts() {
     REG_DISPSTAT |= INT_VBLANK_ENABLE;
 
     REG_INTERRUPT = interruptHandler;
+    enableTimerInterrupts();
+
 	REG_IME = 1;
+}
+
+void enableTimerInterrupts(void) {
+  // TODO 2.0: Enable timer interrupts
+  REG_IE |= INT_TM2 | INT_TM3;
+
+  // TODO 2.1: Set control register and data register for timer 0 (triggers once per cs)
+  REG_TM2CNT = 0;
+  REG_TM2D = (65536 - 164);
+  REG_TM2CNT = TM_FREQ_1024 |TIMER_ON | TM_IRQ;
+
+  // TODO 2.2: Set control register and data register for timer 1 (triggers once per s)
+  REG_TM3CNT = 0;
+  REG_TM3D = (65536 - 16384);
+  REG_TM3CNT = TM_FREQ_1024 |TIMER_ON | TM_IRQ;
+  
 }
 
 void interruptHandler() {
 
 	REG_IME = 0;
+
+    if (REG_IF & INT_TM2) {
+        cseconds++;
+        if (cseconds > 99) cseconds = 0;
+    }
+
+    if (REG_IF & INT_TM3) {
+        seconds = (seconds + 1) % 60;
+    }
 
 	if(REG_IF & INT_VBLANK) {
         if (soundA.isPlaying) {
@@ -103,11 +133,9 @@ void interruptHandler() {
                 }
             }
 		}
-
-
 		REG_IF = INT_VBLANK;
 	}
-
+    REG_IF = REG_IF;
 	REG_IME = 1;
 }
 

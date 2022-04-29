@@ -197,78 +197,108 @@ interruptHandler:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r2, #0
-	ldr	r3, .L32
-	ldrh	r1, [r3, #2]
-	tst	r1, #1
-	strh	r2, [r3, #8]	@ movhi
-	beq	.L27
-	ldr	r3, .L32+4
+	mov	r3, #0
+	ldr	r2, .L38
+	ldrh	r1, [r2, #2]
+	tst	r1, #32
+	push	{r4, lr}
+	strh	r3, [r2, #8]	@ movhi
+	beq	.L15
+	ldr	r1, .L38+4
+	ldr	r2, [r1]
+	add	r2, r2, #1
+	cmp	r2, #99
+	movle	r3, r2
+	str	r3, [r1]
+.L15:
+	ldr	r3, .L38
+	ldrh	r3, [r3, #2]
+	tst	r3, #64
+	beq	.L18
+	ldr	r0, .L38+8
+	ldr	r3, [r0]
+	ldr	r1, .L38+12
+	add	r3, r3, #1
+	smull	r2, r1, r3, r1
+	asr	r2, r3, #31
+	add	r1, r1, r3
+	rsb	r2, r2, r1, asr #5
+	rsb	r2, r2, r2, lsl #4
+	sub	r3, r3, r2, lsl #2
+	str	r3, [r0]
+.L18:
+	ldr	r3, .L38
+	ldrh	r3, [r3, #2]
+	tst	r3, #1
+	beq	.L19
+	ldr	r3, .L38+16
 	ldr	r2, [r3, #12]
 	cmp	r2, #0
-	push	{r4, lr}
-	beq	.L16
+	beq	.L21
 	ldr	r2, [r3, #28]
 	ldr	r1, [r3, #20]
 	add	r2, r2, #1
 	cmp	r2, r1
 	str	r2, [r3, #28]
-	ble	.L16
+	ble	.L21
 	ldr	r2, [r3, #16]
 	cmp	r2, #0
-	bne	.L30
-	ldr	r0, .L32+8
-	ldr	r1, .L32+12
+	bne	.L35
+	ldr	r0, .L38+20
+	ldr	r1, .L38+24
 	ldr	r0, [r0]
 	str	r2, [r3, #12]
 	str	r2, [r0, #20]
 	strh	r2, [r1, #2]	@ movhi
-.L16:
-	ldr	r3, .L32+16
+.L21:
+	ldr	r3, .L38+28
 	ldr	r2, [r3, #12]
 	cmp	r2, #0
-	beq	.L20
+	bne	.L36
+.L25:
+	mov	r2, #1
+	ldr	r3, .L38
+	strh	r2, [r3, #2]	@ movhi
+.L19:
+	mov	r1, #1
+	ldr	r3, .L38
+	ldrh	r2, [r3, #2]
+	strh	r1, [r3, #8]	@ movhi
+	strh	r2, [r3, #2]	@ movhi
+	pop	{r4, lr}
+	bx	lr
+.L36:
 	ldr	r2, [r3, #28]
 	ldr	r1, [r3, #20]
 	add	r2, r2, #1
 	cmp	r2, r1
 	str	r2, [r3, #28]
-	ble	.L20
+	ble	.L25
 	ldr	r2, [r3, #16]
 	cmp	r2, #0
-	bne	.L31
-	ldr	r0, .L32+8
-	ldr	r1, .L32+12
+	bne	.L37
+	ldr	r0, .L38+20
+	ldr	r1, .L38+24
 	ldr	r0, [r0]
 	str	r2, [r3, #12]
 	str	r2, [r0, #32]
 	strh	r2, [r1, #6]	@ movhi
-.L20:
-	mov	r2, #1
-	ldr	r3, .L32
-	strh	r2, [r3, #2]	@ movhi
-	mov	r2, #1
-	ldr	r3, .L32
-	pop	{r4, lr}
-	strh	r2, [r3, #8]	@ movhi
-	bx	lr
-.L27:
-	mov	r2, #1
-	ldr	r3, .L32
-	strh	r2, [r3, #8]	@ movhi
-	bx	lr
-.L30:
+	b	.L25
+.L35:
 	ldm	r3, {r0, r1}
 	bl	playSoundA
-	b	.L16
-.L31:
+	b	.L21
+.L37:
 	ldm	r3, {r0, r1}
 	bl	playSoundB
-	b	.L20
-.L33:
+	b	.L25
+.L39:
 	.align	2
-.L32:
+.L38:
 	.word	67109376
+	.word	cseconds
+	.word	seconds
+	.word	-2004318071
 	.word	soundA
 	.word	dma
 	.word	67109120
@@ -284,29 +314,75 @@ setupInterrupts:
 	@ Function supports interworking.
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	mov	r0, #67108864
-	str	lr, [sp, #-4]!
-	mov	lr, #1
-	ldrh	r1, [r0, #4]
-	ldr	r3, .L36
+	mov	r1, #1
+	push	{r4, r5, lr}
+	mov	lr, #67108864
+	mov	ip, #0
+	mvn	r5, #163
+	mov	r0, #195
+	mov	r4, #49152
+	ldr	r2, .L42
+	strh	r1, [r2, #8]	@ movhi
+	ldrh	r1, [lr, #4]
+	ldr	r3, .L42+4
 	orr	r1, r1, #8
-	ldrh	r2, [r3]
-	ldr	ip, .L36+4
-	strh	r1, [r0, #4]	@ movhi
-	ldr	r1, .L36+8
-	orr	r2, r2, lr
-	strh	lr, [r3, #8]	@ movhi
-	strh	r2, [r3]	@ movhi
-	ldr	lr, [sp], #4
-	str	r1, [ip, #4092]
+	strh	ip, [r3, #10]	@ movhi
+	strh	r1, [lr, #4]	@ movhi
+	ldrh	r1, [r2]
+	orr	r1, r1, #97
+	strh	r5, [r3, #8]	@ movhi
+	strh	r1, [r2]	@ movhi
+	ldr	r2, .L42+8
+	ldr	r1, .L42+12
+	strh	r0, [r3, #10]	@ movhi
+	str	r1, [r2, #4092]
+	strh	ip, [r3, #14]	@ movhi
+	strh	r4, [r3, #12]	@ movhi
+	strh	r0, [r3, #14]	@ movhi
+	pop	{r4, r5, lr}
 	bx	lr
-.L37:
+.L43:
 	.align	2
-.L36:
+.L42:
 	.word	67109376
+	.word	67109120
 	.word	50360320
 	.word	interruptHandler
 	.size	setupInterrupts, .-setupInterrupts
+	.align	2
+	.global	enableTimerInterrupts
+	.syntax unified
+	.arm
+	.fpu softvfp
+	.type	enableTimerInterrupts, %function
+enableTimerInterrupts:
+	@ Function supports interworking.
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 0, uses_anonymous_args = 0
+	push	{r4, lr}
+	mov	r0, #0
+	mvn	r4, #163
+	mov	r1, #195
+	mov	lr, #49152
+	ldr	ip, .L46
+	ldrh	r2, [ip]
+	ldr	r3, .L46+4
+	orr	r2, r2, #96
+	strh	r0, [r3, #10]	@ movhi
+	strh	r2, [ip]	@ movhi
+	strh	r4, [r3, #8]	@ movhi
+	strh	r1, [r3, #10]	@ movhi
+	strh	r0, [r3, #14]	@ movhi
+	strh	lr, [r3, #12]	@ movhi
+	strh	r1, [r3, #14]	@ movhi
+	pop	{r4, lr}
+	bx	lr
+.L47:
+	.align	2
+.L46:
+	.word	67109376
+	.word	67109120
+	.size	enableTimerInterrupts, .-enableTimerInterrupts
 	.align	2
 	.global	pauseSound
 	.syntax unified
@@ -319,17 +395,17 @@ pauseSound:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	mov	r3, #0
-	ldr	r2, .L39
-	ldr	r0, .L39+4
-	ldr	r1, .L39+8
+	ldr	r2, .L49
+	ldr	r0, .L49+4
+	ldr	r1, .L49+8
 	str	r3, [r0, #12]
 	str	r3, [r1, #12]
 	strh	r3, [r2, #2]	@ movhi
 	strh	r3, [r2, #6]	@ movhi
 	bx	lr
-.L40:
+.L50:
 	.align	2
-.L39:
+.L49:
 	.word	67109120
 	.word	soundA
 	.word	soundB
@@ -347,17 +423,17 @@ unpauseSound:
 	@ link register save eliminated.
 	mov	r1, #128
 	mov	r3, #1
-	ldr	r2, .L42
-	ldr	ip, .L42+4
-	ldr	r0, .L42+8
+	ldr	r2, .L52
+	ldr	ip, .L52+4
+	ldr	r0, .L52+8
 	strh	r1, [r2, #2]	@ movhi
 	str	r3, [ip, #12]
 	strh	r1, [r2, #6]	@ movhi
 	str	r3, [r0, #12]
 	bx	lr
-.L43:
+.L53:
 	.align	2
-.L42:
+.L52:
 	.word	67109120
 	.word	soundA
 	.word	soundB
@@ -374,26 +450,32 @@ stopSound:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	@ link register save eliminated.
 	mov	r3, #0
-	ldr	r2, .L45
-	ldr	ip, .L45+4
+	ldr	r2, .L55
+	ldr	ip, .L55+4
 	strh	r3, [r2, #2]	@ movhi
-	ldr	r0, .L45+8
+	ldr	r0, .L55+8
 	strh	r3, [r2, #6]	@ movhi
-	ldr	r1, .L45+12
+	ldr	r1, .L55+12
 	ldr	r2, [ip]
 	str	r3, [r0, #12]
 	str	r3, [r2, #20]
 	str	r3, [r1, #12]
 	str	r3, [r2, #32]
 	bx	lr
-.L46:
+.L56:
 	.align	2
-.L45:
+.L55:
 	.word	67109120
 	.word	dma
 	.word	soundA
 	.word	soundB
 	.size	stopSound, .-stopSound
+	.comm	collisionMap,4,4
+	.comm	stage,4,4
+	.comm	cseconds,4,4
+	.comm	seconds,4,4
+	.comm	mapWidth,4,4
+	.comm	mapHeight,4,4
 	.comm	soundB,32,4
 	.comm	soundA,32,4
 	.ident	"GCC: (devkitARM release 53) 9.1.0"

@@ -102,12 +102,13 @@ void playSoundA(const signed char* sound, int length, int loops);
 void playSoundB(const signed char* sound, int length, int loops);
 
 void setupInterrupts();
+void enableTimerInterrupts();
 void interruptHandler();
 
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 49 "sound.h"
+# 50 "sound.h"
 typedef struct{
     const signed char* data;
     int length;
@@ -122,6 +123,81 @@ typedef struct{
 SOUND soundA;
 SOUND soundB;
 # 3 "sound.c" 2
+# 1 "game.h" 1
+
+
+
+
+# 1 "outsideCM.h" 1
+# 20 "outsideCM.h"
+extern const unsigned short outsideCMBitmap[131072];
+# 6 "game.h" 2
+
+
+int mapHeight;
+int mapWidth;
+int seconds;
+int cseconds;
+
+int stage;
+enum {
+    OUTSIDE,
+    HOUSE,
+    VOLCANO,
+    OCEAN,
+    FOREST,
+    FIRESTONEROOM,
+    LEAFSTONECLEARING
+};
+
+
+extern int hOff;
+extern int vOff;
+extern OBJ_ATTR shadowOAM[128];
+extern ANISPRITE player;
+
+
+enum {PLAYERFRONT, PLAYERBACK, PLAYERRIGHT, PLAYERLEFT, PLAYERIDLE};
+
+unsigned char* collisionMap;
+
+
+void play();
+void initGame();
+int updateGame();
+void drawGame();
+void initPlayer();
+void initNonPlayers();
+void updatePlayer();
+void updateNonPlayers();
+void animatePlayer();
+void drawPlayer();
+void drawNonPlayers();
+void updateStage();
+void showGame();
+void setOutsideBackground();
+void setHouseBackground();
+void setVolcanoBackground();
+void setFireCaveBackground();
+void setOceanBackground();
+void setForestBackground();
+void setLeafStoneClearingBackground();
+void setLavaHitBackground();
+void setPoopHitBackground();
+void setObtainedFlareonBackground();
+void setObtainedLeafeonBackground();
+void initSprites();
+void setStage();
+
+void returnToOutside();
+void returnToHouse();
+void initNonPlayerSprites();
+void clearSprites();
+
+
+int collisionCheck(unsigned char *collisionMap, int mapWidth, int col, int row, int width, int height,
+        int colShift, int rowShift);
+# 4 "sound.c" 2
 
 void setupSounds() {
 
@@ -182,6 +258,8 @@ void playSoundB( const signed char* sound, int length, int loops) {
     soundB.vBlankCount = 0;
 }
 
+
+
 void setupInterrupts() {
 
  *(unsigned short*)0x4000208 = 0;
@@ -190,12 +268,39 @@ void setupInterrupts() {
     *(unsigned short*)0x4000004 |= 1 << 3;
 
     *((ihp*)0x03007FFC) = interruptHandler;
+    enableTimerInterrupts();
+
  *(unsigned short*)0x4000208 = 1;
+}
+
+void enableTimerInterrupts(void) {
+
+  *(unsigned short*)0x4000200 |= 1<<5 | 1<<6;
+
+
+  *(volatile unsigned short*)0x400010A = 0;
+  *(volatile unsigned short*)0x4000108 = (65536 - 164);
+  *(volatile unsigned short*)0x400010A = 3 |(1<<7) | (1<<6);
+
+
+  *(volatile unsigned short*)0x400010E = 0;
+  *(volatile unsigned short*)0x400010C = (65536 - 16384);
+  *(volatile unsigned short*)0x400010E = 3 |(1<<7) | (1<<6);
+
 }
 
 void interruptHandler() {
 
  *(unsigned short*)0x4000208 = 0;
+
+    if (*(volatile unsigned short*)0x4000202 & 1<<5) {
+        cseconds++;
+        if (cseconds > 99) cseconds = 0;
+    }
+
+    if (*(volatile unsigned short*)0x4000202 & 1<<6) {
+        seconds = (seconds + 1) % 60;
+    }
 
  if(*(volatile unsigned short*)0x4000202 & 1 << 0) {
         if (soundA.isPlaying) {
@@ -225,11 +330,9 @@ void interruptHandler() {
                 }
             }
   }
-
-
   *(volatile unsigned short*)0x4000202 = 1 << 0;
  }
-
+    *(volatile unsigned short*)0x4000202 = *(volatile unsigned short*)0x4000202;
  *(unsigned short*)0x4000208 = 1;
 }
 

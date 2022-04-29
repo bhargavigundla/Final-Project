@@ -565,6 +565,10 @@ game:
 	.word	idleSong_data
 	.word	playSoundA
 	.size	game, .-game
+	.section	.rodata.str1.4,"aMS",%progbits,1
+	.align	2
+.LC0:
+	.ascii	"debug init\000"
 	.section	.text.startup,"ax",%progbits
 	.align	2
 	.global	main
@@ -578,25 +582,32 @@ main:
 	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r7, fp, lr}
-	ldr	r6, .L95
-	ldr	fp, .L95+4
-	ldr	r3, .L95+8
+	ldr	r3, .L95
 	mov	lr, pc
 	bx	r3
-	ldr	r5, .L95+12
-	ldr	r2, [r6]
+	ldr	r6, .L95+4
+	ldr	r3, .L95+8
+	ldr	fp, .L95+12
+	mov	lr, pc
+	bx	r3
+	ldr	r0, .L95+16
+	ldr	r3, .L95+20
+	mov	lr, pc
+	bx	r3
+	ldr	r5, .L95+24
+	ldr	r1, [r6]
 	ldrh	r0, [fp]
-	ldr	r10, .L95+16
-	ldr	r9, .L95+20
-	ldr	r8, .L95+24
-	ldr	r7, .L95+28
-	ldr	r4, .L95+32
+	ldr	r10, .L95+28
+	ldr	r9, .L95+32
+	ldr	r8, .L95+36
+	ldr	r7, .L95+40
+	ldr	r4, .L95+44
 .L82:
 	strh	r0, [r5]	@ movhi
 	ldrh	r3, [r4, #48]
 	strh	r3, [fp]	@ movhi
-	cmp	r2, #4
-	ldrls	pc, [pc, r2, asl #2]
+	cmp	r1, #4
+	ldrls	pc, [pc, r1, asl #2]
 	b	.L90
 .L84:
 	.word	.L88
@@ -615,40 +626,43 @@ main:
 .L85:
 	mov	lr, pc
 	bx	r7
-	ldr	r2, [r6]
+	ldr	r1, [r6]
 	ldrh	r0, [fp]
 	b	.L82
 .L86:
 	mov	lr, pc
 	bx	r8
-	ldr	r2, [r6]
+	ldr	r1, [r6]
 	ldrh	r0, [fp]
 	b	.L82
 .L88:
 	mov	lr, pc
 	bx	r10
-	ldr	r2, [r6]
+	ldr	r1, [r6]
 	ldrh	r0, [fp]
 	b	.L82
 .L87:
 	mov	lr, pc
 	bx	r9
-	ldr	r2, [r6]
+	ldr	r1, [r6]
 	ldrh	r0, [fp]
 	b	.L82
 .L94:
-	ldr	r3, .L95+36
+	ldr	r3, .L95+48
 	mov	lr, pc
 	bx	r3
-	ldr	r2, [r6]
+	ldr	r1, [r6]
 	ldrh	r0, [fp]
 	b	.L82
 .L96:
 	.align	2
 .L95:
-	.word	state
-	.word	buttons
 	.word	initialize
+	.word	state
+	.word	mgba_open
+	.word	buttons
+	.word	.LC0
+	.word	mgba_printf
 	.word	oldButtons
 	.word	start
 	.word	game
@@ -694,6 +708,9 @@ win:
 	.comm	soundB,32,4
 	.comm	soundA,32,4
 	.comm	collisionMap,4,4
+	.comm	stage,4,4
+	.comm	cseconds,4,4
+	.comm	seconds,4,4
 	.comm	mapWidth,4,4
 	.comm	mapHeight,4,4
 	.ident	"GCC: (devkitARM release 53) 9.1.0"

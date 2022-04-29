@@ -1373,6 +1373,19 @@ extern const unsigned short outsideCMBitmap[131072];
 
 int mapHeight;
 int mapWidth;
+int seconds;
+int cseconds;
+
+int stage;
+enum {
+    OUTSIDE,
+    HOUSE,
+    VOLCANO,
+    OCEAN,
+    FOREST,
+    FIRESTONEROOM,
+    LEAFSTONECLEARING
+};
 
 
 extern int hOff;
@@ -1469,12 +1482,13 @@ void playSoundA(const signed char* sound, int length, int loops);
 void playSoundB(const signed char* sound, int length, int loops);
 
 void setupInterrupts();
+void enableTimerInterrupts();
 void interruptHandler();
 
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 49 "sound.h"
+# 50 "sound.h"
 typedef struct{
     const signed char* data;
     int length;
@@ -1496,6 +1510,14 @@ extern const unsigned int idleSong_sampleRate;
 extern const unsigned int idleSong_length;
 extern const signed char idleSong_data[];
 # 18 "main.c" 2
+# 1 "print.h" 1
+# 36 "print.h"
+void mgba_printf_level(int level, const char* ptr, ...);
+void mgba_printf(const char* string, ...);
+void mgba_break(void);
+uint8_t mgba_open(void);
+void mgba_close(void);
+# 19 "main.c" 2
 
 
 void initialize();
@@ -1534,11 +1556,14 @@ OBJ_ATTR shadowOAM[128];
 
 int main() {
     initialize();
-
+    mgba_open();
+    mgba_printf("debug init");
     while (1) {
 
         oldButtons = buttons;
         buttons = (*(volatile unsigned short *)0x04000130);
+
+
 
 
         switch (state) {

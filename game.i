@@ -919,6 +919,19 @@ extern const unsigned short outsideCMBitmap[131072];
 
 int mapHeight;
 int mapWidth;
+int seconds;
+int cseconds;
+
+int stage;
+enum {
+    OUTSIDE,
+    HOUSE,
+    VOLCANO,
+    OCEAN,
+    FOREST,
+    FIRESTONEROOM,
+    LEAFSTONECLEARING
+};
 
 
 extern int hOff;
@@ -1107,12 +1120,13 @@ void playSoundA(const signed char* sound, int length, int loops);
 void playSoundB(const signed char* sound, int length, int loops);
 
 void setupInterrupts();
+void enableTimerInterrupts();
 void interruptHandler();
 
 void pauseSound();
 void unpauseSound();
 void stopSound();
-# 49 "sound.h"
+# 50 "sound.h"
 typedef struct{
     const signed char* data;
     int length;
@@ -1272,16 +1286,6 @@ enum {
     SCROLLING
 };
 int scroll;
-
-enum {
-    OUTSIDE,
-    HOUSE,
-    VOLCANO,
-    OCEAN,
-    FOREST,
-    FIRESTONEROOM,
-    LEAFSTONECLEARING
-};
 enum {
     SLEEPINGEEVEEROW = 57,
     SLEEPINGEEVEECOL = 108,
@@ -1327,7 +1331,6 @@ enum {
     FORESTCLEARINGHEIGHT = 160,
     FORESTCLEARINGWIDTH = 240
 };
-int stage;
 
 enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
       HOUSEWIDTH = 240, HOUSEHEIGHT = 160,
@@ -1440,13 +1443,6 @@ void updatePlayer() {
             player.worldCol -= player.cdel;
    hOff -= (hOff - scroll >= 0) ? scroll : 0;
             skyShift -= (wait == 0) ? 1 : 0;
-            if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<1)))) {
-                player.worldCol -= player.cdel;
-                if (player.worldCol - 100 > 0) {
-                    hOff -= (hOff - scroll >= 0) ? scroll : 0;
-                }
-
-            }
         }
     }
     if((~((*(volatile unsigned short *)0x04000130)) & ((1<<4)))) {
@@ -1458,15 +1454,9 @@ void updatePlayer() {
             player.worldCol += player.cdel;
    hOff += ((hOff + scroll + 240 - 1) < mapWidth) ? scroll : 0;
             skyShift += (wait == 0) ? 1 : 0;
-            if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<1)))) {
-                player.worldCol += player.cdel;
-                if (player.worldCol + player.width + 100 > mapWidth) {
-                    hOff += ((hOff + scroll + 240 - 1) < mapWidth) ? scroll : 0;
-                }
-            }
         }
     }
-# 275 "game.c"
+# 251 "game.c"
     (*(volatile unsigned short *)0x04000014) = skyShift;
     if (stage == FOREST && (!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
         cheat = 1;
@@ -1500,7 +1490,7 @@ void updateStage() {
                 (*(volatile unsigned short *)0x04000010) = hOff;
                 initNonPlayers();
             }
-# 328 "game.c"
+# 304 "game.c"
             else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {
                 scroll = SCROLLING;
@@ -1578,7 +1568,7 @@ void updateStage() {
                 returnToHouse();
             }
             break;
-# 415 "game.c"
+# 391 "game.c"
         case FOREST:
             for (int i = 0; i < 10; i++) {
                     if (poops[i].worldRow > player.worldRow) {
@@ -1727,7 +1717,6 @@ void setVolcanoBackground() {
 }
 
 void setLavaHitBackground() {
-    infoScreen = 500;
     (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((30)<<8);
     (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
     scroll = STATIC;
@@ -1740,14 +1729,17 @@ void setLavaHitBackground() {
     DMANow(3, LavaLosePal, ((unsigned short *)0x5000000), 256);
     DMANow(3, LavaLoseTiles, &((charblock *)0x6000000)[0], 11904 / 2);
     DMANow(3, LavaLoseMap, &((screenblock *)0x6000000)[30], 2048 / 2);
-    while (--infoScreen > 0) {
-        waitForVBlank();
+
+
+    mgba_printf("seconds before wait: (%d)", seconds);
+    int secondsBeforeWait = seconds;
+    while (seconds < secondsBeforeWait + 4){
+        mgba_printf("seconds before wait: (%d)", seconds);
     }
 }
 
 void setObtainedFlareonBackground() {
     playSoundB(evolvedSong_data, evolvedSong_length, 0);
-    infoScreen = 1000;
     (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((30)<<8);
     (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
     scroll = STATIC;
@@ -1760,13 +1752,14 @@ void setObtainedFlareonBackground() {
     DMANow(3, gotFirePal, ((unsigned short *)0x5000000), 256);
     DMANow(3, gotFireTiles, &((charblock *)0x6000000)[0], 6048 / 2);
     DMANow(3, gotFireMap, &((screenblock *)0x6000000)[30], 2048 / 2);
-    while (--infoScreen > 0) {
-        waitForVBlank();
+    mgba_printf("seconds before wait: (%d)", seconds);
+    int secondsBeforeWait = seconds;
+    while (seconds < secondsBeforeWait + 4){
+        mgba_printf("seconds before wait: (%d)", seconds);
     }
 }
 
 void setPoopHitBackground() {
-    infoScreen = 500;
     (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((30)<<8);
     (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
     scroll = STATIC;
@@ -1779,14 +1772,15 @@ void setPoopHitBackground() {
     DMANow(3, PoopHitPal, ((unsigned short *)0x5000000), 256);
     DMANow(3, PoopHitTiles, &((charblock *)0x6000000)[0], 11936 / 2);
     DMANow(3, PoopHitMap, &((screenblock *)0x6000000)[30], 2048 / 2);
-    while (--infoScreen > 0) {
-        waitForVBlank();
+    mgba_printf("seconds before wait: (%d)", seconds);
+    int secondsBeforeWait = seconds;
+    while (seconds < secondsBeforeWait + 4){
+        mgba_printf("seconds before wait: (%d)", seconds);
     }
 }
 
 void setObtainedLeafeonBackground() {
     playSoundB(evolvedSong_data, evolvedSong_length, 0);
-    infoScreen = 1400;
     (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((30)<<8);
     (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
     scroll = STATIC;
@@ -1799,8 +1793,10 @@ void setObtainedLeafeonBackground() {
     DMANow(3, gotLeafPal, ((unsigned short *)0x5000000), 256);
     DMANow(3, gotLeafTiles, &((charblock *)0x6000000)[0], 4352 / 2);
     DMANow(3, gotLeafMap, &((screenblock *)0x6000000)[30], 2048 / 2);
-    while (--infoScreen > 0) {
-        waitForVBlank();
+    mgba_printf("seconds before wait: (%d)", seconds);
+    int secondsBeforeWait = seconds;
+    while (seconds < secondsBeforeWait + 4){
+        mgba_printf("seconds before wait: (%d)", seconds);
     }
 }
 
@@ -1897,7 +1893,7 @@ void setStage() {
             waitForVBlank();
             setVolcanoBackground();
             break;
-# 743 "game.c"
+# 725 "game.c"
         case FOREST:
             playSoundA(forestSong_data, forestSong_length, 1);
             (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((20)<<8);
