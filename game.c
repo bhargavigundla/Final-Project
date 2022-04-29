@@ -25,6 +25,9 @@
 #include "forestClearing.h"
 #include "forestClearingNoStone.h"
 #include "forestClearingCM.h"
+#include "PoopHit.h"
+#include "gotLeaf.h"
+#include "gotFire.h"
 
 #define lavaRocksLen 12
 #define poopsLen 10
@@ -393,6 +396,7 @@ void updateStage() {
             player.worldCol, player.worldRow, player.width, player.height)) {
                 if (!hasFireStone) {
                         hasFireStone = 1;
+                        setObtainedFlareonBackground();
                 }
                 returnToHouse();
                 playSoundB(soundB_data, soundB_length, 0);
@@ -419,6 +423,7 @@ void updateStage() {
                         } 
                         if (collision(player.worldCol, player.worldRow, player.width, player.height,
                             poops[i].worldCol, poops[i].worldRow, poops[i].width, poops[i].height)) {
+                                setPoopHitBackground();
                                 returnToHouse();                            
                         }
                     }
@@ -454,7 +459,8 @@ void updateStage() {
             if (collision(player.worldCol, player.worldRow, player.width, player.height,
             LEAFSTONECOL, LEAFSTONEROW, LEAFSTONEWIDTH, LEAFSTONEHEIGHT)) {
                 if (!hasLeafStone) {
-                    hasLeafStone = 1; 
+                    hasLeafStone = 1;
+                    setObtainedLeafeonBackground();
                 }
                 returnToHouse();
             }
@@ -573,8 +579,61 @@ void setLavaHitBackground() {
     } 
 }
 
-void setInfoBackground() {
+void setObtainedFlareonBackground() {
+    infoScreen = 500;
+    REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(30);
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    scroll = STATIC;
+    mapHeight = 160;
+    mapWidth = 240;
+    REG_BG0VOFF = 0;
+    REG_BG0HOFF = 0;
 
+    waitForVBlank();
+    DMANow(3, gotFirePal, PALETTE, 256);
+    DMANow(3, gotFireTiles, &CHARBLOCK[0], gotFireTilesLen / 2);
+    DMANow(3, gotFireMap, &SCREENBLOCK[30], gotFireMapLen / 2);                
+    while (--infoScreen > 0) {
+        waitForVBlank();
+    } 
+}
+
+void setPoopHitBackground() {
+    infoScreen = 500;
+    REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(30);
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    scroll = STATIC;
+    mapHeight = 160;
+    mapWidth = 240;
+    REG_BG0VOFF = 0;
+    REG_BG0HOFF = 0;
+
+    waitForVBlank();
+    DMANow(3, PoopHitPal, PALETTE, 256);
+    DMANow(3, PoopHitTiles, &CHARBLOCK[0], PoopHitTilesLen / 2);
+    DMANow(3, PoopHitMap, &SCREENBLOCK[30], PoopHitMapLen / 2);                
+    while (--infoScreen > 0) {
+        waitForVBlank();
+    } 
+}
+
+void setObtainedLeafeonBackground() {
+    infoScreen = 500;
+    REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(30);
+    REG_DISPCTL = MODE0 | BG0_ENABLE;
+    scroll = STATIC;
+    mapHeight = 160;
+    mapWidth = 240;
+    REG_BG0VOFF = 0;
+    REG_BG0HOFF = 0;
+
+    waitForVBlank();
+    DMANow(3, gotLeafPal, PALETTE, 256);
+    DMANow(3, gotLeafTiles, &CHARBLOCK[0], gotLeafTilesLen / 2);
+    DMANow(3, gotLeafMap, &SCREENBLOCK[30], gotLeafMapLen / 2);                
+    while (--infoScreen > 0) {
+        waitForVBlank();
+    } 
 }
 
 void setFireCaveBackground() {
@@ -786,7 +845,7 @@ void updateNonPlayers() {
             }
         break;
         case FOREST:
-            poopCount = (poopCount + 1) % 20;
+            poopCount = (poopCount + 1) % 30;
             for (int i = 0; i < poopsLen; i++) {
                 if (poops[i].worldRow <= SCREENHEIGHT) {
                     poops[i].worldRow += poops[i].rdel;

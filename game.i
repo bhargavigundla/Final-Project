@@ -952,6 +952,8 @@ void setFireCaveBackground();
 void setOceanBackground();
 void setForestBackground();
 void setLeafStoneClearingBackground();
+void setLavaHitBackground();
+void setObtainedFlareonBackground();
 void initSprites();
 void setStage();
 
@@ -1164,6 +1166,36 @@ extern const unsigned short forestClearingNoStonePal[256];
 # 20 "forestClearingCM.h"
 extern const unsigned short forestClearingCMBitmap[19200];
 # 28 "game.c" 2
+# 1 "PoopHit.h" 1
+# 22 "PoopHit.h"
+extern const unsigned short PoopHitTiles[5968];
+
+
+extern const unsigned short PoopHitMap[1024];
+
+
+extern const unsigned short PoopHitPal[256];
+# 29 "game.c" 2
+# 1 "gotLeaf.h" 1
+# 22 "gotLeaf.h"
+extern const unsigned short gotLeafTiles[2176];
+
+
+extern const unsigned short gotLeafMap[1024];
+
+
+extern const unsigned short gotLeafPal[256];
+# 30 "game.c" 2
+# 1 "gotFire.h" 1
+# 22 "gotFire.h"
+extern const unsigned short gotFireTiles[3024];
+
+
+extern const unsigned short gotFireMap[1024];
+
+
+extern const unsigned short gotFirePal[256];
+# 31 "game.c" 2
 
 
 
@@ -1390,7 +1422,7 @@ void updatePlayer() {
             }
         }
     }
-# 266 "game.c"
+# 269 "game.c"
     (*(volatile unsigned short *)0x04000014) = skyShift;
     if (stage == FOREST && (!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
         cheat = 1;
@@ -1425,7 +1457,7 @@ void updateStage() {
                 initNonPlayers();
                 playSoundB(soundB_data, soundB_length, 0);
             }
-# 320 "game.c"
+# 323 "game.c"
             else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {
                 scroll = SCROLLING;
@@ -1502,12 +1534,13 @@ void updateStage() {
             player.worldCol, player.worldRow, player.width, player.height)) {
                 if (!hasFireStone) {
                         hasFireStone = 1;
+                        setObtainedFlareonBackground();
                 }
                 returnToHouse();
                 playSoundB(soundB_data, soundB_length, 0);
             }
             break;
-# 411 "game.c"
+# 415 "game.c"
         case FOREST:
             for (int i = 0; i < 10; i++) {
                     if (poops[i].worldRow > player.worldRow) {
@@ -1519,6 +1552,7 @@ void updateStage() {
                         }
                         if (collision(player.worldCol, player.worldRow, player.width, player.height,
                             poops[i].worldCol, poops[i].worldRow, poops[i].width, poops[i].height)) {
+                                setPoopHitBackground();
                                 returnToHouse();
                         }
                     }
@@ -1555,6 +1589,7 @@ void updateStage() {
             LEAFSTONECOL, LEAFSTONEROW, LEAFSTONEWIDTH, LEAFSTONEHEIGHT)) {
                 if (!hasLeafStone) {
                     hasLeafStone = 1;
+                    setObtainedLeafeonBackground();
                 }
                 returnToHouse();
             }
@@ -1673,8 +1708,61 @@ void setLavaHitBackground() {
     }
 }
 
-void setInfoBackground() {
+void setObtainedFlareonBackground() {
+    infoScreen = 500;
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((30)<<8);
+    (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
+    scroll = STATIC;
+    mapHeight = 160;
+    mapWidth = 240;
+    (*(volatile unsigned short *)0x04000012) = 0;
+    (*(volatile unsigned short *)0x04000010) = 0;
 
+    waitForVBlank();
+    DMANow(3, gotFirePal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, gotFireTiles, &((charblock *)0x6000000)[0], 6048 / 2);
+    DMANow(3, gotFireMap, &((screenblock *)0x6000000)[30], 2048 / 2);
+    while (--infoScreen > 0) {
+        waitForVBlank();
+    }
+}
+
+void setPoopHitBackground() {
+    infoScreen = 500;
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((30)<<8);
+    (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
+    scroll = STATIC;
+    mapHeight = 160;
+    mapWidth = 240;
+    (*(volatile unsigned short *)0x04000012) = 0;
+    (*(volatile unsigned short *)0x04000010) = 0;
+
+    waitForVBlank();
+    DMANow(3, PoopHitPal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, PoopHitTiles, &((charblock *)0x6000000)[0], 11936 / 2);
+    DMANow(3, PoopHitMap, &((screenblock *)0x6000000)[30], 2048 / 2);
+    while (--infoScreen > 0) {
+        waitForVBlank();
+    }
+}
+
+void setObtainedLeafeonBackground() {
+    infoScreen = 500;
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((30)<<8);
+    (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
+    scroll = STATIC;
+    mapHeight = 160;
+    mapWidth = 240;
+    (*(volatile unsigned short *)0x04000012) = 0;
+    (*(volatile unsigned short *)0x04000010) = 0;
+
+    waitForVBlank();
+    DMANow(3, gotLeafPal, ((unsigned short *)0x5000000), 256);
+    DMANow(3, gotLeafTiles, &((charblock *)0x6000000)[0], 4352 / 2);
+    DMANow(3, gotLeafMap, &((screenblock *)0x6000000)[30], 2048 / 2);
+    while (--infoScreen > 0) {
+        waitForVBlank();
+    }
 }
 
 void setFireCaveBackground() {
@@ -1767,7 +1855,7 @@ void setStage() {
             waitForVBlank();
             setVolcanoBackground();
             break;
-# 680 "game.c"
+# 739 "game.c"
         case FOREST:
             (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((20)<<8);
             (*(volatile unsigned short*)0x400000A) = (0<<7) | (3<<14) | ((1)<<2) | ((30)<<8);
@@ -1877,7 +1965,7 @@ void updateNonPlayers() {
             }
         break;
         case FOREST:
-            poopCount = (poopCount + 1) % 20;
+            poopCount = (poopCount + 1) % 30;
             for (int i = 0; i < 10; i++) {
                 if (poops[i].worldRow <= 160) {
                     poops[i].worldRow += poops[i].rdel;

@@ -1406,6 +1406,8 @@ void setFireCaveBackground();
 void setOceanBackground();
 void setForestBackground();
 void setLeafStoneClearingBackground();
+void setLavaHitBackground();
+void setObtainedFlareonBackground();
 void initSprites();
 void setStage();
 
