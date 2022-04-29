@@ -133,9 +133,7 @@ void goToInstructions() {
 
 // Runs every frame of the game state.
 void instructions() {
-    if (BUTTON_PRESSED(BUTTON_B)) {
-        goToStart();
-    } else if (BUTTON_PRESSED(BUTTON_A) || BUTTON_PRESSED(BUTTON_START)) {
+    if (BUTTON_PRESSED(BUTTON_START)) {
         goToGame();
     }
 }
@@ -164,7 +162,7 @@ void game() {
 void goToPause() {
     state = PAUSE;
 
-    REG_BG0CNT = BG_8BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
+    REG_BG0CNT = BG_4BPP | BG_SIZE_SMALL | BG_CHARBLOCK(0) | BG_SCREENBLOCK(28);
     REG_DISPCTL = MODE0 | BG0_ENABLE;
     REG_BG0VOFF = 0;
     REG_BG0HOFF = 0;

@@ -1182,9 +1182,14 @@ int wait;
 int infoScreen;
 
 int loopCount;
+int poopCount;
+int numPoops;
 
 int currEeveeFrame;
+int currPokeFrame;
 int eeveeTimer;
+
+int cheat;
 
 enum {
     STATIC,
@@ -1226,10 +1231,10 @@ enum {
     FIRESTONECAVEDOORWIDTH = 22,
     LAVAROCKSWIDTH = 16,
     LAVAROCKSHEIGHT = 16,
-    OCEANDOORROW = 382,
-    OCEANDOORCOL = 60,
-    OCEANDOORWIDTH = 3,
-    OCEANDOORHEIGHT = 17,
+    HOTDOORROW = 382,
+    HOTDOORCOL = 60,
+    HOTDOORWIDTH = 3,
+    HOTDOORHEIGHT = 17,
     WATERSTONECOL = 496,
     WATERSTONEROW = 224,
     WATERSTONEWIDTH = 16,
@@ -1257,8 +1262,10 @@ enum {OUTSIDEWIDTH = 512, OUTSIDEHEIGHT = 512,
 
 OBJ_ATTR shadowOAM[128];
 ANISPRITE player;
+ANISPRITE togekiss;
 
-ANISPRITE lavaRocks[4];
+ANISPRITE lavaRocks[12];
+ANISPRITE poops[10];
 
 unsigned char* collisionMap;
 
@@ -1281,6 +1288,7 @@ void initGame() {
     hasLeafStone = 0;
     hasWaterStone = 0;
 
+    cheat = 0;
 
     initNonPlayers();
     initSprites();
@@ -1356,6 +1364,13 @@ void updatePlayer() {
             player.worldCol -= player.cdel;
    hOff -= (hOff - scroll >= 0) ? scroll : 0;
             skyShift -= (wait == 0) ? 1 : 0;
+            if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<1)))) {
+                player.worldCol -= player.cdel;
+                if (player.worldCol - 100 > 0) {
+                    hOff -= (hOff - scroll >= 0) ? scroll : 0;
+                }
+
+            }
         }
     }
     if((~((*(volatile unsigned short *)0x04000130)) & ((1<<4)))) {
@@ -1367,10 +1382,19 @@ void updatePlayer() {
             player.worldCol += player.cdel;
    hOff += ((hOff + scroll + 240 - 1) < mapWidth) ? scroll : 0;
             skyShift += (wait == 0) ? 1 : 0;
+            if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<1)))) {
+                player.worldCol += player.cdel;
+                if (player.worldCol + player.width + 100 > mapWidth) {
+                    hOff += ((hOff + scroll + 240 - 1) < mapWidth) ? scroll : 0;
+                }
+            }
         }
     }
-# 245 "game.c"
+# 266 "game.c"
     (*(volatile unsigned short *)0x04000014) = skyShift;
+    if (stage == FOREST && (!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
+        cheat = 1;
+    }
     animatePlayer();
 }
 
@@ -1382,7 +1406,7 @@ void updateStage() {
 
                 returnToHouse();
             } else if (collision(player.worldCol, player.worldRow, player.width, player.height,
-                OCEANDOORCOL, OCEANDOORROW, OCEANDOORWIDTH, OCEANDOORHEIGHT)) {
+                HOTDOORCOL, HOTDOORROW, HOTDOORWIDTH, HOTDOORHEIGHT)) {
                 scroll = SCROLLING;
                 collisionMap = (unsigned char *) volcanoCMBitmap;
                 mapHeight = VOLCANOHEIGHT;
@@ -1401,7 +1425,7 @@ void updateStage() {
                 initNonPlayers();
                 playSoundB(soundB_data, soundB_length, 0);
             }
-# 296 "game.c"
+# 320 "game.c"
             else if (collision(player.worldCol, player.worldRow, player.width, player.height,
                 FORESTDOORCOL, FORESTDOORROW, FORESTDOORWIDTH, FORESTDOORHEIGHT)) {
                 scroll = SCROLLING;
@@ -1457,17 +1481,17 @@ void updateStage() {
                 playSoundB(soundB_data, soundB_length, 0);
             } else if (!collisionCheck((unsigned char *) lavaPoolCMBitmap, mapWidth,
                 player.worldCol, player.worldRow, player.width, player.height, 0, 0)) {
-
-
-
-
-
+                setLavaHitBackground();
                 returnToHouse();
             }
 
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 12; i++) {
                 if (collision(player.worldCol, player.worldRow, player.width, player.height,
                     lavaRocks[i].worldCol, lavaRocks[i].worldRow, lavaRocks[i].width, lavaRocks[i].height)) {
+                    setLavaHitBackground();
+                    while (--infoScreen > 0) {
+                        waitForVBlank();
+                    }
                     returnToHouse();
                 }
                 playSoundB(soundB_data, soundB_length, 0);
@@ -1483,8 +1507,23 @@ void updateStage() {
                 playSoundB(soundB_data, soundB_length, 0);
             }
             break;
-# 387 "game.c"
+# 411 "game.c"
         case FOREST:
+            for (int i = 0; i < 10; i++) {
+                    if (poops[i].worldRow > player.worldRow) {
+                        if (cheat) {
+                            if (collision(player.worldCol, player.worldRow - 5, player.width, player.height,
+                            poops[i].worldCol, poops[i].worldRow, poops[i].width, poops[i].height)) {
+                                poops[i].worldRow = 160 * 2;
+                            }
+                        }
+                        if (collision(player.worldCol, player.worldRow, player.width, player.height,
+                            poops[i].worldCol, poops[i].worldRow, poops[i].width, poops[i].height)) {
+                                returnToHouse();
+                        }
+                    }
+                }
+
             if (player.worldCol == mapWidth - player.width - 5) {
 
 
@@ -1616,16 +1655,26 @@ void setVolcanoBackground() {
 }
 
 void setLavaHitBackground() {
-    (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
+    infoScreen = 500;
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((30)<<8);
     (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
+    scroll = STATIC;
+    mapHeight = 160;
+    mapWidth = 240;
     (*(volatile unsigned short *)0x04000012) = 0;
     (*(volatile unsigned short *)0x04000010) = 0;
 
     waitForVBlank();
-
     DMANow(3, LavaLosePal, ((unsigned short *)0x5000000), 256);
     DMANow(3, LavaLoseTiles, &((charblock *)0x6000000)[0], 11904 / 2);
-    DMANow(3, LavaLoseMap, &((screenblock *)0x6000000)[24], 2048 / 2);
+    DMANow(3, LavaLoseMap, &((screenblock *)0x6000000)[30], 2048 / 2);
+    while (--infoScreen > 0) {
+        waitForVBlank();
+    }
+}
+
+void setInfoBackground() {
+
 }
 
 void setFireCaveBackground() {
@@ -1718,7 +1767,7 @@ void setStage() {
             waitForVBlank();
             setVolcanoBackground();
             break;
-# 631 "game.c"
+# 680 "game.c"
         case FOREST:
             (*(volatile unsigned short*)0x4000008) = (0<<7) | (3<<14) | ((0)<<2) | ((20)<<8);
             (*(volatile unsigned short*)0x400000A) = (0<<7) | (3<<14) | ((1)<<2) | ((30)<<8);
@@ -1789,30 +1838,60 @@ void initNonPlayers() {
     hideSprites();
     switch (stage) {
         case OUTSIDE:
-
             break;
         case HOUSE:
             break;
         case VOLCANO:
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 12; i++) {
                 lavaRocks[i].width = 16;
                 lavaRocks[i].height = 16;
-                lavaRocks[i].rdel = (i % 2 == 0) ? 2 : 4;
+                lavaRocks[i].rdel = (i % 2 == 0) ? 2 : 3;
                 lavaRocks[i].cdel = 0;
-                lavaRocks[i].worldCol = rand() % (mapWidth - LAVAROCKSWIDTH);
+                lavaRocks[i].worldCol = (i % 2 == 0) ? rand() % 228 : (rand() % (240 - LAVAROCKSWIDTH)) + 265;
                 lavaRocks[i].worldRow = rand() % (mapHeight - LAVAROCKSWIDTH);
             }
             break;
-
-
+        case FOREST:
+            for (int i = 0; i < 10; i++) {
+                poops[i].width = 8;
+                poops[i].height = 8;
+                poops[i].rdel = (i % 2 == 0) ? 2 : 2;
+                poops[i].cdel = 0;
+                poops[i].worldCol = player.worldCol + 20;
+                poops[i].worldRow = 160 + 1;
+                poops[i].hide = 1;
+            }
+            togekiss.width = 27;
+            togekiss.height = 23;
+            togekiss.worldCol = 0;
+            togekiss.worldRow = 0;
+            break;
     }
 }
 
 void updateNonPlayers() {
     switch (stage) {
         case VOLCANO:
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 12; i++) {
                 lavaRocks[i].worldRow = (lavaRocks[i].worldRow + lavaRocks[i].rdel) % (mapHeight - LAVAROCKSHEIGHT);
+            }
+        break;
+        case FOREST:
+            poopCount = (poopCount + 1) % 20;
+            for (int i = 0; i < 10; i++) {
+                if (poops[i].worldRow <= 160) {
+                    poops[i].worldRow += poops[i].rdel;
+                }
+
+            }
+            if (poopCount == 0) {
+                for (int i = 0; i < 10 && poopCount == 0; i++) {
+                    if (poops[i].worldRow > 160) {
+                        poops[i].worldRow = 10;
+                        poops[i].worldCol = player.worldCol + 20 + (rand() % togekiss.width);
+                        poopCount += 1;
+                    }
+                }
             }
         break;
     }
@@ -1845,7 +1924,7 @@ void drawNonPlayers() {
             }
             break;
         case VOLCANO:
-            for (int i = 1; i < 4 + 1; i++) {
+            for (int i = 1; i < 12 + 1; i++) {
 
 
                 if ((lavaRocks[i - 1].worldRow + lavaRocks[i - 1].height - vOff >= 0 && lavaRocks[i - 1].worldRow - vOff <= 160) &&
@@ -1857,6 +1936,36 @@ void drawNonPlayers() {
                     shadowOAM[i].attr0 |= (2<<8);
                 }
             }
+            break;
+        case FOREST:
+                eeveeTimer = (eeveeTimer + 1) % 30;
+                currEeveeFrame = (eeveeTimer == 0) ? (currEeveeFrame + 1) % 3 : currEeveeFrame;
+                for (int i = 1; i < 10 + 1; i++) {
+
+
+                    if ((poops[i - 1].worldRow + poops[i - 1].height - vOff >= 0 && poops[i - 1].worldRow - vOff <= 160) &&
+                        (poops[i - 1].worldCol + poops[i - 1].width - hOff >= 0 && poops[i - 1].worldCol - hOff <= 240) && poops[i - 1].worldRow < 160) {
+                        shadowOAM[i].attr0 = (0xFF &(poops[i - 1].worldRow - vOff)) | (0<<14);
+                        shadowOAM[i].attr1 = (0x1FF &(poops[i - 1].worldCol - hOff)) | (0<<14);
+                        shadowOAM[i].attr2 = ((0)<<12) | ((8)*32+(0));
+                    } else {
+                        shadowOAM[i].attr0 |= (2<<8);
+                    }
+                }
+                shadowOAM[10 + 2].attr0 = (0xFF &(10 - vOff)) | (0<<14);
+                shadowOAM[10 + 2].attr1 = (0x1FF &(player.worldCol - hOff)) | (2<<14);
+                if ((~((*(volatile unsigned short *)0x04000130)) & ((1<<5)))) {
+                    shadowOAM[10 + 2].attr2 = ((0)<<12) | (((currEeveeFrame * 4))*32+(28));
+                } else {
+                    shadowOAM[10 + 2].attr2 = ((0)<<12) | (((currEeveeFrame * 4))*32+(24));
+                }
+
+                if (cheat) {
+                    shadowOAM[10 + 3].attr0 = (0xFF &(player.worldRow - 5 - vOff)) | (0<<14);
+                    shadowOAM[10 + 3].attr1 = (0x1FF &(player.worldCol - hOff)) | (1<<14);
+                    shadowOAM[10 + 3].attr2 = ((0)<<12) | ((10)*32+(0));
+                }
+
             break;
     }
 }

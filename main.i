@@ -1322,7 +1322,7 @@ int collision(int colA, int rowA, int widthA, int heightA, int colB, int rowB, i
 # 6 "main.c" 2
 # 1 "start.h" 1
 # 22 "start.h"
-extern const unsigned short startTiles[19200];
+extern const unsigned short startTiles[19168];
 
 
 extern const unsigned short startMap[1024];
@@ -1332,7 +1332,7 @@ extern const unsigned short startPal[256];
 # 7 "main.c" 2
 # 1 "instructions.h" 1
 # 22 "instructions.h"
-extern const unsigned short instructionsTiles[3056];
+extern const unsigned short instructionsTiles[6288];
 
 
 extern const unsigned short instructionsMap[1024];
@@ -1352,7 +1352,7 @@ extern const unsigned short winPal[256];
 # 9 "main.c" 2
 # 1 "pause.h" 1
 # 22 "pause.h"
-extern const unsigned short pauseTiles[7840];
+extern const unsigned short pauseTiles[3280];
 
 
 extern const unsigned short pauseMap[1024];
@@ -1566,7 +1566,7 @@ void goToStart() {
 
     waitForVBlank();
     DMANow(3, startPal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, startTiles, &((charblock *)0x6000000)[0], 38400 / 2);
+    DMANow(3, startTiles, &((charblock *)0x6000000)[0], 38336 / 2);
     DMANow(3, startMap, &((screenblock *)0x6000000)[28], 2048 / 2);
 }
 
@@ -1592,15 +1592,13 @@ void goToInstructions() {
 
     waitForVBlank();
     DMANow(3, instructionsPal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, instructionsTiles, &((charblock *)0x6000000)[0], 6112 / 2);
+    DMANow(3, instructionsTiles, &((charblock *)0x6000000)[0], 12576 / 2);
     DMANow(3, instructionsMap, &((screenblock *)0x6000000)[28], 2048 / 2);
 }
 
 
 void instructions() {
-    if ((!(~(oldButtons)&((1<<1))) && (~buttons & ((1<<1))))) {
-        goToStart();
-    } else if ((!(~(oldButtons)&((1<<0))) && (~buttons & ((1<<0)))) || (!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
+    if ((!(~(oldButtons)&((1<<3))) && (~buttons & ((1<<3))))) {
         goToGame();
     }
 }
@@ -1629,14 +1627,14 @@ void game() {
 void goToPause() {
     state = PAUSE;
 
-    (*(volatile unsigned short*)0x4000008) = (1<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
+    (*(volatile unsigned short*)0x4000008) = (0<<7) | (0<<14) | ((0)<<2) | ((28)<<8);
     (*(volatile unsigned short *)0x4000000) = 0 | (1<<8);
     (*(volatile unsigned short *)0x04000012) = 0;
     (*(volatile unsigned short *)0x04000010) = 0;
 
     waitForVBlank();
     DMANow(3, pausePal, ((unsigned short *)0x5000000), 256);
-    DMANow(3, pauseTiles, &((charblock *)0x6000000)[0], 15680 / 2);
+    DMANow(3, pauseTiles, &((charblock *)0x6000000)[0], 6560 / 2);
     DMANow(3, pauseMap, &((screenblock *)0x6000000)[28], 2048 / 2);
 }
 

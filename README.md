@@ -33,8 +33,7 @@ digital sound
 ○ At least one must not loop
 
 ● A cheat to make the game easier
-○ The game must be winnable (if your game includes a win state) without
-the cheat
+○ Press B in the forest to activate the cheat!
 ○ Not just skipping to the win state; not just an “invincible” mode; not just
 removing a conditional. It must meaningfully change existing mechanics or
 introduce an entirely new one – please be creative (and ask your TA for
